@@ -8,6 +8,8 @@ const DEFAULT_CENTER: LatLng = [37.7749, -122.4194]
 const SKYLINE_QUEENSTOWN: LatLng = [-45.0266, 168.6495]
 const GEOFENCE_RADIUS_KM = 2.5
 const STADIA_API_KEY = import.meta.env.VITE_STADIA_API_KEY
+const VERTIGO_TRAIL_FILE = TRAILS.find((trail) => trail.name === 'Vertigo')?.file ?? '/trails/vertigo.gpx'
+const SIMULATED_RIDE_DURATION_MS = 1 * 60 * 1000
 
 type LocationStatus = 'checking' | 'at-skyline' | 'not-at-skyline'
 
@@ -71,7 +73,7 @@ function TrailOverlays() {
 }
 
 interface RecordRideProps {
-  onSave: (rideName: string, distance: number) => Promise<void>
+  onSave: (rideName: string, distance: number, time: number) => Promise<void>
 }
 
 function RecordRide({ onSave }: RecordRideProps) {
@@ -81,7 +83,10 @@ function RecordRide({ onSave }: RecordRideProps) {
   const [rideName, setRideName] = useState('')
   const [saving, setSaving] = useState(false)
   const [locationStatus, setLocationStatus] = useState<LocationStatus>('checking')
+  const [elapsedMinutes, setElapsedMinutes] = useState(0)
   const watchIdRef = useRef<number | null>(null)
+  const simulationIntervalRef = useRef<number | null>(null)
+  const recordingStartRef = useRef<number | null>(null)
 
   useEffect(() => {
     if (!navigator.geolocation) {
@@ -105,8 +110,27 @@ function RecordRide({ onSave }: RecordRideProps) {
       if (watchIdRef.current !== null) {
         navigator.geolocation.clearWatch(watchIdRef.current)
       }
+      if (simulationIntervalRef.current !== null) {
+        window.clearInterval(simulationIntervalRef.current)
+      }
     }
   }, [])
+
+  const finishRecording = () => {
+    if (watchIdRef.current !== null) {
+      navigator.geolocation.clearWatch(watchIdRef.current)
+      watchIdRef.current = null
+    }
+    if (simulationIntervalRef.current !== null) {
+      window.clearInterval(simulationIntervalRef.current)
+      simulationIntervalRef.current = null
+    }
+    if (recordingStartRef.current !== null) {
+      setElapsedMinutes((Date.now() - recordingStartRef.current) / 60000)
+      recordingStartRef.current = null
+    }
+    setRecording(false)
+  }
 
   const startRecording = () => {
     if (!navigator.geolocation) {
@@ -115,6 +139,8 @@ function RecordRide({ onSave }: RecordRideProps) {
     }
     setPath([])
     setRideName('')
+    setElapsedMinutes(0)
+    recordingStartRef.current = Date.now()
     setRecording(true)
     watchIdRef.current = navigator.geolocation.watchPosition(
       (pos) => {
@@ -127,12 +153,38 @@ function RecordRide({ onSave }: RecordRideProps) {
     )
   }
 
-  const stopRecording = () => {
-    if (watchIdRef.current !== null) {
-      navigator.geolocation.clearWatch(watchIdRef.current)
-      watchIdRef.current = null
+  const startSimulatedRide = async () => {
+    let points: LatLng[]
+    try {
+      const res = await fetch(VERTIGO_TRAIL_FILE)
+      points = parseGpxTrack(await res.text())
+    } catch (err) {
+      console.error('Failed to load Vertigo trail for simulation:', err)
+      return
     }
-    setRecording(false)
+    if (points.length < 2) return
+
+    setPath([])
+    setRideName('')
+    setElapsedMinutes(0)
+    recordingStartRef.current = Date.now()
+    setRecording(true)
+
+    const stepMs = SIMULATED_RIDE_DURATION_MS / (points.length - 1)
+    let index = 0
+    setPosition(points[0])
+    setPath([points[0]])
+
+    simulationIntervalRef.current = window.setInterval(() => {
+      index += 1
+      if (index >= points.length) {
+        finishRecording()
+        return
+      }
+      const next = points[index]
+      setPosition(next)
+      setPath((prev) => [...prev, next])
+    }, stepMs)
   }
 
   const distance = totalDistanceKm(path)
@@ -141,7 +193,7 @@ function RecordRide({ onSave }: RecordRideProps) {
     if (!rideName.trim() || distance === 0) return
     setSaving(true)
     try {
-      await onSave(rideName.trim(), Math.round(distance * 100) / 100)
+      await onSave(rideName.trim(), Math.round(distance * 100) / 100, Math.round(elapsedMinutes * 10) / 10)
       setRideName('')
       setPath([])
     } finally {
@@ -182,6 +234,11 @@ function RecordRide({ onSave }: RecordRideProps) {
   return (
     <div className="record-ride">
       {testButton}
+      {!recording && (
+        <button className="btn btn-secondary record-ride__test-btn" onClick={startSimulatedRide}>
+          Test: Simulate Vertigo Ride (1 min)
+        </button>
+      )}
       <div className="record-ride__map">
         <MapContainer center={position} zoom={15} scrollWheelZoom={false} style={{ height: '220px', width: '100%' }}>
           <TileLayer
@@ -206,7 +263,7 @@ function RecordRide({ onSave }: RecordRideProps) {
             {path.length > 0 ? 'Record Again' : 'Record'}
           </button>
         ) : (
-          <button className="btn btn-danger" onClick={stopRecording}>
+          <button className="btn btn-danger" onClick={finishRecording}>
             Stop
           </button>
         )}

@@ -25,11 +25,18 @@ function App() {
       {isAuthenticated ? (
         <div className="auth-page">
           <div className="auth-card">
+            <div className="auth-card__banner">
+              <MountainBikeIllustration />
+            </div>
             <div className="auth-card__body">
-              <h1>Vertigo</h1>
-              <p className="subtitle">Logged in as {user?.email}</p>
-              <h2>User Profile</h2>
-              <pre>{JSON.stringify(user, null, 2)}</pre>
+              {user?.picture ? (
+                <img src={user.picture} alt="" className="avatar" />
+              ) : (
+                <div className="avatar avatar--fallback">
+                  {(user?.nickname ?? '?').charAt(0).toUpperCase()}
+                </div>
+              )}
+              <h1>{user?.nickname ?? 'Welcome back'}</h1>
               <div className="auth-card__actions">
                 <button className="btn btn-secondary" onClick={logout}>
                   Log Out

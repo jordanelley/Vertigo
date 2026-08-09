@@ -5,7 +5,7 @@ import {
   TRAILS,
   parseGpxTrack,
   haversineDistanceKm,
-  findClosestTrailName,
+  segmentPathByTrail,
   nextAttemptRideName,
   type LatLng,
   type TrailDefinition,
@@ -213,18 +213,26 @@ function RecordRide({ onSave, existingRideNames }: RecordRideProps) {
 
   const distance = totalDistanceKm(path)
 
-  const computedName = useMemo(() => {
-    if (recording || path.length < 2) return null
-    const trailName = findClosestTrailName(path, trailPaths)
-    if (!trailName) return null
-    return nextAttemptRideName(trailName, existingRideNames)
+  const computedSegments = useMemo(() => {
+    if (recording || path.length < 2) return []
+    const rawSegments = segmentPathByTrail(path, trailPaths)
+    const namesSoFar: string[] = []
+    return rawSegments.map((segment) => {
+      const segDistance = totalDistanceKm(segment.points)
+      const name = nextAttemptRideName(segment.trailName, [...existingRideNames, ...namesSoFar])
+      namesSoFar.push(name)
+      return { name, distance: segDistance }
+    })
   }, [recording, path, trailPaths, existingRideNames])
 
   const handleSave = async () => {
-    if (!computedName || distance === 0) return
+    if (computedSegments.length === 0 || distance === 0) return
     setSaving(true)
     try {
-      await onSave(computedName, Math.round(distance * 100) / 100, Math.round(elapsedMinutes * 10) / 10)
+      for (const segment of computedSegments) {
+        const segTime = distance > 0 ? (elapsedMinutes * segment.distance) / distance : 0
+        await onSave(segment.name, Math.round(segment.distance * 100) / 100, Math.round(segTime * 10) / 10)
+      }
       setPath([])
     } finally {
       setSaving(false)
@@ -324,9 +332,19 @@ function RecordRide({ onSave, existingRideNames }: RecordRideProps) {
 
       {!recording && path.length > 1 && (
         <div className="record-ride__save">
-          <span className="record-ride__save-name">{computedName ?? 'Matching trail…'}</span>
-          <button className="btn btn-primary" onClick={handleSave} disabled={saving || !computedName}>
-            {saving ? 'Saving…' : 'Save Ride'}
+          <ul className="record-ride__save-names">
+            {computedSegments.length === 0 ? (
+              <li>Matching trail…</li>
+            ) : (
+              computedSegments.map((segment) => (
+                <li key={segment.name}>
+                  {segment.name} <span>({segment.distance.toFixed(2)} km)</span>
+                </li>
+              ))
+            )}
+          </ul>
+          <button className="btn btn-primary" onClick={handleSave} disabled={saving || computedSegments.length === 0}>
+            {saving ? 'Saving…' : computedSegments.length > 1 ? 'Save Rides' : 'Save Ride'}
           </button>
         </div>
       )}

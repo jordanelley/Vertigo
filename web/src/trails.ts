@@ -33,36 +33,80 @@ export function haversineDistanceKm(a: LatLng, b: LatLng): number {
   return R * 2 * Math.asin(Math.sqrt(h))
 }
 
-/** Average distance (km) from each point in `path` to its nearest point on `trailPoints`. Lower = closer match. */
-function averageDistanceToTrail(path: LatLng[], trailPoints: LatLng[]): number {
-  if (path.length === 0 || trailPoints.length === 0) return Infinity
-  let total = 0
-  for (const point of path) {
-    let nearest = Infinity
-    for (const trailPoint of trailPoints) {
-      const d = haversineDistanceKm(point, trailPoint)
-      if (d < nearest) nearest = d
-    }
-    total += nearest
-  }
-  return total / path.length
-}
-
-/** Picks whichever loaded trail the recorded path lies closest to, always returning a match. */
-export function findClosestTrailName(
-  path: LatLng[],
-  trailPaths: Record<string, LatLng[]>,
-): string | null {
+function nearestTrailForPoint(point: LatLng, trailPaths: Record<string, LatLng[]>): string | null {
   let bestName: string | null = null
-  let bestScore = Infinity
+  let bestDist = Infinity
   for (const [name, points] of Object.entries(trailPaths)) {
-    const score = averageDistanceToTrail(path, points)
-    if (score < bestScore) {
-      bestScore = score
-      bestName = name
+    for (const trailPoint of points) {
+      const d = haversineDistanceKm(point, trailPoint)
+      if (d < bestDist) {
+        bestDist = d
+        bestName = name
+      }
     }
   }
   return bestName
+}
+
+export interface TrailSegment {
+  trailName: string
+  points: LatLng[]
+}
+
+// Below this many points, a run is treated as GPS/matching noise rather than a real transition to another trail.
+const MIN_SEGMENT_POINTS = 3
+
+/**
+ * Splits a recorded path into runs, each attributed to whichever loaded trail its points lie
+ * closest to. Handles a ride that crosses from one trail onto another (e.g. Upper Hammy's Track
+ * into Vertigo), returning one segment per trail actually ridden, in order.
+ */
+export function segmentPathByTrail(path: LatLng[], trailPaths: Record<string, LatLng[]>): TrailSegment[] {
+  if (Object.keys(trailPaths).length === 0) return []
+
+  const rawSegments: TrailSegment[] = []
+  let currentName: string | null = null
+  let currentPoints: LatLng[] = []
+
+  for (const point of path) {
+    const name = nearestTrailForPoint(point, trailPaths)
+    if (name === null) continue
+    if (name !== currentName) {
+      if (currentName !== null && currentPoints.length > 0) {
+        rawSegments.push({ trailName: currentName, points: currentPoints })
+      }
+      currentName = name
+      currentPoints = [point]
+    } else {
+      currentPoints.push(point)
+    }
+  }
+  if (currentName !== null && currentPoints.length > 0) {
+    rawSegments.push({ trailName: currentName, points: currentPoints })
+  }
+
+  // Fold short runs (noise) into whichever segment came before them.
+  const folded: TrailSegment[] = []
+  for (const segment of rawSegments) {
+    if (segment.points.length < MIN_SEGMENT_POINTS && folded.length > 0) {
+      folded[folded.length - 1].points.push(...segment.points)
+    } else {
+      folded.push({ trailName: segment.trailName, points: [...segment.points] })
+    }
+  }
+
+  // Re-merge consecutive segments that ended up on the same trail after folding.
+  const merged: TrailSegment[] = []
+  for (const segment of folded) {
+    const last = merged[merged.length - 1]
+    if (last && last.trailName === segment.trailName) {
+      last.points.push(...segment.points)
+    } else {
+      merged.push({ trailName: segment.trailName, points: [...segment.points] })
+    }
+  }
+
+  return merged.filter((segment) => segment.points.length >= 2)
 }
 
 /** Builds "<Trail Name> #N" using the next attempt number after any existing matches. */

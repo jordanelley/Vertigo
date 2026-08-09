@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Vetigo.Api.Controllers;
 
@@ -6,29 +7,30 @@ namespace Vetigo.Api.Controllers;
 [Route("api/[controller]")]
 public class RidesController : ControllerBase
 {
-    private static readonly List<Ride> Rides = new()
+    private readonly VetigoDbContext _db;
+
+    public RidesController(VetigoDbContext db)
     {
-        new Ride { Id = 1, RideName = "Sunday Loop", Distance = 18.4, Time = 62 },
-        new Ride { Id = 2, RideName = "Downhill Run", Distance = 6.2, Time = 18 },
-    };
+        _db = db;
+    }
 
     [HttpGet(Name = "GetRides")]
-    public IEnumerable<Ride> Get()
+    public async Task<IEnumerable<Ride>> Get()
     {
-        return Rides;
+        return await _db.Rides.ToListAsync();
     }
 
     [HttpPost(Name = "CreateRide")]
-    public ActionResult<Ride> Post(CreateRideRequest request)
+    public async Task<ActionResult<Ride>> Post(CreateRideRequest request)
     {
         var ride = new Ride
         {
-            Id = Rides.Count == 0 ? 1 : Rides.Max(r => r.Id) + 1,
             RideName = request.RideName,
             Distance = request.Distance,
             Time = request.Time,
         };
-        Rides.Add(ride);
+        _db.Rides.Add(ride);
+        await _db.SaveChangesAsync();
         return ride;
     }
 }

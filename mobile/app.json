@@ -30,6 +30,12 @@
           "domain": "dev-74arexrqup207kmv.us.auth0.com"
         }
       ]
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "e6bd7163-b888-4d32-819f-f42ec5bd980a"
+      }
+    },
+    "owner": "jordanelley"
   }
 }

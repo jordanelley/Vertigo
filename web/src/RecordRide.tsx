@@ -9,7 +9,7 @@ const SKYLINE_QUEENSTOWN: LatLng = [-45.0266, 168.6495]
 const GEOFENCE_RADIUS_KM = 2.5
 const STADIA_API_KEY = import.meta.env.VITE_STADIA_API_KEY
 const VERTIGO_TRAIL_FILE = TRAILS.find((trail) => trail.name === 'Vertigo')?.file ?? '/trails/vertigo.gpx'
-const SIMULATED_RIDE_DURATION_MS = 1 * 60 * 1000
+const SIMULATED_RIDE_DURATION_MS = 10 * 1000
 
 type LocationStatus = 'checking' | 'at-skyline' | 'not-at-skyline'
 
@@ -153,7 +153,9 @@ function RecordRide({ onSave }: RecordRideProps) {
     )
   }
 
-  const startSimulatedRide = async () => {
+  const simulateMovement = async () => {
+    if (!recording || simulationIntervalRef.current !== null) return
+
     let points: LatLng[]
     try {
       const res = await fetch(VERTIGO_TRAIL_FILE)
@@ -164,16 +166,10 @@ function RecordRide({ onSave }: RecordRideProps) {
     }
     if (points.length < 2) return
 
-    setPath([])
-    setRideName('')
-    setElapsedMinutes(0)
-    recordingStartRef.current = Date.now()
-    setRecording(true)
-
     const stepMs = SIMULATED_RIDE_DURATION_MS / (points.length - 1)
     let index = 0
     setPosition(points[0])
-    setPath([points[0]])
+    setPath((prev) => [...prev, points[0]])
 
     simulationIntervalRef.current = window.setInterval(() => {
       index += 1
@@ -234,11 +230,13 @@ function RecordRide({ onSave }: RecordRideProps) {
   return (
     <div className="record-ride">
       {testButton}
-      {!recording && (
-        <button className="btn btn-secondary record-ride__test-btn" onClick={startSimulatedRide}>
-          Test: Simulate Vertigo Ride (1 min)
-        </button>
-      )}
+      <button
+        className="btn btn-secondary record-ride__test-btn"
+        onClick={simulateMovement}
+        disabled={!recording}
+      >
+        Test: Move Along Vertigo (10 sec)
+      </button>
       <div className="record-ride__map">
         <MapContainer center={position} zoom={15} scrollWheelZoom={false} style={{ height: '220px', width: '100%' }}>
           <TileLayer

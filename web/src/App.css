@@ -265,6 +265,11 @@
   transition: background-color 0.2s, border-color 0.2s;
 }
 
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .btn-primary {
   background-color: #2563eb;
   color: #ffffff;

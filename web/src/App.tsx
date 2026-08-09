@@ -1,8 +1,16 @@
+import { useEffect, useState } from 'react'
 import { useAuth0 } from '@auth0/auth0-react'
 import MountainBikeIllustration from './MountainBikeIllustration'
 import './App.css'
 
+interface Ride {
+  id: number
+  rideName: string
+  distance: number
+}
+
 function App() {
+  const [rides, setRides] = useState<Ride[]>([])
   const {
     isLoading,
     isAuthenticated,
@@ -17,6 +25,15 @@ function App() {
 
   const logout = () =>
     auth0Logout({ logoutParams: { returnTo: window.location.origin } })
+
+  useEffect(() => {
+    if (!isAuthenticated) return
+
+    fetch('http://localhost:5090/api/rides')
+      .then((res) => res.json())
+      .then(setRides)
+      .catch(() => setRides([]))
+  }, [isAuthenticated])
 
   if (isLoading) return 'Loading...'
 
@@ -37,6 +54,14 @@ function App() {
                 </div>
               )}
               <h1>{user?.nickname ?? 'Welcome back'}</h1>
+              <ul className="ride-list">
+                {rides.map((ride) => (
+                  <li key={ride.id} className="ride-list__item">
+                    <span className="ride-list__name">{ride.rideName}</span>
+                    <span className="ride-list__distance">{ride.distance} km</span>
+                  </li>
+                ))}
+              </ul>
               <div className="auth-card__actions">
                 <button className="btn btn-secondary" onClick={logout}>
                   Log Out

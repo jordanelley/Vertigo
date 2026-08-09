@@ -17,6 +17,7 @@ const SKYLINE_QUEENSTOWN: LatLng = [-45.0266, 168.6495]
 const GEOFENCE_RADIUS_KM = 2.5
 const STADIA_API_KEY = import.meta.env.VITE_STADIA_API_KEY
 const SIMULATED_RIDE_DURATION_MS = 10 * 1000
+const vertigoAndThunderGoat = TRAILS.filter((trail) => trail.name === 'Vertigo' || trail.name === 'Thunder Goat')
 
 type LocationStatus = 'checking' | 'at-skyline' | 'not-at-skyline'
 
@@ -152,23 +153,15 @@ function RecordRide({ onSave, existingRideNames }: RecordRideProps) {
     )
   }
 
-  const simulateMovement = async (trail: TrailDefinition) => {
-    if (!recording || simulationIntervalRef.current !== null) return
-    setShowTrailPicker(false)
+  const loadTrailPoints = async (trail: TrailDefinition): Promise<LatLng[]> => {
+    const cached = trailPaths[trail.name]
+    if (cached) return cached
+    const res = await fetch(trail.file)
+    return parseGpxTrack(await res.text())
+  }
 
-    let points = trailPaths[trail.name]
-    if (!points) {
-      try {
-        const res = await fetch(trail.file)
-        points = parseGpxTrack(await res.text())
-      } catch (err) {
-        console.error(`Failed to load trail "${trail.name}" for simulation:`, err)
-        return
-      }
-    }
-    if (points.length < 2) return
-
-    const stepMs = SIMULATED_RIDE_DURATION_MS / (points.length - 1)
+  const runSimulatedPath = (points: LatLng[], durationMs: number) => {
+    const stepMs = durationMs / (points.length - 1)
     let index = 0
     setPosition(points[0])
     setPath((prev) => [...prev, points[0]])
@@ -183,6 +176,39 @@ function RecordRide({ onSave, existingRideNames }: RecordRideProps) {
       setPosition(next)
       setPath((prev) => [...prev, next])
     }, stepMs)
+  }
+
+  const simulateMovement = async (trail: TrailDefinition) => {
+    if (!recording || simulationIntervalRef.current !== null) return
+    setShowTrailPicker(false)
+
+    let points: LatLng[]
+    try {
+      points = await loadTrailPoints(trail)
+    } catch (err) {
+      console.error(`Failed to load trail "${trail.name}" for simulation:`, err)
+      return
+    }
+    if (points.length < 2) return
+
+    runSimulatedPath(points, SIMULATED_RIDE_DURATION_MS)
+  }
+
+  const simulateCombinedRide = async (trails: TrailDefinition[]) => {
+    if (!recording || simulationIntervalRef.current !== null) return
+    setShowTrailPicker(false)
+
+    let combined: LatLng[]
+    try {
+      const pointSets = await Promise.all(trails.map(loadTrailPoints))
+      combined = pointSets.flat()
+    } catch (err) {
+      console.error('Failed to load trails for combined simulation:', err)
+      return
+    }
+    if (combined.length < 2) return
+
+    runSimulatedPath(combined, SIMULATED_RIDE_DURATION_MS * trails.length)
   }
 
   const distance = totalDistanceKm(path)
@@ -256,6 +282,14 @@ function RecordRide({ onSave, existingRideNames }: RecordRideProps) {
               {trail.name}
             </button>
           ))}
+          {vertigoAndThunderGoat.length === 2 && (
+            <button
+              className="btn btn-secondary record-ride__test-btn"
+              onClick={() => simulateCombinedRide(vertigoAndThunderGoat)}
+            >
+              Vertigo + Thunder Goat
+            </button>
+          )}
         </div>
       )}
       <div className="record-ride__map">

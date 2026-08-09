@@ -1,12 +1,13 @@
 import { useEffect, useRef, useState } from 'react'
 import { CircleMarker, MapContainer, Polyline, TileLayer, useMap } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
-
-type LatLng = [number, number]
+import { TRAILS, parseGpxTrack, type LatLng } from './trails'
 
 const DEFAULT_CENTER: LatLng = [37.7749, -122.4194]
-const SKYLINE_QUEENSTOWN: LatLng = [-45.0313, 168.6631]
+// Skyline Queenstown gondola top station, Bob's Peak (45°01'36"S 168°38'58"E)
+const SKYLINE_QUEENSTOWN: LatLng = [-45.0266, 168.6495]
 const GEOFENCE_RADIUS_KM = 2.5
+const STADIA_API_KEY = import.meta.env.VITE_STADIA_API_KEY
 
 type LocationStatus = 'checking' | 'at-skyline' | 'not-at-skyline'
 
@@ -36,6 +37,37 @@ function RecenterMap({ position }: { position: LatLng }) {
     map.setView(position)
   }, [position, map])
   return null
+}
+
+function TrailOverlays() {
+  const [trailPaths, setTrailPaths] = useState<Record<string, LatLng[]>>({})
+
+  useEffect(() => {
+    TRAILS.forEach((trail) => {
+      fetch(trail.file)
+        .then((res) => res.text())
+        .then((gpxText) => {
+          setTrailPaths((prev) => ({ ...prev, [trail.name]: parseGpxTrack(gpxText) }))
+        })
+        .catch((err) => console.error(`Failed to load trail "${trail.name}":`, err))
+    })
+  }, [])
+
+  return (
+    <>
+      {TRAILS.map((trail) => {
+        const points = trailPaths[trail.name]
+        if (!points) return null
+        return (
+          <Polyline
+            key={trail.name}
+            positions={points}
+            pathOptions={{ color: trail.color, weight: 4, dashArray: '8 8', opacity: 0.9 }}
+          />
+        )
+      })}
+    </>
+  )
 }
 
 interface RecordRideProps {
@@ -117,10 +149,23 @@ function RecordRide({ onSave }: RecordRideProps) {
     }
   }
 
+  const testButton = (
+    <button
+      className="btn btn-secondary record-ride__test-btn"
+      onClick={() => {
+        setPosition(SKYLINE_QUEENSTOWN)
+        setLocationStatus('at-skyline')
+      }}
+    >
+      Test: Simulate being at Skyline
+    </button>
+  )
+
   if (locationStatus === 'checking') {
     return (
       <div className="record-ride">
         <p className="record-ride__status">Checking your location…</p>
+        {testButton}
       </div>
     )
   }
@@ -129,28 +174,22 @@ function RecordRide({ onSave }: RecordRideProps) {
     return (
       <div className="record-ride">
         <p className="record-ride__status">Please go to Skyline Queenstown to record your ride.</p>
-        <button
-          className="btn btn-secondary record-ride__test-btn"
-          onClick={() => {
-            setPosition(SKYLINE_QUEENSTOWN)
-            setLocationStatus('at-skyline')
-          }}
-        >
-          Test: Simulate being at Skyline
-        </button>
+        {testButton}
       </div>
     )
   }
 
   return (
     <div className="record-ride">
+      {testButton}
       <div className="record-ride__map">
         <MapContainer center={position} zoom={15} scrollWheelZoom={false} style={{ height: '220px', width: '100%' }}>
           <TileLayer
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            attribution='&copy; <a href="https://stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://stamen.com/" target="_blank">Stamen Design</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>'
+            url={`https://tiles.stadiamaps.com/tiles/stamen_terrain/{z}/{x}/{y}{r}.png?api_key=${STADIA_API_KEY}`}
           />
           <RecenterMap position={position} />
+          <TrailOverlays />
           {path.length > 1 && <Polyline positions={path} color="#ff6b35" weight={4} />}
           <CircleMarker
             center={position}

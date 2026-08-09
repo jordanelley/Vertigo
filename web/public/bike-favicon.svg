@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 180">
+  <!-- rear wheel -->
+  <circle cx="70" cy="130" r="42" fill="#f4f4f4" stroke="#222" stroke-width="6" />
+  <circle cx="70" cy="130" r="8" fill="#222" />
+  <line x1="36" y1="130" x2="104" y2="130" stroke="#bbb" stroke-width="2" />
+  <line x1="46" y1="106" x2="94" y2="154" stroke="#bbb" stroke-width="2" />
+  <line x1="70" y1="96" x2="70" y2="164" stroke="#bbb" stroke-width="2" />
+  <line x1="94" y1="106" x2="46" y2="154" stroke="#bbb" stroke-width="2" />
+
+  <!-- front wheel -->
+  <circle cx="230" cy="130" r="42" fill="#f4f4f4" stroke="#222" stroke-width="6" />
+  <circle cx="230" cy="130" r="8" fill="#222" />
+  <line x1="196" y1="130" x2="264" y2="130" stroke="#bbb" stroke-width="2" />
+  <line x1="206" y1="106" x2="254" y2="154" stroke="#bbb" stroke-width="2" />
+  <line x1="230" y1="96" x2="230" y2="164" stroke="#bbb" stroke-width="2" />
+  <line x1="254" y1="106" x2="206" y2="154" stroke="#bbb" stroke-width="2" />
+
+  <!-- rear suspension / seat stay + chain stay -->
+  <path d="M 150 118 L 70 130 L 128 100" fill="none" stroke="#ff6b35" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" />
+  <line x1="128" y1="100" x2="118" y2="122" stroke="#888" stroke-width="8" stroke-linecap="round" />
+  <line x1="128" y1="100" x2="118" y2="122" stroke="#ddd" stroke-width="3" stroke-linecap="round" />
+
+  <!-- seat tube -->
+  <path d="M 150 118 L 128 100 L 118 55" fill="none" stroke="#ff6b35" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" />
+  <line x1="100" y1="52" x2="132" y2="48" stroke="#222" stroke-width="8" stroke-linecap="round" />
+
+  <!-- down tube + top tube to head tube -->
+  <path d="M 150 118 L 214 62 M 128 100 L 214 62" fill="none" stroke="#ff6b35" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" />
+
+  <!-- front suspension fork -->
+  <line x1="214" y1="62" x2="230" y2="130" stroke="#888" stroke-width="9" stroke-linecap="round" />
+  <line x1="214" y1="62" x2="230" y2="130" stroke="#ddd" stroke-width="4" stroke-linecap="round" />
+
+  <!-- handlebar -->
+  <line x1="196" y1="52" x2="222" y2="58" stroke="#222" stroke-width="7" stroke-linecap="round" />
+
+  <!-- crank + pedal -->
+  <circle cx="150" cy="118" r="12" fill="#222" />
+  <line x1="150" y1="118" x2="168" y2="132" stroke="#222" stroke-width="5" stroke-linecap="round" />
+  <line x1="150" y1="118" x2="132" y2="104" stroke="#222" stroke-width="5" stroke-linecap="round" />
+</svg>

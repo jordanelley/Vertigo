@@ -8,6 +8,7 @@ interface Ride {
   id: number
   rideName: string
   distance: number
+  time: number
 }
 
 type Tab = 'feed' | 'ride' | 'leaderboard'
@@ -50,11 +51,11 @@ function App() {
       .catch(() => setRides([]))
   }, [isAuthenticated])
 
-  const handleSaveRide = async (rideName: string, distance: number) => {
+  const handleSaveRide = async (rideName: string, distance: number, time: number) => {
     const res = await fetch('http://localhost:5090/api/rides', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ rideName, distance }),
+      body: JSON.stringify({ rideName, distance, time }),
     })
     const newRide = await res.json()
     setRides((prev) => [...prev, newRide])
@@ -116,7 +117,9 @@ function App() {
                       {rides.map((ride) => (
                         <li key={ride.id} className="data-list__item">
                           <span className="data-list__primary">{ride.rideName}</span>
-                          <span className="data-list__secondary">{ride.distance} km</span>
+                          <span className="data-list__secondary">
+                            {ride.distance} km · {ride.time} min
+                          </span>
                         </li>
                       ))}
                     </ul>

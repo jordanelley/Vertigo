@@ -7,4 +7,6 @@ public class Ride
     public string RideName { get; set; } = string.Empty;
 
     public double Distance { get; set; }
+
+    public double Time { get; set; }
 }

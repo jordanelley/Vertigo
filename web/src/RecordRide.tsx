@@ -10,6 +10,7 @@ import {
   type LatLng,
   type TrailDefinition,
 } from './trails'
+import { LIFTS, excludeLiftPoints } from './lifts'
 
 const DEFAULT_CENTER: LatLng = [37.7749, -122.4194]
 // Skyline Queenstown gondola top station, Bob's Peak (45°01'36"S 168°38'58"E)
@@ -18,6 +19,24 @@ const GEOFENCE_RADIUS_KM = 2.5
 const STADIA_API_KEY = import.meta.env.VITE_STADIA_API_KEY
 const SIMULATED_RIDE_DURATION_MS = 10 * 1000
 const vertigoAndThunderGoat = TRAILS.filter((trail) => trail.name === 'Vertigo' || trail.name === 'Thunder Goat')
+
+const hammysTrail = TRAILS.find((trail) => trail.name === "Upper Hammy's Track")
+const thunderGoatTrail = TRAILS.find((trail) => trail.name === 'Thunder Goat')
+const vertigoTrail = TRAILS.find((trail) => trail.name === 'Vertigo')
+const gondolaLift = LIFTS.find((lift) => lift.name === 'Skyline Gondola')
+const bigRideSequence =
+  hammysTrail && thunderGoatTrail && vertigoTrail && gondolaLift
+    ? [
+        hammysTrail,
+        thunderGoatTrail,
+        gondolaLift,
+        vertigoTrail,
+        thunderGoatTrail,
+        gondolaLift,
+        hammysTrail,
+        thunderGoatTrail,
+      ]
+    : null
 
 type LocationStatus = 'checking' | 'at-skyline' | 'not-at-skyline'
 
@@ -55,6 +74,24 @@ function TrailOverlays({ trailPaths }: { trailPaths: Record<string, LatLng[]> })
   )
 }
 
+function LiftOverlays({ liftPaths }: { liftPaths: Record<string, LatLng[]> }) {
+  return (
+    <>
+      {LIFTS.map((lift) => {
+        const points = liftPaths[lift.name]
+        if (!points) return null
+        return (
+          <Polyline
+            key={lift.name}
+            positions={points}
+            pathOptions={{ color: '#9ca3af', weight: 3, dashArray: '2 10', opacity: 0.8 }}
+          />
+        )
+      })}
+    </>
+  )
+}
+
 interface RecordRideProps {
   onSave: (rideName: string, distance: number, time: number) => Promise<void>
   existingRideNames: string[]
@@ -68,6 +105,7 @@ function RecordRide({ onSave, existingRideNames }: RecordRideProps) {
   const [locationStatus, setLocationStatus] = useState<LocationStatus>('checking')
   const [elapsedMinutes, setElapsedMinutes] = useState(0)
   const [trailPaths, setTrailPaths] = useState<Record<string, LatLng[]>>({})
+  const [liftPaths, setLiftPaths] = useState<Record<string, LatLng[]>>({})
   const [showTrailPicker, setShowTrailPicker] = useState(false)
   const watchIdRef = useRef<number | null>(null)
   const simulationIntervalRef = useRef<number | null>(null)
@@ -81,6 +119,14 @@ function RecordRide({ onSave, existingRideNames }: RecordRideProps) {
           setTrailPaths((prev) => ({ ...prev, [trail.name]: parseGpxTrack(gpxText) }))
         })
         .catch((err) => console.error(`Failed to load trail "${trail.name}":`, err))
+    })
+    LIFTS.forEach((lift) => {
+      fetch(lift.file)
+        .then((res) => res.text())
+        .then((gpxText) => {
+          setLiftPaths((prev) => ({ ...prev, [lift.name]: parseGpxTrack(gpxText) }))
+        })
+        .catch((err) => console.error(`Failed to load lift "${lift.name}":`, err))
     })
   }, [])
 
@@ -153,10 +199,10 @@ function RecordRide({ onSave, existingRideNames }: RecordRideProps) {
     )
   }
 
-  const loadTrailPoints = async (trail: TrailDefinition): Promise<LatLng[]> => {
-    const cached = trailPaths[trail.name]
+  const loadPoints = async (item: { name: string; file: string }): Promise<LatLng[]> => {
+    const cached = trailPaths[item.name] ?? liftPaths[item.name]
     if (cached) return cached
-    const res = await fetch(trail.file)
+    const res = await fetch(item.file)
     return parseGpxTrack(await res.text())
   }
 
@@ -184,7 +230,7 @@ function RecordRide({ onSave, existingRideNames }: RecordRideProps) {
 
     let points: LatLng[]
     try {
-      points = await loadTrailPoints(trail)
+      points = await loadPoints(trail)
     } catch (err) {
       console.error(`Failed to load trail "${trail.name}" for simulation:`, err)
       return
@@ -200,7 +246,7 @@ function RecordRide({ onSave, existingRideNames }: RecordRideProps) {
 
     let combined: LatLng[]
     try {
-      const pointSets = await Promise.all(trails.map(loadTrailPoints))
+      const pointSets: LatLng[][] = await Promise.all(trails.map((trail) => loadPoints(trail)))
       combined = pointSets.flat()
     } catch (err) {
       console.error('Failed to load trails for combined simulation:', err)
@@ -211,11 +257,29 @@ function RecordRide({ onSave, existingRideNames }: RecordRideProps) {
     runSimulatedPath(combined, SIMULATED_RIDE_DURATION_MS * trails.length)
   }
 
+  const simulateBigRide = async () => {
+    if (!recording || simulationIntervalRef.current !== null || !bigRideSequence) return
+    setShowTrailPicker(false)
+
+    let combined: LatLng[]
+    try {
+      const pointSets: LatLng[][] = await Promise.all(bigRideSequence.map((item) => loadPoints(item)))
+      combined = pointSets.flat()
+    } catch (err) {
+      console.error('Failed to load trails/lifts for big ride simulation:', err)
+      return
+    }
+    if (combined.length < 2) return
+
+    runSimulatedPath(combined, SIMULATED_RIDE_DURATION_MS)
+  }
+
   const distance = totalDistanceKm(path)
 
   const computedSegments = useMemo(() => {
     if (recording || path.length < 2) return []
-    const rawSegments = segmentPathByTrail(path, trailPaths)
+    const runs = excludeLiftPoints(path, liftPaths)
+    const rawSegments = runs.flatMap((run) => segmentPathByTrail(run, trailPaths))
     const namesSoFar: string[] = []
     return rawSegments.map((segment) => {
       const segDistance = totalDistanceKm(segment.points)
@@ -223,14 +287,16 @@ function RecordRide({ onSave, existingRideNames }: RecordRideProps) {
       namesSoFar.push(name)
       return { name, distance: segDistance }
     })
-  }, [recording, path, trailPaths, existingRideNames])
+  }, [recording, path, trailPaths, liftPaths, existingRideNames])
 
   const handleSave = async () => {
-    if (computedSegments.length === 0 || distance === 0) return
+    if (computedSegments.length === 0) return
+    const totalSegmentDistance = computedSegments.reduce((sum, s) => sum + s.distance, 0)
     setSaving(true)
     try {
       for (const segment of computedSegments) {
-        const segTime = distance > 0 ? (elapsedMinutes * segment.distance) / distance : 0
+        const segTime =
+          totalSegmentDistance > 0 ? (elapsedMinutes * segment.distance) / totalSegmentDistance : 0
         await onSave(segment.name, Math.round(segment.distance * 100) / 100, Math.round(segTime * 10) / 10)
       }
       setPath([])
@@ -298,6 +364,11 @@ function RecordRide({ onSave, existingRideNames }: RecordRideProps) {
               Vertigo + Thunder Goat
             </button>
           )}
+          {bigRideSequence && (
+            <button className="btn btn-secondary record-ride__test-btn" onClick={simulateBigRide}>
+              Big Ride: Hammy's → TG → Gondola → Vertigo → TG → Gondola → Hammy's → TG
+            </button>
+          )}
         </div>
       )}
       <div className="record-ride__map">
@@ -308,6 +379,7 @@ function RecordRide({ onSave, existingRideNames }: RecordRideProps) {
           />
           <RecenterMap position={position} />
           <TrailOverlays trailPaths={trailPaths} />
+          <LiftOverlays liftPaths={liftPaths} />
           {path.length > 1 && <Polyline positions={path} color="#ff6b35" weight={4} />}
           <CircleMarker
             center={position}

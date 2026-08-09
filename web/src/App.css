@@ -1,42 +1,104 @@
 #root {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
   text-align: center;
-}
-
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
 }
 
 .card {
   padding: 2em;
 }
 
+.mountain-bike {
+  display: block;
+  margin: 0 auto;
+}
+
 .read-the-docs {
   color: #888;
+}
+
+.auth-page {
+  width: 100vw;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1.5rem;
+  box-sizing: border-box;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 380px;
+  background: #1e293b;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 20px 40px -16px rgba(0, 0, 0, 0.6);
+}
+
+.auth-card__banner {
+  background: linear-gradient(135deg, #2563eb, #1e3a8a);
+  padding: 2rem 1.5rem 1.5rem;
+  display: flex;
+  justify-content: center;
+}
+
+.auth-card__body {
+  padding: 1.75rem 2rem 2rem;
+  color: #f1f5f9;
+}
+
+.auth-card__body h1 {
+  margin: 0 0 0.35rem;
+  font-size: 1.85rem;
+  color: #f1f5f9;
+}
+
+.auth-card .subtitle {
+  margin: 0 0 1.5rem;
+  color: #94a3b8;
+  font-size: 0.95rem;
+}
+
+.auth-card .error {
+  color: #f87171;
+  font-size: 0.9rem;
+  margin: -0.75rem 0 1rem;
+}
+
+.auth-card__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.btn {
+  width: 100%;
+  padding: 0.7rem 1rem;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.btn-primary {
+  background-color: #2563eb;
+  color: #ffffff;
+  border: 1px solid #2563eb;
+}
+
+.btn-primary:hover {
+  background-color: #1d4ed8;
+  border-color: #1d4ed8;
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: #60a5fa;
+  border: 1.5px solid #60a5fa;
+}
+
+.btn-secondary:hover {
+  background-color: rgba(96, 165, 250, 0.12);
 }

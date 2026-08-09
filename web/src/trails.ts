@@ -9,6 +9,7 @@ export interface TrailDefinition {
 export const TRAILS: TrailDefinition[] = [
   { name: 'Vertigo', file: '/trails/vertigo.gpx', color: '#3b82f6' },
   { name: "Upper Hammy's Track", file: '/trails/upper-hammy-s-track-8273.gpx', color: '#22c55e' },
+  { name: 'Thunder Goat', file: '/trails/thunder-goat.gpx', color: '#f97316' },
 ]
 
 export function parseGpxTrack(gpxText: string): LatLng[] {

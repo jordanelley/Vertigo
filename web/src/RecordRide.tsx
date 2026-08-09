@@ -8,6 +8,7 @@ import {
   findClosestTrailName,
   nextAttemptRideName,
   type LatLng,
+  type TrailDefinition,
 } from './trails'
 
 const DEFAULT_CENTER: LatLng = [37.7749, -122.4194]
@@ -15,7 +16,6 @@ const DEFAULT_CENTER: LatLng = [37.7749, -122.4194]
 const SKYLINE_QUEENSTOWN: LatLng = [-45.0266, 168.6495]
 const GEOFENCE_RADIUS_KM = 2.5
 const STADIA_API_KEY = import.meta.env.VITE_STADIA_API_KEY
-const VERTIGO_TRAIL_FILE = TRAILS.find((trail) => trail.name === 'Vertigo')?.file ?? '/trails/vertigo.gpx'
 const SIMULATED_RIDE_DURATION_MS = 10 * 1000
 
 type LocationStatus = 'checking' | 'at-skyline' | 'not-at-skyline'
@@ -67,6 +67,7 @@ function RecordRide({ onSave, existingRideNames }: RecordRideProps) {
   const [locationStatus, setLocationStatus] = useState<LocationStatus>('checking')
   const [elapsedMinutes, setElapsedMinutes] = useState(0)
   const [trailPaths, setTrailPaths] = useState<Record<string, LatLng[]>>({})
+  const [showTrailPicker, setShowTrailPicker] = useState(false)
   const watchIdRef = useRef<number | null>(null)
   const simulationIntervalRef = useRef<number | null>(null)
   const recordingStartRef = useRef<number | null>(null)
@@ -133,6 +134,7 @@ function RecordRide({ onSave, existingRideNames }: RecordRideProps) {
     }
     setPath([])
     setElapsedMinutes(0)
+    setShowTrailPicker(false)
     recordingStartRef.current = Date.now()
     setRecording(true)
     watchIdRef.current = navigator.geolocation.watchPosition(
@@ -146,16 +148,19 @@ function RecordRide({ onSave, existingRideNames }: RecordRideProps) {
     )
   }
 
-  const simulateMovement = async () => {
+  const simulateMovement = async (trail: TrailDefinition) => {
     if (!recording || simulationIntervalRef.current !== null) return
+    setShowTrailPicker(false)
 
-    let points: LatLng[]
-    try {
-      const res = await fetch(VERTIGO_TRAIL_FILE)
-      points = parseGpxTrack(await res.text())
-    } catch (err) {
-      console.error('Failed to load Vertigo trail for simulation:', err)
-      return
+    let points = trailPaths[trail.name]
+    if (!points) {
+      try {
+        const res = await fetch(trail.file)
+        points = parseGpxTrack(await res.text())
+      } catch (err) {
+        console.error(`Failed to load trail "${trail.name}" for simulation:`, err)
+        return
+      }
     }
     if (points.length < 2) return
 
@@ -231,11 +236,24 @@ function RecordRide({ onSave, existingRideNames }: RecordRideProps) {
       {testButton}
       <button
         className="btn btn-secondary record-ride__test-btn"
-        onClick={simulateMovement}
+        onClick={() => setShowTrailPicker((prev) => !prev)}
         disabled={!recording}
       >
-        Test: Move Along Vertigo (10 sec)
+        Test: Moving
       </button>
+      {showTrailPicker && (
+        <div className="record-ride__trail-picker">
+          {TRAILS.map((trail) => (
+            <button
+              key={trail.name}
+              className="btn btn-secondary record-ride__test-btn"
+              onClick={() => simulateMovement(trail)}
+            >
+              {trail.name}
+            </button>
+          ))}
+        </div>
+      )}
       <div className="record-ride__map">
         <MapContainer center={position} zoom={15} scrollWheelZoom={false} style={{ height: '220px', width: '100%' }}>
           <TileLayer

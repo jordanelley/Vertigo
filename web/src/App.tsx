@@ -61,6 +61,12 @@ function App() {
     setRides((prev) => [...prev, newRide])
   }
 
+  const handleDeleteRide = async (id: number, rideName: string) => {
+    if (!window.confirm(`Delete "${rideName}"? This can't be undone.`)) return
+    await fetch(`http://localhost:5090/api/rides/${id}`, { method: 'DELETE' })
+    setRides((prev) => prev.filter((ride) => ride.id !== id))
+  }
+
   if (isLoading) return 'Loading...'
 
   return (
@@ -119,10 +125,19 @@ function App() {
                       )}
                       {rides.map((ride) => (
                         <li key={ride.id} className="data-list__item">
-                          <span className="data-list__primary">{ride.rideName}</span>
-                          <span className="data-list__secondary">
-                            {ride.distance} km · {ride.time} min
-                          </span>
+                          <div className="data-list__info">
+                            <span className="data-list__primary">{ride.rideName}</span>
+                            <span className="data-list__secondary">
+                              {ride.distance} km · {ride.time} min
+                            </span>
+                          </div>
+                          <button
+                            className="data-list__delete"
+                            onClick={() => handleDeleteRide(ride.id, ride.rideName)}
+                            aria-label={`Delete ${ride.rideName}`}
+                          >
+                            ×
+                          </button>
                         </li>
                       ))}
                     </ul>

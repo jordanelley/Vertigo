@@ -33,6 +33,20 @@ public class RidesController : ControllerBase
         await _db.SaveChangesAsync();
         return ride;
     }
+
+    [HttpDelete("{id}", Name = "DeleteRide")]
+    public async Task<IActionResult> Delete(int id)
+    {
+        var ride = await _db.Rides.FindAsync(id);
+        if (ride is null)
+        {
+            return NotFound();
+        }
+
+        _db.Rides.Remove(ride);
+        await _db.SaveChangesAsync();
+        return NoContent();
+    }
 }
 
 public class CreateRideRequest

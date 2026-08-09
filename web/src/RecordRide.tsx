@@ -140,6 +140,10 @@ function RecordRide({ onSave, existingRideNames }: RecordRideProps) {
     watchIdRef.current = navigator.geolocation.watchPosition(
       (pos) => {
         const next: LatLng = [pos.coords.latitude, pos.coords.longitude]
+        if (haversineDistanceKm(next, SKYLINE_QUEENSTOWN) > GEOFENCE_RADIUS_KM) {
+          console.warn('Ignoring GPS update outside the Skyline area:', next)
+          return
+        }
         setPosition(next)
         setPath((prev) => [...prev, next])
       },

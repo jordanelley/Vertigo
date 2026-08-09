@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useAuth0 } from '@auth0/auth0-react'
 import MountainBikeIllustration from './MountainBikeIllustration'
+import RecordRide from './RecordRide'
 import './App.css'
 
 interface Ride {
@@ -9,8 +10,22 @@ interface Ride {
   distance: number
 }
 
+type Tab = 'feed' | 'ride' | 'leaderboard'
+
+const feedItems = [
+  { id: 1, rider: 'Sam', rideName: 'Ridge Trail', distance: 24.1 },
+  { id: 2, rider: 'Alex', rideName: 'Sunday Loop', distance: 18.4 },
+]
+
+const leaderboard = [
+  { name: 'Alex', distance: 142 },
+  { name: 'Sam', distance: 118 },
+  { name: 'You', distance: 84 },
+]
+
 function App() {
   const [rides, setRides] = useState<Ride[]>([])
+  const [activeTab, setActiveTab] = useState<Tab>('feed')
   const {
     isLoading,
     isAuthenticated,
@@ -35,13 +50,23 @@ function App() {
       .catch(() => setRides([]))
   }, [isAuthenticated])
 
+  const handleSaveRide = async (rideName: string, distance: number) => {
+    const res = await fetch('http://localhost:5090/api/rides', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ rideName, distance }),
+    })
+    const newRide = await res.json()
+    setRides((prev) => [...prev, newRide])
+  }
+
   if (isLoading) return 'Loading...'
 
   return (
     <>
       {isAuthenticated ? (
         <div className="auth-page">
-          <div className="auth-card">
+          <div className="auth-card auth-card--app">
             <div className="auth-card__banner">
               <MountainBikeIllustration />
             </div>
@@ -54,14 +79,64 @@ function App() {
                 </div>
               )}
               <h1>{user?.nickname ?? 'Welcome back'}</h1>
-              <ul className="ride-list">
-                {rides.map((ride) => (
-                  <li key={ride.id} className="ride-list__item">
-                    <span className="ride-list__name">{ride.rideName}</span>
-                    <span className="ride-list__distance">{ride.distance} km</span>
-                  </li>
+
+              <nav className="tabs">
+                {(['feed', 'ride', 'leaderboard'] as Tab[]).map((tab) => (
+                  <button
+                    key={tab}
+                    className={`tab${activeTab === tab ? ' tab--active' : ''}`}
+                    onClick={() => setActiveTab(tab)}
+                  >
+                    {tab.charAt(0).toUpperCase() + tab.slice(1)}
+                  </button>
                 ))}
-              </ul>
+              </nav>
+
+              <div className="tab-panel">
+                {activeTab === 'feed' && (
+                  <ul className="data-list">
+                    {feedItems.map((item) => (
+                      <li key={item.id} className="data-list__item">
+                        <span className="data-list__primary">{item.rider}</span>
+                        <span className="data-list__secondary">
+                          {item.rideName} · {item.distance} km
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+
+                {activeTab === 'ride' && (
+                  <>
+                    <RecordRide onSave={handleSaveRide} />
+                    <ul className="data-list">
+                      {rides.length === 0 && (
+                        <li className="data-list__empty">No rides yet.</li>
+                      )}
+                      {rides.map((ride) => (
+                        <li key={ride.id} className="data-list__item">
+                          <span className="data-list__primary">{ride.rideName}</span>
+                          <span className="data-list__secondary">{ride.distance} km</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </>
+                )}
+
+                {activeTab === 'leaderboard' && (
+                  <ol className="data-list">
+                    {leaderboard.map((entry, index) => (
+                      <li key={entry.name} className="data-list__item">
+                        <span className="data-list__primary">
+                          {index + 1}. {entry.name}
+                        </span>
+                        <span className="data-list__secondary">{entry.distance} km</span>
+                      </li>
+                    ))}
+                  </ol>
+                )}
+              </div>
+
               <div className="auth-card__actions">
                 <button className="btn btn-secondary" onClick={logout}>
                   Log Out

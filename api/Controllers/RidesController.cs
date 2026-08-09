@@ -17,4 +17,24 @@ public class RidesController : ControllerBase
     {
         return Rides;
     }
+
+    [HttpPost(Name = "CreateRide")]
+    public ActionResult<Ride> Post(CreateRideRequest request)
+    {
+        var ride = new Ride
+        {
+            Id = Rides.Count == 0 ? 1 : Rides.Max(r => r.Id) + 1,
+            RideName = request.RideName,
+            Distance = request.Distance,
+        };
+        Rides.Add(ride);
+        return ride;
+    }
+}
+
+public class CreateRideRequest
+{
+    public string RideName { get; set; } = string.Empty;
+
+    public double Distance { get; set; }
 }

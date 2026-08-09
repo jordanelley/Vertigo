@@ -109,7 +109,10 @@ function App() {
 
                 {activeTab === 'ride' && (
                   <>
-                    <RecordRide onSave={handleSaveRide} />
+                    <RecordRide
+                      onSave={handleSaveRide}
+                      existingRideNames={rides.map((ride) => ride.rideName)}
+                    />
                     <ul className="data-list">
                       {rides.length === 0 && (
                         <li className="data-list__empty">No rides yet.</li>

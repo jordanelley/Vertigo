@@ -1,7 +1,14 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { CircleMarker, MapContainer, Polyline, TileLayer, useMap } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
-import { TRAILS, parseGpxTrack, type LatLng } from './trails'
+import {
+  TRAILS,
+  parseGpxTrack,
+  haversineDistanceKm,
+  findClosestTrailName,
+  nextAttemptRideName,
+  type LatLng,
+} from './trails'
 
 const DEFAULT_CENTER: LatLng = [37.7749, -122.4194]
 // Skyline Queenstown gondola top station, Bob's Peak (45°01'36"S 168°38'58"E)
@@ -12,18 +19,6 @@ const VERTIGO_TRAIL_FILE = TRAILS.find((trail) => trail.name === 'Vertigo')?.fil
 const SIMULATED_RIDE_DURATION_MS = 10 * 1000
 
 type LocationStatus = 'checking' | 'at-skyline' | 'not-at-skyline'
-
-function haversineDistanceKm(a: LatLng, b: LatLng): number {
-  const toRad = (deg: number) => (deg * Math.PI) / 180
-  const R = 6371
-  const dLat = toRad(b[0] - a[0])
-  const dLng = toRad(b[1] - a[1])
-  const lat1 = toRad(a[0])
-  const lat2 = toRad(b[0])
-  const h =
-    Math.sin(dLat / 2) ** 2 + Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLng / 2) ** 2
-  return R * 2 * Math.asin(Math.sqrt(h))
-}
 
 function totalDistanceKm(path: LatLng[]): number {
   let total = 0
@@ -41,20 +36,7 @@ function RecenterMap({ position }: { position: LatLng }) {
   return null
 }
 
-function TrailOverlays() {
-  const [trailPaths, setTrailPaths] = useState<Record<string, LatLng[]>>({})
-
-  useEffect(() => {
-    TRAILS.forEach((trail) => {
-      fetch(trail.file)
-        .then((res) => res.text())
-        .then((gpxText) => {
-          setTrailPaths((prev) => ({ ...prev, [trail.name]: parseGpxTrack(gpxText) }))
-        })
-        .catch((err) => console.error(`Failed to load trail "${trail.name}":`, err))
-    })
-  }, [])
-
+function TrailOverlays({ trailPaths }: { trailPaths: Record<string, LatLng[]> }) {
   return (
     <>
       {TRAILS.map((trail) => {
@@ -74,19 +56,31 @@ function TrailOverlays() {
 
 interface RecordRideProps {
   onSave: (rideName: string, distance: number, time: number) => Promise<void>
+  existingRideNames: string[]
 }
 
-function RecordRide({ onSave }: RecordRideProps) {
+function RecordRide({ onSave, existingRideNames }: RecordRideProps) {
   const [recording, setRecording] = useState(false)
   const [path, setPath] = useState<LatLng[]>([])
   const [position, setPosition] = useState<LatLng>(DEFAULT_CENTER)
-  const [rideName, setRideName] = useState('')
   const [saving, setSaving] = useState(false)
   const [locationStatus, setLocationStatus] = useState<LocationStatus>('checking')
   const [elapsedMinutes, setElapsedMinutes] = useState(0)
+  const [trailPaths, setTrailPaths] = useState<Record<string, LatLng[]>>({})
   const watchIdRef = useRef<number | null>(null)
   const simulationIntervalRef = useRef<number | null>(null)
   const recordingStartRef = useRef<number | null>(null)
+
+  useEffect(() => {
+    TRAILS.forEach((trail) => {
+      fetch(trail.file)
+        .then((res) => res.text())
+        .then((gpxText) => {
+          setTrailPaths((prev) => ({ ...prev, [trail.name]: parseGpxTrack(gpxText) }))
+        })
+        .catch((err) => console.error(`Failed to load trail "${trail.name}":`, err))
+    })
+  }, [])
 
   useEffect(() => {
     if (!navigator.geolocation) {
@@ -138,7 +132,6 @@ function RecordRide({ onSave }: RecordRideProps) {
       return
     }
     setPath([])
-    setRideName('')
     setElapsedMinutes(0)
     recordingStartRef.current = Date.now()
     setRecording(true)
@@ -185,12 +178,18 @@ function RecordRide({ onSave }: RecordRideProps) {
 
   const distance = totalDistanceKm(path)
 
+  const computedName = useMemo(() => {
+    if (recording || path.length < 2) return null
+    const trailName = findClosestTrailName(path, trailPaths)
+    if (!trailName) return null
+    return nextAttemptRideName(trailName, existingRideNames)
+  }, [recording, path, trailPaths, existingRideNames])
+
   const handleSave = async () => {
-    if (!rideName.trim() || distance === 0) return
+    if (!computedName || distance === 0) return
     setSaving(true)
     try {
-      await onSave(rideName.trim(), Math.round(distance * 100) / 100, Math.round(elapsedMinutes * 10) / 10)
-      setRideName('')
+      await onSave(computedName, Math.round(distance * 100) / 100, Math.round(elapsedMinutes * 10) / 10)
       setPath([])
     } finally {
       setSaving(false)
@@ -244,7 +243,7 @@ function RecordRide({ onSave }: RecordRideProps) {
             url={`https://tiles.stadiamaps.com/tiles/stamen_terrain/{z}/{x}/{y}{r}.png?api_key=${STADIA_API_KEY}`}
           />
           <RecenterMap position={position} />
-          <TrailOverlays />
+          <TrailOverlays trailPaths={trailPaths} />
           {path.length > 1 && <Polyline positions={path} color="#ff6b35" weight={4} />}
           <CircleMarker
             center={position}
@@ -269,14 +268,8 @@ function RecordRide({ onSave }: RecordRideProps) {
 
       {!recording && path.length > 1 && (
         <div className="record-ride__save">
-          <input
-            className="text-input"
-            type="text"
-            placeholder="Ride name"
-            value={rideName}
-            onChange={(e) => setRideName(e.target.value)}
-          />
-          <button className="btn btn-primary" onClick={handleSave} disabled={saving || !rideName.trim()}>
+          <span className="record-ride__save-name">{computedName ?? 'Matching trail…'}</span>
+          <button className="btn btn-primary" onClick={handleSave} disabled={saving || !computedName}>
             {saving ? 'Saving…' : 'Save Ride'}
           </button>
         </div>

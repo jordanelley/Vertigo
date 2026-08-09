@@ -1,29 +1,44 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { CircleMarker, MapContainer, Polyline, TileLayer, useMap } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
-import { TRAILS, parseGpxTrack, type LatLng } from './trails'
+import {
+  TRAILS,
+  parseGpxTrack,
+  haversineDistanceKm,
+  segmentPathByTrail,
+  nextAttemptRideName,
+  type LatLng,
+  type TrailDefinition,
+} from './trails'
+import { LIFTS, excludeLiftPoints } from './lifts'
 
 const DEFAULT_CENTER: LatLng = [37.7749, -122.4194]
 // Skyline Queenstown gondola top station, Bob's Peak (45°01'36"S 168°38'58"E)
 const SKYLINE_QUEENSTOWN: LatLng = [-45.0266, 168.6495]
 const GEOFENCE_RADIUS_KM = 2.5
 const STADIA_API_KEY = import.meta.env.VITE_STADIA_API_KEY
-const VERTIGO_TRAIL_FILE = TRAILS.find((trail) => trail.name === 'Vertigo')?.file ?? '/trails/vertigo.gpx'
-const SIMULATED_RIDE_DURATION_MS = 1 * 60 * 1000
+const SIMULATED_RIDE_DURATION_MS = 10 * 1000
+const vertigoAndThunderGoat = TRAILS.filter((trail) => trail.name === 'Vertigo' || trail.name === 'Thunder Goat')
+
+const hammysTrail = TRAILS.find((trail) => trail.name === "Upper Hammy's Track")
+const thunderGoatTrail = TRAILS.find((trail) => trail.name === 'Thunder Goat')
+const vertigoTrail = TRAILS.find((trail) => trail.name === 'Vertigo')
+const gondolaLift = LIFTS.find((lift) => lift.name === 'Skyline Gondola')
+const bigRideSequence =
+  hammysTrail && thunderGoatTrail && vertigoTrail && gondolaLift
+    ? [
+        hammysTrail,
+        thunderGoatTrail,
+        gondolaLift,
+        vertigoTrail,
+        thunderGoatTrail,
+        gondolaLift,
+        hammysTrail,
+        thunderGoatTrail,
+      ]
+    : null
 
 type LocationStatus = 'checking' | 'at-skyline' | 'not-at-skyline'
-
-function haversineDistanceKm(a: LatLng, b: LatLng): number {
-  const toRad = (deg: number) => (deg * Math.PI) / 180
-  const R = 6371
-  const dLat = toRad(b[0] - a[0])
-  const dLng = toRad(b[1] - a[1])
-  const lat1 = toRad(a[0])
-  const lat2 = toRad(b[0])
-  const h =
-    Math.sin(dLat / 2) ** 2 + Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLng / 2) ** 2
-  return R * 2 * Math.asin(Math.sqrt(h))
-}
 
 function totalDistanceKm(path: LatLng[]): number {
   let total = 0
@@ -41,20 +56,7 @@ function RecenterMap({ position }: { position: LatLng }) {
   return null
 }
 
-function TrailOverlays() {
-  const [trailPaths, setTrailPaths] = useState<Record<string, LatLng[]>>({})
-
-  useEffect(() => {
-    TRAILS.forEach((trail) => {
-      fetch(trail.file)
-        .then((res) => res.text())
-        .then((gpxText) => {
-          setTrailPaths((prev) => ({ ...prev, [trail.name]: parseGpxTrack(gpxText) }))
-        })
-        .catch((err) => console.error(`Failed to load trail "${trail.name}":`, err))
-    })
-  }, [])
-
+function TrailOverlays({ trailPaths }: { trailPaths: Record<string, LatLng[]> }) {
   return (
     <>
       {TRAILS.map((trail) => {
@@ -72,21 +74,61 @@ function TrailOverlays() {
   )
 }
 
-interface RecordRideProps {
-  onSave: (rideName: string, distance: number, time: number) => Promise<void>
+function LiftOverlays({ liftPaths }: { liftPaths: Record<string, LatLng[]> }) {
+  return (
+    <>
+      {LIFTS.map((lift) => {
+        const points = liftPaths[lift.name]
+        if (!points) return null
+        return (
+          <Polyline
+            key={lift.name}
+            positions={points}
+            pathOptions={{ color: '#9ca3af', weight: 3, dashArray: '2 10', opacity: 0.8 }}
+          />
+        )
+      })}
+    </>
+  )
 }
 
-function RecordRide({ onSave }: RecordRideProps) {
+interface RecordRideProps {
+  onSave: (rideName: string, distance: number, time: number) => Promise<void>
+  existingRideNames: string[]
+}
+
+function RecordRide({ onSave, existingRideNames }: RecordRideProps) {
   const [recording, setRecording] = useState(false)
   const [path, setPath] = useState<LatLng[]>([])
   const [position, setPosition] = useState<LatLng>(DEFAULT_CENTER)
-  const [rideName, setRideName] = useState('')
   const [saving, setSaving] = useState(false)
   const [locationStatus, setLocationStatus] = useState<LocationStatus>('checking')
   const [elapsedMinutes, setElapsedMinutes] = useState(0)
+  const [trailPaths, setTrailPaths] = useState<Record<string, LatLng[]>>({})
+  const [liftPaths, setLiftPaths] = useState<Record<string, LatLng[]>>({})
+  const [showTrailPicker, setShowTrailPicker] = useState(false)
   const watchIdRef = useRef<number | null>(null)
   const simulationIntervalRef = useRef<number | null>(null)
   const recordingStartRef = useRef<number | null>(null)
+
+  useEffect(() => {
+    TRAILS.forEach((trail) => {
+      fetch(trail.file)
+        .then((res) => res.text())
+        .then((gpxText) => {
+          setTrailPaths((prev) => ({ ...prev, [trail.name]: parseGpxTrack(gpxText) }))
+        })
+        .catch((err) => console.error(`Failed to load trail "${trail.name}":`, err))
+    })
+    LIFTS.forEach((lift) => {
+      fetch(lift.file)
+        .then((res) => res.text())
+        .then((gpxText) => {
+          setLiftPaths((prev) => ({ ...prev, [lift.name]: parseGpxTrack(gpxText) }))
+        })
+        .catch((err) => console.error(`Failed to load lift "${lift.name}":`, err))
+    })
+  }, [])
 
   useEffect(() => {
     if (!navigator.geolocation) {
@@ -138,13 +180,17 @@ function RecordRide({ onSave }: RecordRideProps) {
       return
     }
     setPath([])
-    setRideName('')
     setElapsedMinutes(0)
+    setShowTrailPicker(false)
     recordingStartRef.current = Date.now()
     setRecording(true)
     watchIdRef.current = navigator.geolocation.watchPosition(
       (pos) => {
         const next: LatLng = [pos.coords.latitude, pos.coords.longitude]
+        if (haversineDistanceKm(next, SKYLINE_QUEENSTOWN) > GEOFENCE_RADIUS_KM) {
+          console.warn('Ignoring GPS update outside the Skyline area:', next)
+          return
+        }
         setPosition(next)
         setPath((prev) => [...prev, next])
       },
@@ -153,27 +199,18 @@ function RecordRide({ onSave }: RecordRideProps) {
     )
   }
 
-  const startSimulatedRide = async () => {
-    let points: LatLng[]
-    try {
-      const res = await fetch(VERTIGO_TRAIL_FILE)
-      points = parseGpxTrack(await res.text())
-    } catch (err) {
-      console.error('Failed to load Vertigo trail for simulation:', err)
-      return
-    }
-    if (points.length < 2) return
+  const loadPoints = async (item: { name: string; file: string }): Promise<LatLng[]> => {
+    const cached = trailPaths[item.name] ?? liftPaths[item.name]
+    if (cached) return cached
+    const res = await fetch(item.file)
+    return parseGpxTrack(await res.text())
+  }
 
-    setPath([])
-    setRideName('')
-    setElapsedMinutes(0)
-    recordingStartRef.current = Date.now()
-    setRecording(true)
-
-    const stepMs = SIMULATED_RIDE_DURATION_MS / (points.length - 1)
+  const runSimulatedPath = (points: LatLng[], durationMs: number) => {
+    const stepMs = durationMs / (points.length - 1)
     let index = 0
     setPosition(points[0])
-    setPath([points[0]])
+    setPath((prev) => [...prev, points[0]])
 
     simulationIntervalRef.current = window.setInterval(() => {
       index += 1
@@ -187,14 +224,81 @@ function RecordRide({ onSave }: RecordRideProps) {
     }, stepMs)
   }
 
+  const simulateMovement = async (trail: TrailDefinition) => {
+    if (!recording || simulationIntervalRef.current !== null) return
+    setShowTrailPicker(false)
+
+    let points: LatLng[]
+    try {
+      points = await loadPoints(trail)
+    } catch (err) {
+      console.error(`Failed to load trail "${trail.name}" for simulation:`, err)
+      return
+    }
+    if (points.length < 2) return
+
+    runSimulatedPath(points, SIMULATED_RIDE_DURATION_MS)
+  }
+
+  const simulateCombinedRide = async (trails: TrailDefinition[]) => {
+    if (!recording || simulationIntervalRef.current !== null) return
+    setShowTrailPicker(false)
+
+    let combined: LatLng[]
+    try {
+      const pointSets: LatLng[][] = await Promise.all(trails.map((trail) => loadPoints(trail)))
+      combined = pointSets.flat()
+    } catch (err) {
+      console.error('Failed to load trails for combined simulation:', err)
+      return
+    }
+    if (combined.length < 2) return
+
+    runSimulatedPath(combined, SIMULATED_RIDE_DURATION_MS * trails.length)
+  }
+
+  const simulateBigRide = async () => {
+    if (!recording || simulationIntervalRef.current !== null || !bigRideSequence) return
+    setShowTrailPicker(false)
+
+    let combined: LatLng[]
+    try {
+      const pointSets: LatLng[][] = await Promise.all(bigRideSequence.map((item) => loadPoints(item)))
+      combined = pointSets.flat()
+    } catch (err) {
+      console.error('Failed to load trails/lifts for big ride simulation:', err)
+      return
+    }
+    if (combined.length < 2) return
+
+    runSimulatedPath(combined, SIMULATED_RIDE_DURATION_MS)
+  }
+
   const distance = totalDistanceKm(path)
 
+  const computedSegments = useMemo(() => {
+    if (recording || path.length < 2) return []
+    const runs = excludeLiftPoints(path, liftPaths)
+    const rawSegments = runs.flatMap((run) => segmentPathByTrail(run, trailPaths))
+    const namesSoFar: string[] = []
+    return rawSegments.map((segment) => {
+      const segDistance = totalDistanceKm(segment.points)
+      const name = nextAttemptRideName(segment.trailName, [...existingRideNames, ...namesSoFar])
+      namesSoFar.push(name)
+      return { name, distance: segDistance }
+    })
+  }, [recording, path, trailPaths, liftPaths, existingRideNames])
+
   const handleSave = async () => {
-    if (!rideName.trim() || distance === 0) return
+    if (computedSegments.length === 0) return
+    const totalSegmentDistance = computedSegments.reduce((sum, s) => sum + s.distance, 0)
     setSaving(true)
     try {
-      await onSave(rideName.trim(), Math.round(distance * 100) / 100, Math.round(elapsedMinutes * 10) / 10)
-      setRideName('')
+      for (const segment of computedSegments) {
+        const segTime =
+          totalSegmentDistance > 0 ? (elapsedMinutes * segment.distance) / totalSegmentDistance : 0
+        await onSave(segment.name, Math.round(segment.distance * 100) / 100, Math.round(segTime * 10) / 10)
+      }
       setPath([])
     } finally {
       setSaving(false)
@@ -234,10 +338,38 @@ function RecordRide({ onSave }: RecordRideProps) {
   return (
     <div className="record-ride">
       {testButton}
-      {!recording && (
-        <button className="btn btn-secondary record-ride__test-btn" onClick={startSimulatedRide}>
-          Test: Simulate Vertigo Ride (1 min)
-        </button>
+      <button
+        className="btn btn-secondary record-ride__test-btn"
+        onClick={() => setShowTrailPicker((prev) => !prev)}
+        disabled={!recording}
+      >
+        Test: Moving
+      </button>
+      {showTrailPicker && (
+        <div className="record-ride__trail-picker">
+          {TRAILS.map((trail) => (
+            <button
+              key={trail.name}
+              className="btn btn-secondary record-ride__test-btn"
+              onClick={() => simulateMovement(trail)}
+            >
+              {trail.name}
+            </button>
+          ))}
+          {vertigoAndThunderGoat.length === 2 && (
+            <button
+              className="btn btn-secondary record-ride__test-btn"
+              onClick={() => simulateCombinedRide(vertigoAndThunderGoat)}
+            >
+              Vertigo + Thunder Goat
+            </button>
+          )}
+          {bigRideSequence && (
+            <button className="btn btn-secondary record-ride__test-btn" onClick={simulateBigRide}>
+              Big Ride: Hammy's → TG → Gondola → Vertigo → TG → Gondola → Hammy's → TG
+            </button>
+          )}
+        </div>
       )}
       <div className="record-ride__map">
         <MapContainer center={position} zoom={15} scrollWheelZoom={false} style={{ height: '220px', width: '100%' }}>
@@ -246,7 +378,8 @@ function RecordRide({ onSave }: RecordRideProps) {
             url={`https://tiles.stadiamaps.com/tiles/stamen_terrain/{z}/{x}/{y}{r}.png?api_key=${STADIA_API_KEY}`}
           />
           <RecenterMap position={position} />
-          <TrailOverlays />
+          <TrailOverlays trailPaths={trailPaths} />
+          <LiftOverlays liftPaths={liftPaths} />
           {path.length > 1 && <Polyline positions={path} color="#ff6b35" weight={4} />}
           <CircleMarker
             center={position}
@@ -271,15 +404,19 @@ function RecordRide({ onSave }: RecordRideProps) {
 
       {!recording && path.length > 1 && (
         <div className="record-ride__save">
-          <input
-            className="text-input"
-            type="text"
-            placeholder="Ride name"
-            value={rideName}
-            onChange={(e) => setRideName(e.target.value)}
-          />
-          <button className="btn btn-primary" onClick={handleSave} disabled={saving || !rideName.trim()}>
-            {saving ? 'Saving…' : 'Save Ride'}
+          <ul className="record-ride__save-names">
+            {computedSegments.length === 0 ? (
+              <li>Matching trail…</li>
+            ) : (
+              computedSegments.map((segment) => (
+                <li key={segment.name}>
+                  {segment.name} <span>({segment.distance.toFixed(2)} km)</span>
+                </li>
+              ))
+            )}
+          </ul>
+          <button className="btn btn-primary" onClick={handleSave} disabled={saving || computedSegments.length === 0}>
+            {saving ? 'Saving…' : computedSegments.length > 1 ? 'Save Rides' : 'Save Ride'}
           </button>
         </div>
       )}

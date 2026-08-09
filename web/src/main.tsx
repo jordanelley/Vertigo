@@ -7,8 +7,8 @@ import { Auth0Provider } from '@auth0/auth0-react'
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <Auth0Provider
-      domain="dev-74arexrqup207kmv.us.auth0.com"
-      clientId="5dqfdwgv8BO5U7OtjHOREh5YtbOeOL9W"
+      domain={import.meta.env.VITE_AUTH0_DOMAIN}
+      clientId={import.meta.env.VITE_AUTH0_CLIENT_ID}
       authorizationParams={{ redirect_uri: window.location.origin }}
     >
       <App />

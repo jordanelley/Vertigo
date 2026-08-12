@@ -11,21 +11,32 @@ interface Ride {
   time: number
 }
 
+interface LeaderboardEntry {
+  userId: number
+  name: string
+  time: number
+  isSelf: boolean
+  isFollowing: boolean
+}
+
+interface TrackLeaderboard {
+  trailName: string
+  totalAttempts: number
+  topUsers: LeaderboardEntry[]
+}
+
 type Tab = 'feed' | 'ride' | 'leaderboard'
+type LeaderboardScope = 'all' | 'following'
 
 const feedItems = [
   { id: 1, rider: 'Sam', rideName: 'Ridge Trail', distance: 24.1 },
   { id: 2, rider: 'Alex', rideName: 'Sunday Loop', distance: 18.4 },
 ]
 
-const leaderboard = [
-  { name: 'Alex', distance: 142 },
-  { name: 'Sam', distance: 118 },
-  { name: 'You', distance: 84 },
-]
-
 function App() {
   const [rides, setRides] = useState<Ride[]>([])
+  const [leaderboard, setLeaderboard] = useState<TrackLeaderboard[]>([])
+  const [leaderboardScope, setLeaderboardScope] = useState<LeaderboardScope>('all')
   const [activeTab, setActiveTab] = useState<Tab>('feed')
   const {
     isLoading,
@@ -42,14 +53,47 @@ function App() {
   const logout = () =>
     auth0Logout({ logoutParams: { returnTo: window.location.origin } })
 
+  const authHeaders = (): HeadersInit =>
+    user?.sub ? { 'X-Auth0-Id': user.sub } : {}
+
+  const fetchLeaderboard = (scope: LeaderboardScope) => {
+    fetch(`http://localhost:5090/api/leaderboard?scope=${scope}`, {
+      headers: authHeaders(),
+    })
+      .then((res) => res.json())
+      .then(setLeaderboard)
+      .catch(() => setLeaderboard([]))
+  }
+
   useEffect(() => {
-    if (!isAuthenticated) return
+    if (!isAuthenticated || !user?.sub) return
+
+    fetch('http://localhost:5090/api/users/me', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', ...authHeaders() },
+      body: JSON.stringify({ nickname: user.nickname ?? 'Rider' }),
+    }).then(() => fetchLeaderboard(leaderboardScope))
 
     fetch('http://localhost:5090/api/rides')
       .then((res) => res.json())
       .then(setRides)
       .catch(() => setRides([]))
-  }, [isAuthenticated])
+    // Only re-run when auth state changes; scope changes are handled by handleScopeChange.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAuthenticated, user?.sub])
+
+  const handleScopeChange = (scope: LeaderboardScope) => {
+    setLeaderboardScope(scope)
+    fetchLeaderboard(scope)
+  }
+
+  const handleToggleFollow = async (entry: LeaderboardEntry) => {
+    await fetch(`http://localhost:5090/api/users/${entry.userId}/follow`, {
+      method: entry.isFollowing ? 'DELETE' : 'POST',
+      headers: authHeaders(),
+    })
+    fetchLeaderboard(leaderboardScope)
+  }
 
   const handleSaveRide = async (rideName: string, distance: number, time: number) => {
     const res = await fetch('http://localhost:5090/api/rides', {
@@ -145,16 +189,57 @@ function App() {
                 )}
 
                 {activeTab === 'leaderboard' && (
-                  <ol className="data-list">
-                    {leaderboard.map((entry, index) => (
-                      <li key={entry.name} className="data-list__item">
-                        <span className="data-list__primary">
-                          {index + 1}. {entry.name}
-                        </span>
-                        <span className="data-list__secondary">{entry.distance} km</span>
-                      </li>
+                  <div className="leaderboard">
+                    <div className="leaderboard__scope">
+                      {(['all', 'following'] as LeaderboardScope[]).map((scope) => (
+                        <button
+                          key={scope}
+                          className={`leaderboard__scope-btn${leaderboardScope === scope ? ' leaderboard__scope-btn--active' : ''}`}
+                          onClick={() => handleScopeChange(scope)}
+                        >
+                          {scope === 'all' ? 'Everyone' : 'Following'}
+                        </button>
+                      ))}
+                    </div>
+
+                    {leaderboard.length === 0 && (
+                      <p className="data-list__empty">
+                        {leaderboardScope === 'following'
+                          ? "No rides from people you follow yet."
+                          : 'No rides yet.'}
+                      </p>
+                    )}
+                    {leaderboard.map((track) => (
+                      <div key={track.trailName} className="leaderboard__track">
+                        <h3 className="leaderboard__track-name">
+                          {track.trailName}
+                          <span className="leaderboard__attempts">
+                            {track.totalAttempts} attempt{track.totalAttempts === 1 ? '' : 's'}
+                          </span>
+                        </h3>
+                        <ol className="data-list">
+                          {track.topUsers.map((entry, index) => (
+                            <li key={entry.name} className="data-list__item">
+                              <span className="data-list__primary">
+                                {index + 1}. {entry.name}
+                              </span>
+                              <span className="data-list__secondary leaderboard__entry-right">
+                                {entry.time} min
+                                {!entry.isSelf && (
+                                  <button
+                                    className={`leaderboard__follow-btn${entry.isFollowing ? ' leaderboard__follow-btn--active' : ''}`}
+                                    onClick={() => handleToggleFollow(entry)}
+                                  >
+                                    {entry.isFollowing ? 'Following' : 'Follow'}
+                                  </button>
+                                )}
+                              </span>
+                            </li>
+                          ))}
+                        </ol>
+                      </div>
                     ))}
-                  </ol>
+                  </div>
                 )}
               </div>
 

@@ -25,12 +25,27 @@ interface TrackLeaderboard {
   topUsers: LeaderboardEntry[]
 }
 
-type Tab = 'feed' | 'ride' | 'leaderboard'
+type Tab = 'feed' | 'ride' | 'leaderboard' | 'challenges'
 type LeaderboardScope = 'all' | 'following'
 
 const feedItems = [
   { id: 1, rider: 'Sam', rideName: 'Ridge Trail', distance: 24.1 },
   { id: 2, rider: 'Alex', rideName: 'Sunday Loop', distance: 18.4 },
+]
+
+const feedLeaderboard = [
+  { name: 'Jamie', time: 0.09 },
+  { name: 'Alex', time: 0.12 },
+  { name: 'Sam', time: 0.19 },
+]
+
+const challengeBadges = [
+  { id: 1, description: 'Ride every blue track in skyline' },
+  { id: 2, description: 'Ride every track in Skyline' },
+  { id: 3, description: 'Do a lap with another use (Friend achievement)' },
+  { id: 4, description: 'Pedal up Hammys (probably better at night)' },
+  { id: 5, description: 'do a lap after 9pm' },
+  { id: 6, description: 'Complete 15 laps in one day' },
 ]
 
 function App() {
@@ -132,7 +147,7 @@ function App() {
               <h1>{user?.nickname ?? 'Welcome back'}</h1>
 
               <nav className="tabs">
-                {(['feed', 'ride', 'leaderboard'] as Tab[]).map((tab) => (
+                {(['feed', 'ride', 'leaderboard', 'challenges'] as Tab[]).map((tab) => (
                   <button
                     key={tab}
                     className={`tab${activeTab === tab ? ' tab--active' : ''}`}
@@ -145,16 +160,36 @@ function App() {
 
               <div className="tab-panel">
                 {activeTab === 'feed' && (
-                  <ul className="data-list">
-                    {feedItems.map((item) => (
-                      <li key={item.id} className="data-list__item">
-                        <span className="data-list__primary">{item.rider}</span>
-                        <span className="data-list__secondary">
-                          {item.rideName} · {item.distance} km
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
+                  <>
+                    <div className="feed-highlights">
+                      <div className="popup-challenge">
+                        <h3 className="popup-challenge__title">Pop-up Challenge</h3>
+                        <p className="popup-challenge__body">Complete Bubba</p>
+                      </div>
+                      <div className="feed-highlights__divider" />
+                      <div className="feed-leaderboard">
+                        <h3 className="feed-leaderboard__title">Leaderboard</h3>
+                        <ol className="feed-leaderboard__list">
+                          {feedLeaderboard.map((entry, index) => (
+                            <li key={entry.name} className="feed-leaderboard__item">
+                              <span>{index + 1}. {entry.name}</span>
+                              <span className="feed-leaderboard__time">{entry.time} min</span>
+                            </li>
+                          ))}
+                        </ol>
+                      </div>
+                    </div>
+                    <ul className="data-list">
+                      {feedItems.map((item) => (
+                        <li key={item.id} className="data-list__item">
+                          <span className="data-list__primary">{item.rider}</span>
+                          <span className="data-list__secondary">
+                            {item.rideName} · {item.distance} km
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  </>
                 )}
 
                 {activeTab === 'ride' && (
@@ -237,6 +272,16 @@ function App() {
                             </li>
                           ))}
                         </ol>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {activeTab === 'challenges' && (
+                  <div className="badges-grid">
+                    {challengeBadges.map((badge) => (
+                      <div key={badge.id} className="badge" data-tooltip={badge.description}>
+                        <span className="badge__icon" aria-hidden="true">🔒</span>
                       </div>
                     ))}
                   </div>

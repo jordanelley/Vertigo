@@ -29,5 +29,9 @@ public class VetigoDbContext : DbContext
         modelBuilder.Entity<Follow>()
             .HasIndex(f => new { f.FollowerId, f.FollowingId })
             .IsUnique();
+
+        modelBuilder.Entity<User>()
+            .HasIndex(u => u.Auth0Id)
+            .IsUnique();
     }
 }

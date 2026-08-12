@@ -11,6 +11,17 @@ interface Ride {
   time: number
 }
 
+interface LeaderboardEntry {
+  name: string
+  time: number
+}
+
+interface TrackLeaderboard {
+  trailName: string
+  totalAttempts: number
+  topUsers: LeaderboardEntry[]
+}
+
 type Tab = 'feed' | 'ride' | 'leaderboard'
 
 const feedItems = [
@@ -18,14 +29,9 @@ const feedItems = [
   { id: 2, rider: 'Alex', rideName: 'Sunday Loop', distance: 18.4 },
 ]
 
-const leaderboard = [
-  { name: 'Alex', distance: 142 },
-  { name: 'Sam', distance: 118 },
-  { name: 'You', distance: 84 },
-]
-
 function App() {
   const [rides, setRides] = useState<Ride[]>([])
+  const [leaderboard, setLeaderboard] = useState<TrackLeaderboard[]>([])
   const [activeTab, setActiveTab] = useState<Tab>('feed')
   const {
     isLoading,
@@ -49,6 +55,11 @@ function App() {
       .then((res) => res.json())
       .then(setRides)
       .catch(() => setRides([]))
+
+    fetch('http://localhost:5090/api/leaderboard')
+      .then((res) => res.json())
+      .then(setLeaderboard)
+      .catch(() => setLeaderboard([]))
   }, [isAuthenticated])
 
   const handleSaveRide = async (rideName: string, distance: number, time: number) => {
@@ -145,16 +156,31 @@ function App() {
                 )}
 
                 {activeTab === 'leaderboard' && (
-                  <ol className="data-list">
-                    {leaderboard.map((entry, index) => (
-                      <li key={entry.name} className="data-list__item">
-                        <span className="data-list__primary">
-                          {index + 1}. {entry.name}
-                        </span>
-                        <span className="data-list__secondary">{entry.distance} km</span>
-                      </li>
+                  <div className="leaderboard">
+                    {leaderboard.length === 0 && (
+                      <p className="data-list__empty">No rides yet.</p>
+                    )}
+                    {leaderboard.map((track) => (
+                      <div key={track.trailName} className="leaderboard__track">
+                        <h3 className="leaderboard__track-name">
+                          {track.trailName}
+                          <span className="leaderboard__attempts">
+                            {track.totalAttempts} attempt{track.totalAttempts === 1 ? '' : 's'}
+                          </span>
+                        </h3>
+                        <ol className="data-list">
+                          {track.topUsers.map((entry, index) => (
+                            <li key={entry.name} className="data-list__item">
+                              <span className="data-list__primary">
+                                {index + 1}. {entry.name}
+                              </span>
+                              <span className="data-list__secondary">{entry.time} min</span>
+                            </li>
+                          ))}
+                        </ol>
+                      </div>
                     ))}
-                  </ol>
+                  </div>
                 )}
               </div>
 

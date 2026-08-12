@@ -9,4 +9,7 @@ public class Ride
     public double Distance { get; set; }
 
     public double Time { get; set; }
+
+    public int? UserId { get; set; }
+    public User? User { get; set; }
 }

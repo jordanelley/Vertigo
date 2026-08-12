@@ -188,6 +188,27 @@
   padding: 0.65rem 0.1rem;
 }
 
+.leaderboard {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.leaderboard__track-name {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin: 0 0 0.5rem;
+  font-size: 1rem;
+  color: #f1f5f9;
+}
+
+.leaderboard__attempts {
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: #94a3b8;
+}
+
 .record-ride {
   margin-bottom: 1.25rem;
 }

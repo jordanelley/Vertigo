@@ -10,4 +10,8 @@ public class User
     public string Nickname { get; set; } = string.Empty;
 
     public List<Ride> Rides { get; set; } = new();
+
+    public List<Follow> Following { get; set; } = new();
+
+    public List<Follow> Followers { get; set; } = new();
 }

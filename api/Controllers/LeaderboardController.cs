@@ -17,12 +17,31 @@ public class LeaderboardController : ControllerBase
         _db = db;
     }
 
-    // For each track: total attempts across everyone, and the top 3 users by best time.
-    // Tracks are ordered most-attempted first.
+    // For each track: total attempts, and the top 3 users by best time, scoped to
+    // everyone or just people the caller follows (plus themselves).
     [HttpGet(Name = "GetLeaderboard")]
-    public async Task<ActionResult<List<TrackLeaderboard>>> Get()
+    public async Task<ActionResult<List<TrackLeaderboard>>> Get(
+        [FromQuery] string scope = "all",
+        [FromHeader(Name = "X-Auth0-Id")] string? auth0Id = null)
     {
-        var rides = await _db.Rides.Include(r => r.User).ToListAsync();
+        var me = string.IsNullOrEmpty(auth0Id)
+            ? null
+            : await _db.Users.FirstOrDefaultAsync(u => u.Auth0Id == auth0Id);
+
+        var myFollowingIds = me is null
+            ? new HashSet<int>()
+            : (await _db.Follows.Where(f => f.FollowerId == me.Id).Select(f => f.FollowingId).ToListAsync()).ToHashSet();
+
+        var ridesQuery = _db.Rides.Include(r => r.User).AsQueryable();
+
+        if (scope == "following")
+        {
+            if (me is null) return Unauthorized();
+            var scopeIds = new HashSet<int>(myFollowingIds) { me.Id };
+            ridesQuery = ridesQuery.Where(r => r.UserId != null && scopeIds.Contains(r.UserId.Value));
+        }
+
+        var rides = await ridesQuery.ToListAsync();
 
         var result = rides
             .Select(r => new
@@ -42,7 +61,14 @@ public class LeaderboardController : ControllerBase
                     .Select(userGroup => userGroup.OrderBy(r => r.Time).First())
                     .OrderBy(r => r.Time)
                     .Take(3)
-                    .Select(r => new LeaderboardEntry { Name = r.User!.Nickname, Time = r.Time })
+                    .Select(r => new LeaderboardEntry
+                    {
+                        UserId = r.User!.Id,
+                        Name = r.User!.Nickname,
+                        Time = r.Time,
+                        IsSelf = me is not null && r.User!.Id == me.Id,
+                        IsFollowing = myFollowingIds.Contains(r.User!.Id),
+                    })
                     .ToList(),
             })
             .OrderByDescending(t => t.TotalAttempts)
@@ -63,7 +89,13 @@ public class TrackLeaderboard
 
 public class LeaderboardEntry
 {
+    public int UserId { get; set; }
+
     public string Name { get; set; } = string.Empty;
 
     public double Time { get; set; }
+
+    public bool IsSelf { get; set; }
+
+    public bool IsFollowing { get; set; }
 }

@@ -127,6 +127,75 @@
   text-align: left;
 }
 
+.feed-highlights {
+  display: flex;
+  align-items: stretch;
+  gap: 0.9rem;
+  margin-bottom: 0.75rem;
+  background: linear-gradient(135deg, #2563eb, #1e3a8a);
+  border-radius: 10px;
+  padding: 0.75rem 0.9rem;
+}
+
+.feed-highlights > .popup-challenge,
+.feed-highlights > .feed-leaderboard {
+  flex: 1;
+  min-width: 0;
+}
+
+.feed-highlights__divider {
+  width: 1px;
+  background: rgba(191, 219, 254, 0.3);
+}
+
+.popup-challenge__title {
+  margin: 0 0 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #bfdbfe;
+}
+
+.popup-challenge__body {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #f1f5f9;
+}
+
+.feed-leaderboard__title {
+  margin: 0 0 0.4rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #bfdbfe;
+}
+
+.feed-leaderboard__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.feed-leaderboard__item {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #f1f5f9;
+}
+
+.feed-leaderboard__time {
+  color: #bfdbfe;
+  font-weight: 400;
+}
+
 .data-list {
   list-style: none;
   margin: 0;

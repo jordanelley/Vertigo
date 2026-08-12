@@ -334,6 +334,13 @@
   margin-top: 0.75rem;
 }
 
+.record-ride__laps {
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #f1f5f9;
+}
+
 .record-ride__save-names {
   list-style: none;
   margin: 0;

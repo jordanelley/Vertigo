@@ -10,7 +10,7 @@ import {
   type LatLng,
   type TrailDefinition,
 } from './trails'
-import { LIFTS, excludeLiftPoints } from './lifts'
+import { LIFTS, excludeLiftPoints, countLiftLaps } from './lifts'
 
 const DEFAULT_CENTER: LatLng = [37.7749, -122.4194]
 // Skyline Queenstown gondola top station, Bob's Peak (45°01'36"S 168°38'58"E)
@@ -276,6 +276,13 @@ function RecordRide({ onSave, existingRideNames }: RecordRideProps) {
 
   const distance = totalDistanceKm(path)
 
+  const gondolaLaps = useMemo(() => {
+    if (recording || path.length < 2 || !gondolaLift) return 0
+    const liftPoints = liftPaths[gondolaLift.name]
+    if (!liftPoints) return 0
+    return countLiftLaps(path, liftPoints)
+  }, [recording, path, liftPaths])
+
   const computedSegments = useMemo(() => {
     if (recording || path.length < 2) return []
     const runs = excludeLiftPoints(path, liftPaths)
@@ -404,6 +411,9 @@ function RecordRide({ onSave, existingRideNames }: RecordRideProps) {
 
       {!recording && path.length > 1 && (
         <div className="record-ride__save">
+          <p className="record-ride__laps">
+            {gondolaLaps} lap{gondolaLaps === 1 ? '' : 's'} this session
+          </p>
           <ul className="record-ride__save-names">
             {computedSegments.length === 0 ? (
               <li>Matching trail…</li>

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Vetigo.Api;
 
@@ -10,9 +11,11 @@ using Vetigo.Api;
 namespace Vetigo.Api.Migrations
 {
     [DbContext(typeof(VetigoDbContext))]
-    partial class VetigoDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260812070747_AddUsersFollowsAndRideUser")]
+    partial class AddUsersFollowsAndRideUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.20");

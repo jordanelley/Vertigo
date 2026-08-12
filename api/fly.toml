@@ -1,0 +1,27 @@
+# Generated for manual `fly deploy`. Run `fly launch --no-deploy` first if you'd rather
+# let Fly pick the app name/region interactively - it will offer to overwrite this file.
+app = "vetigo-api"
+primary_region = "syd"
+
+[build]
+
+[env]
+  ASPNETCORE_ENVIRONMENT = "Production"
+  ASPNETCORE_URLS = "http://+:8080"
+  ConnectionStrings__Default = "Data Source=/data/vetigo.db"
+  AllowedOrigins = "https://jordanelley.github.io"
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0
+
+[[mounts]]
+  source = "vetigo_data"
+  destination = "/data"
+
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "256mb"

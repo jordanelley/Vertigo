@@ -28,6 +28,8 @@ interface TrackLeaderboard {
 type Tab = 'feed' | 'ride' | 'leaderboard' | 'challenges'
 type LeaderboardScope = 'all' | 'following'
 
+const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:5090'
+
 const feedItems = [
   { id: 1, rider: 'Sam', rideName: 'Ridge Trail', distance: 24.1 },
   { id: 2, rider: 'Alex', rideName: 'Sunday Loop', distance: 18.4 },
@@ -72,7 +74,7 @@ function App() {
     user?.sub ? { 'X-Auth0-Id': user.sub } : {}
 
   const fetchLeaderboard = (scope: LeaderboardScope) => {
-    fetch(`http://localhost:5090/api/leaderboard?scope=${scope}`, {
+    fetch(`${API_URL}/api/leaderboard?scope=${scope}`, {
       headers: authHeaders(),
     })
       .then((res) => res.json())
@@ -83,13 +85,13 @@ function App() {
   useEffect(() => {
     if (!isAuthenticated || !user?.sub) return
 
-    fetch('http://localhost:5090/api/users/me', {
+    fetch(`${API_URL}/api/users/me`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', ...authHeaders() },
       body: JSON.stringify({ nickname: user.nickname ?? 'Rider' }),
     }).then(() => fetchLeaderboard(leaderboardScope))
 
-    fetch('http://localhost:5090/api/rides')
+    fetch(`${API_URL}/api/rides`)
       .then((res) => res.json())
       .then(setRides)
       .catch(() => setRides([]))
@@ -103,7 +105,7 @@ function App() {
   }
 
   const handleToggleFollow = async (entry: LeaderboardEntry) => {
-    await fetch(`http://localhost:5090/api/users/${entry.userId}/follow`, {
+    await fetch(`${API_URL}/api/users/${entry.userId}/follow`, {
       method: entry.isFollowing ? 'DELETE' : 'POST',
       headers: authHeaders(),
     })
@@ -111,7 +113,7 @@ function App() {
   }
 
   const handleSaveRide = async (rideName: string, distance: number, time: number) => {
-    const res = await fetch('http://localhost:5090/api/rides', {
+    const res = await fetch(`${API_URL}/api/rides`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ rideName, distance, time }),
@@ -122,7 +124,7 @@ function App() {
 
   const handleDeleteRide = async (id: number, rideName: string) => {
     if (!window.confirm(`Delete "${rideName}"? This can't be undone.`)) return
-    await fetch(`http://localhost:5090/api/rides/${id}`, { method: 'DELETE' })
+    await fetch(`${API_URL}/api/rides/${id}`, { method: 'DELETE' })
     setRides((prev) => prev.filter((ride) => ride.id !== id))
   }
 

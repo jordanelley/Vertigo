@@ -14,11 +14,18 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 const string WebClientCorsPolicy = "WebClient";
+var allowedOrigins = new List<string> { "http://localhost:5173" };
+var configuredOrigins = builder.Configuration["AllowedOrigins"];
+if (!string.IsNullOrWhiteSpace(configuredOrigins))
+{
+    allowedOrigins.AddRange(configuredOrigins.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries));
+}
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(WebClientCorsPolicy, policy =>
     {
-        policy.WithOrigins("http://localhost:5173").AllowAnyHeader().AllowAnyMethod();
+        policy.WithOrigins(allowedOrigins.ToArray()).AllowAnyHeader().AllowAnyMethod();
     });
 });
 
@@ -37,7 +44,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+// Fly's edge already terminates TLS and forces https (see fly.toml), so redirecting again
+// inside the container would just bounce Fly's internal http request back at itself.
+if (!app.Environment.IsProduction())
+{
+    app.UseHttpsRedirection();
+}
 
 app.UseCors(WebClientCorsPolicy);
 

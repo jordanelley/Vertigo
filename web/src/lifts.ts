@@ -6,7 +6,7 @@ export interface LiftDefinition {
 }
 
 export const LIFTS: LiftDefinition[] = [
-  { name: 'Skyline Gondola', file: '/lifts/Skyline-Gondela.gpx' },
+  { name: 'Skyline Gondola', file: `${import.meta.env.BASE_URL}lifts/Skyline-Gondela.gpx` },
 ]
 
 // Hand-traced lift lines aren't as precise as recorded GPX trails, so this is deliberately

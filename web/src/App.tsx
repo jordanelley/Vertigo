@@ -280,13 +280,14 @@ function App() {
                 )}
 
                 {activeTab === 'challenges' && (
-                  <div className="badges-grid">
+                  <ul className="data-list">
                     {challengeBadges.map((badge) => (
-                      <div key={badge.id} className="badge" data-tooltip={badge.description}>
-                        <span className="badge__icon" aria-hidden="true">🔒</span>
-                      </div>
+                      <li key={badge.id} className="data-list__item badge-row">
+                        <span className="badge-row__icon" aria-hidden="true">🔒</span>
+                        <span className="data-list__primary">{badge.description}</span>
+                      </li>
                     ))}
-                  </div>
+                  </ul>
                 )}
               </div>
 

@@ -6,10 +6,14 @@ export interface TrailDefinition {
   color: string
 }
 
+// import.meta.env.BASE_URL is Vite's configured base path (e.g. "/Vertigo/" in production, "/"
+// in dev) - public/ files need it prefixed manually since it's a plain fetch, not an asset import.
+const trailFile = (name: string) => `${import.meta.env.BASE_URL}trails/${name}`
+
 export const TRAILS: TrailDefinition[] = [
-  { name: 'Vertigo', file: '/trails/vertigo.gpx', color: '#3b82f6' },
-  { name: "Upper Hammy's Track", file: '/trails/upper-hammy-s-track-8273.gpx', color: '#22c55e' },
-  { name: 'Thunder Goat', file: '/trails/thunder-goat.gpx', color: '#f97316' },
+  { name: 'Vertigo', file: trailFile('vertigo.gpx'), color: '#3b82f6' },
+  { name: "Upper Hammy's Track", file: trailFile('upper-hammy-s-track-8273.gpx'), color: '#22c55e' },
+  { name: 'Thunder Goat', file: trailFile('thunder-goat.gpx'), color: '#f97316' },
 ]
 
 export function parseGpxTrack(gpxText: string): LatLng[] {

@@ -4,6 +4,7 @@ app = "vetigo-api"
 primary_region = "syd"
 
 [build]
+  dockerfile = "Dockerfile"
 
 [env]
   ASPNETCORE_ENVIRONMENT = "Production"

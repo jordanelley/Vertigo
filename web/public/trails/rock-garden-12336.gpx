@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<gpx version="1.1" creator="Trailforks.com" xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPointExtension/v1" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd">
+<metadata>
+<name>Rock Garden Trailforks Trail</name>
+<link href="https://www.trailforks.com/">
+<text>Trailforks</text>
+</link>
+</metadata>
+<trk>
+<name>
+Rock Garden
+</name>
+<link href="https://www.trailforks.com/trails/rock-garden-12336/">
+</link>
+<trkseg>
+<trkpt lat="-45.02834" lon="168.64616">
+<ele>701.62</ele>
+<time>2026-08-15T23:07:00-07:00</time>
+</trkpt>
+<trkpt lat="-45.02836" lon="168.64598">
+<ele>697.289</ele>
+<time>2026-08-15T23:07:01-07:00</time>
+</trkpt>
+<trkpt lat="-45.02837" lon="168.64582">
+<ele>697.401</ele>
+<time>2026-08-15T23:07:02-07:00</time>
+</trkpt>
+<trkpt lat="-45.02838" lon="168.64578">
+<ele>693.905</ele>
+<time>2026-08-15T23:07:03-07:00</time>
+</trkpt>
+<trkpt lat="-45.02835" lon="168.64564">
+<ele>692.839</ele>
+<time>2026-08-15T23:07:04-07:00</time>
+</trkpt>
+<trkpt lat="-45.02834" lon="168.64559">
+<ele>689.078</ele>
+<time>2026-08-15T23:07:05-07:00</time>
+</trkpt>
+<trkpt lat="-45.02837" lon="168.64525">
+<ele>688.301</ele>
+<time>2026-08-15T23:07:06-07:00</time>
+</trkpt>
+<trkpt lat="-45.02839" lon="168.6452">
+<ele>681.727</ele>
+<time>2026-08-15T23:07:07-07:00</time>
+</trkpt>
+<trkpt lat="-45.02869" lon="168.64571">
+<ele>680.684</ele>
+<time>2026-08-15T23:07:08-07:00</time>
+</trkpt>
+<trkpt lat="-45.02875" lon="168.6458">
+<ele>667.359</ele>
+<time>2026-08-15T23:07:09-07:00</time>
+</trkpt>
+<trkpt lat="-45.02903" lon="168.64579">
+<ele>667.359</ele>
+<time>2026-08-15T23:07:10-07:00</time>
+</trkpt>
+</trkseg>
+</trk>
+</gpx>

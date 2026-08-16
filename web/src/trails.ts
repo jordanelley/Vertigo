@@ -10,11 +10,51 @@ export interface TrailDefinition {
 // in dev) - public/ files need it prefixed manually since it's a plain fetch, not an asset import.
 const trailFile = (name: string) => `${import.meta.env.BASE_URL}trails/${name}`
 
+// 1-6 difficulty scale: purple (easiest) through red (hardest).
+const LEVEL_COLORS: Record<number, string> = {
+  1: '#895489', // purple
+  2: '#46b415', // green
+  3: '#3298ee', // light blue
+  4: '#0c4b80', // dark blue
+  5: '#000000', // black
+  6: '#c72a3a', // red
+}
+
+// Difficulty ratings pulled from Trailforks (trailforks.com/trails/<slug>). Trailforks itself
+// only distinguishes Blue / Black-ish / Double Black for these trails, so that's bucketed onto
+// this park's 6-level scale as: Blue -> 3, Black Diamond/Advanced -> 5, Double Black Diamond -> 6.
+// Skyline Access Road isn't a difficulty-rated trail (it's the paved/gravel road to the gondola).
+const trail = (name: string, file: string, level: number): TrailDefinition => ({
+  name,
+  file: trailFile(file),
+  color: LEVEL_COLORS[level],
+})
+
 export const TRAILS: TrailDefinition[] = [
-  { name: 'Vertigo', file: trailFile('vertigo.gpx'), color: '#3b82f6' },
-  { name: "Upper Hammy's Track", file: trailFile('upper-hammy-s-track-8273.gpx'), color: '#22c55e' },
-  { name: 'Thunder Goat', file: trailFile('thunder-goat.gpx'), color: '#f97316' },
-  { name: 'Huck Yeah', file: trailFile('huck-yeah.gpx'), color: '#a855f7' },
+  trail('Vertigo', 'vertigo.gpx', 3),
+  trail("Upper Hammy's Track", 'upper-hammy-s-track-8273.gpx', 3),
+  trail('Thunder Goat', 'thunder-goat.gpx', 3),
+  trail('Lazy Vertigo', 'lazy-vertigo.gpx', 3),
+  trail('Skyline Access Road', 'skyline-access-road.gpx', 1),
+  trail('Huck Yeah', 'huck-yeah.gpx', 5),
+  trail('Armageddon', 'armageddon-8266.gpx', 5),
+  trail('Black Beard', 'black-beard.gpx', 5),
+  trail('El Gato', 'el-gato-721751.gpx', 5),
+  trail('Give It Barry', 'give-it-barry.gpx', 5),
+  trail('Grundy', 'grundy.gpx', 5),
+  trail("I'm A Shreddin", 'i-m-a-shreddin-71818.gpx', 5),
+  trail('Rock Garden', 'rock-garden-12336.gpx', 5),
+  trail('Shikaka', 'shikaka.gpx', 5),
+  trail('Squid Run', 'squid-run.gpx', 5),
+  trail('Thingymajig', 'thingymajig.gpx', 5),
+  trail("Ant's Track", 'ant-s-track.gpx', 6),
+  trail('Drop Garden', 'drop-garden.gpx', 6),
+  trail('Fundy', 'fundy.gpx', 6),
+  trail('G.S.D.', 'g-s-d.gpx', 6),
+  trail('Hobbit to GSD Link', 'hobbit-to-gsd-link.gpx', 6),
+  trail('Hobbit', 'hobbit.gpx', 6),
+  trail('Slippery Ninja', 'slippery-ninja.gpx', 6),
+  trail('World Cup', 'world-cup-8261.gpx', 6),
 ]
 
 export function parseGpxTrack(gpxText: string): LatLng[] {

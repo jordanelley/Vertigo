@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<gpx version="1.1" creator="Trailforks.com" xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPointExtension/v1" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd">
+<metadata>
+<name>Hobbit to GSD Link Trailforks Trail</name>
+<link href="https://www.trailforks.com/">
+<text>Trailforks</text>
+</link>
+</metadata>
+<trk>
+<name>
+Hobbit to GSD Link
+</name>
+<link href="https://www.trailforks.com/trails/hobbit-to-gsd-link/">
+</link>
+<trkseg>
+<trkpt lat="-45.02907" lon="168.64927">
+<ele>630</ele>
+<time>2026-08-15T23:09:27-07:00</time>
+</trkpt>
+<trkpt lat="-45.02913" lon="168.64926">
+<ele>630</ele>
+<time>2026-08-15T23:09:28-07:00</time>
+</trkpt>
+<trkpt lat="-45.02915" lon="168.64923">
+<ele>630</ele>
+<time>2026-08-15T23:09:29-07:00</time>
+</trkpt>
+<trkpt lat="-45.02916" lon="168.64913">
+<ele>630</ele>
+<time>2026-08-15T23:09:30-07:00</time>
+</trkpt>
+<trkpt lat="-45.02922" lon="168.64907">
+<ele>630</ele>
+<time>2026-08-15T23:09:31-07:00</time>
+</trkpt>
+<trkpt lat="-45.02924" lon="168.64895">
+<ele>632</ele>
+<time>2026-08-15T23:09:32-07:00</time>
+</trkpt>
+<trkpt lat="-45.02926" lon="168.64891">
+<ele>632</ele>
+<time>2026-08-15T23:09:33-07:00</time>
+</trkpt>
+<trkpt lat="-45.02931" lon="168.64887">
+<ele>620</ele>
+<time>2026-08-15T23:09:34-07:00</time>
+</trkpt>
+<trkpt lat="-45.02936" lon="168.64887">
+<ele>620</ele>
+<time>2026-08-15T23:09:35-07:00</time>
+</trkpt>
+<trkpt lat="-45.0294" lon="168.64882">
+<ele>620</ele>
+<time>2026-08-15T23:09:36-07:00</time>
+</trkpt>
+<trkpt lat="-45.02946" lon="168.64869">
+<ele>625</ele>
+<time>2026-08-15T23:09:37-07:00</time>
+</trkpt>
+</trkseg>
+</trk>
+</gpx>

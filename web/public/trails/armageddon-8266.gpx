@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<gpx version="1.1" creator="Trailforks.com" xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPointExtension/v1" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd">
+<metadata>
+<name>Armageddon Trailforks Trail</name>
+<link href="https://www.trailforks.com/">
+<text>Trailforks</text>
+</link>
+</metadata>
+<trk>
+<name>
+Armageddon
+</name>
+<link href="https://www.trailforks.com/trails/armageddon-8266/">
+</link>
+<trkseg>
+<trkpt lat="-45.02713" lon="168.64279">
+<ele>773</ele>
+<time>2026-08-15T22:59:11-07:00</time>
+</trkpt>
+<trkpt lat="-45.02719" lon="168.64274">
+<ele>773</ele>
+<time>2026-08-15T22:59:12-07:00</time>
+</trkpt>
+<trkpt lat="-45.02724" lon="168.64274">
+<ele>773</ele>
+<time>2026-08-15T22:59:13-07:00</time>
+</trkpt>
+<trkpt lat="-45.02728" lon="168.64278">
+<ele>773</ele>
+<time>2026-08-15T22:59:14-07:00</time>
+</trkpt>
+<trkpt lat="-45.0273" lon="168.6429">
+<ele>773</ele>
+<time>2026-08-15T22:59:15-07:00</time>
+</trkpt>
+<trkpt lat="-45.02729" lon="168.643">
+<ele>777</ele>
+<time>2026-08-15T22:59:16-07:00</time>
+</trkpt>
+<trkpt lat="-45.02723" lon="168.64314">
+<ele>777</ele>
+<time>2026-08-15T22:59:17-07:00</time>
+</trkpt>
+<trkpt lat="-45.02724" lon="168.64328">
+<ele>778</ele>
+<time>2026-08-15T22:59:18-07:00</time>
+</trkpt>
+<trkpt lat="-45.0273" lon="168.64359">
+<ele>775</ele>
+<time>2026-08-15T22:59:19-07:00</time>
+</trkpt>
+<trkpt lat="-45.02745" lon="168.64397">
+<ele>753</ele>
+<time>2026-08-15T22:59:20-07:00</time>
+</trkpt>
+<trkpt lat="-45.02748" lon="168.64403">
+<ele>749</ele>
+<time>2026-08-15T22:59:21-07:00</time>
+</trkpt>
+<trkpt lat="-45.02756" lon="168.6441">
+<ele>749</ele>
+<time>2026-08-15T22:59:22-07:00</time>
+</trkpt>
+<trkpt lat="-45.02771" lon="168.64415">
+<ele>736</ele>
+<time>2026-08-15T22:59:23-07:00</time>
+</trkpt>
+<trkpt lat="-45.02777" lon="168.64419">
+<ele>736</ele>
+<time>2026-08-15T22:59:24-07:00</time>
+</trkpt>
+<trkpt lat="-45.02788" lon="168.64432">
+<ele>739</ele>
+<time>2026-08-15T22:59:25-07:00</time>
+</trkpt>
+<trkpt lat="-45.02803" lon="168.6443">
+<ele>722</ele>
+<time>2026-08-15T22:59:26-07:00</time>
+</trkpt>
+<trkpt lat="-45.02807" lon="168.64426">
+<ele>722</ele>
+<time>2026-08-15T22:59:27-07:00</time>
+</trkpt>
+<trkpt lat="-45.0281" lon="168.64417">
+<ele>722</ele>
+<time>2026-08-15T22:59:28-07:00</time>
+</trkpt>
+<trkpt lat="-45.02809" lon="168.64407">
+<ele>722</ele>
+<time>2026-08-15T22:59:29-07:00</time>
+</trkpt>
+<trkpt lat="-45.02809" lon="168.64398">
+<ele>724</ele>
+<time>2026-08-15T22:59:30-07:00</time>
+</trkpt>
+<trkpt lat="-45.02811" lon="168.64393">
+<ele>724</ele>
+<time>2026-08-15T22:59:31-07:00</time>
+</trkpt>
+<trkpt lat="-45.02816" lon="168.64392">
+<ele>724</ele>
+<time>2026-08-15T22:59:32-07:00</time>
+</trkpt>
+<trkpt lat="-45.02818" lon="168.64397">
+<ele>724</ele>
+<time>2026-08-15T22:59:33-07:00</time>
+</trkpt>
+<trkpt lat="-45.02823" lon="168.64403">
+<ele>710</ele>
+<time>2026-08-15T22:59:34-07:00</time>
+</trkpt>
+<trkpt lat="-45.02827" lon="168.64405">
+<ele>710</ele>
+<time>2026-08-15T22:59:35-07:00</time>
+</trkpt>
+<trkpt lat="-45.02831" lon="168.64404">
+<ele>710</ele>
+<time>2026-08-15T22:59:36-07:00</time>
+</trkpt>
+<trkpt lat="-45.02835" lon="168.64403">
+<ele>710</ele>
+<time>2026-08-15T22:59:37-07:00</time>
+</trkpt>
+<trkpt lat="-45.02841" lon="168.64397">
+<ele>711</ele>
+<time>2026-08-15T22:59:38-07:00</time>
+</trkpt>
+<trkpt lat="-45.02845" lon="168.64385">
+<ele>711</ele>
+<time>2026-08-15T22:59:39-07:00</time>
+</trkpt>
+<trkpt lat="-45.02844" lon="168.64376">
+<ele>711</ele>
+<time>2026-08-15T22:59:40-07:00</time>
+</trkpt>
+<trkpt lat="-45.02847" lon="168.64368">
+<ele>712</ele>
+<time>2026-08-15T22:59:41-07:00</time>
+</trkpt>
+<trkpt lat="-45.0285" lon="168.64363">
+<ele>697</ele>
+<time>2026-08-15T22:59:42-07:00</time>
+</trkpt>
+<trkpt lat="-45.0286" lon="168.64355">
+<ele>697</ele>
+<time>2026-08-15T22:59:43-07:00</time>
+</trkpt>
+<trkpt lat="-45.02866" lon="168.64346">
+<ele>700</ele>
+<time>2026-08-15T22:59:44-07:00</time>
+</trkpt>
+<trkpt lat="-45.02874" lon="168.64335">
+<ele>700</ele>
+<time>2026-08-15T22:59:45-07:00</time>
+</trkpt>
+<trkpt lat="-45.02881" lon="168.64325">
+<ele>690</ele>
+<time>2026-08-15T22:59:46-07:00</time>
+</trkpt>
+<trkpt lat="-45.02889" lon="168.64319">
+<ele>694</ele>
+<time>2026-08-15T22:59:47-07:00</time>
+</trkpt>
+<trkpt lat="-45.02896" lon="168.6431">
+<ele>694</ele>
+<time>2026-08-15T22:59:48-07:00</time>
+</trkpt>
+<trkpt lat="-45.02905" lon="168.64306">
+<ele>677</ele>
+<time>2026-08-15T22:59:49-07:00</time>
+</trkpt>
+<trkpt lat="-45.02911" lon="168.64297">
+<ele>677</ele>
+<time>2026-08-15T22:59:50-07:00</time>
+</trkpt>
+<trkpt lat="-45.02922" lon="168.64295">
+<ele>677</ele>
+<time>2026-08-15T22:59:51-07:00</time>
+</trkpt>
+<trkpt lat="-45.0294" lon="168.64285">
+<ele>663</ele>
+<time>2026-08-15T22:59:52-07:00</time>
+</trkpt>
+</trkseg>
+</trk>
+</gpx>

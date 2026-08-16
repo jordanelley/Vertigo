@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<gpx version="1.1" creator="Trailforks.com" xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPointExtension/v1" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd">
+<metadata>
+<name>Shikaka Trailforks Trail</name>
+<link href="https://www.trailforks.com/">
+<text>Trailforks</text>
+</link>
+</metadata>
+<trk>
+<name>
+Shikaka
+</name>
+<link href="https://www.trailforks.com/trails/shikaka/">
+</link>
+<trkseg>
+<trkpt lat="-45.02705" lon="168.64744">
+<ele>778</ele>
+<time>2026-08-15T23:03:32-07:00</time>
+</trkpt>
+<trkpt lat="-45.02717" lon="168.64746">
+<ele>767</ele>
+<time>2026-08-15T23:03:33-07:00</time>
+</trkpt>
+<trkpt lat="-45.02721" lon="168.64735">
+<ele>772</ele>
+<time>2026-08-15T23:03:34-07:00</time>
+</trkpt>
+<trkpt lat="-45.02722" lon="168.64719">
+<ele>772</ele>
+<time>2026-08-15T23:03:35-07:00</time>
+</trkpt>
+<trkpt lat="-45.02727" lon="168.64706">
+<ele>777</ele>
+<time>2026-08-15T23:03:36-07:00</time>
+</trkpt>
+<trkpt lat="-45.02729" lon="168.6471">
+<ele>772</ele>
+<time>2026-08-15T23:03:37-07:00</time>
+</trkpt>
+<trkpt lat="-45.02733" lon="168.6471">
+<ele>772</ele>
+<time>2026-08-15T23:03:38-07:00</time>
+</trkpt>
+<trkpt lat="-45.02735" lon="168.64704">
+<ele>777</ele>
+<time>2026-08-15T23:03:39-07:00</time>
+</trkpt>
+<trkpt lat="-45.02746" lon="168.64707">
+<ele>764</ele>
+<time>2026-08-15T23:03:40-07:00</time>
+</trkpt>
+<trkpt lat="-45.02753" lon="168.64712">
+<ele>762</ele>
+<time>2026-08-15T23:03:41-07:00</time>
+</trkpt>
+<trkpt lat="-45.02762" lon="168.64718">
+<ele>762</ele>
+<time>2026-08-15T23:03:42-07:00</time>
+</trkpt>
+<trkpt lat="-45.02767" lon="168.64729">
+<ele>747</ele>
+<time>2026-08-15T23:03:43-07:00</time>
+</trkpt>
+<trkpt lat="-45.02769" lon="168.64739">
+<ele>740</ele>
+<time>2026-08-15T23:03:44-07:00</time>
+</trkpt>
+<trkpt lat="-45.02775" lon="168.64747">
+<ele>740</ele>
+<time>2026-08-15T23:03:45-07:00</time>
+</trkpt>
+<trkpt lat="-45.02781" lon="168.64745">
+<ele>740</ele>
+<time>2026-08-15T23:03:46-07:00</time>
+</trkpt>
+<trkpt lat="-45.02788" lon="168.64747">
+<ele>740</ele>
+<time>2026-08-15T23:03:47-07:00</time>
+</trkpt>
+<trkpt lat="-45.02791" lon="168.64739">
+<ele>740</ele>
+<time>2026-08-15T23:03:48-07:00</time>
+</trkpt>
+<trkpt lat="-45.02802" lon="168.64732">
+<ele>731</ele>
+<time>2026-08-15T23:03:49-07:00</time>
+</trkpt>
+<trkpt lat="-45.02805" lon="168.64733">
+<ele>731</ele>
+<time>2026-08-15T23:03:50-07:00</time>
+</trkpt>
+<trkpt lat="-45.02813" lon="168.6472">
+<ele>731</ele>
+<time>2026-08-15T23:03:51-07:00</time>
+</trkpt>
+<trkpt lat="-45.02811" lon="168.64713">
+<ele>731</ele>
+<time>2026-08-15T23:03:52-07:00</time>
+</trkpt>
+<trkpt lat="-45.02819" lon="168.64705">
+<ele>736</ele>
+<time>2026-08-15T23:03:53-07:00</time>
+</trkpt>
+<trkpt lat="-45.02828" lon="168.64701">
+<ele>729</ele>
+<time>2026-08-15T23:03:54-07:00</time>
+</trkpt>
+<trkpt lat="-45.02836" lon="168.64702">
+<ele>729</ele>
+<time>2026-08-15T23:03:55-07:00</time>
+</trkpt>
+<trkpt lat="-45.02853" lon="168.64717">
+<ele>709</ele>
+<time>2026-08-15T23:03:56-07:00</time>
+</trkpt>
+<trkpt lat="-45.02866" lon="168.64716">
+<ele>709</ele>
+<time>2026-08-15T23:03:57-07:00</time>
+</trkpt>
+</trkseg>
+</trk>
+</gpx>

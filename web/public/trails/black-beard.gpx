@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<gpx version="1.1" creator="Trailforks.com" xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPointExtension/v1" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd">
+<metadata>
+<name>Black Beard Trailforks Trail</name>
+<link href="https://www.trailforks.com/">
+<text>Trailforks</text>
+</link>
+</metadata>
+<trk>
+<name>
+Black Beard
+</name>
+<link href="https://www.trailforks.com/trails/black-beard/">
+</link>
+<trkseg>
+<trkpt lat="-45.02975" lon="168.64449">
+<ele>645</ele>
+<time>2026-08-15T23:11:57-07:00</time>
+</trkpt>
+<trkpt lat="-45.02978" lon="168.64461">
+<ele>648</ele>
+<time>2026-08-15T23:11:58-07:00</time>
+</trkpt>
+<trkpt lat="-45.02979" lon="168.64476">
+<ele>648</ele>
+<time>2026-08-15T23:11:59-07:00</time>
+</trkpt>
+<trkpt lat="-45.0298" lon="168.64485">
+<ele>648</ele>
+<time>2026-08-15T23:12:00-07:00</time>
+</trkpt>
+<trkpt lat="-45.02981" lon="168.64493">
+<ele>649</ele>
+<time>2026-08-15T23:12:01-07:00</time>
+</trkpt>
+<trkpt lat="-45.02984" lon="168.64501">
+<ele>649</ele>
+<time>2026-08-15T23:12:02-07:00</time>
+</trkpt>
+<trkpt lat="-45.02984" lon="168.64511">
+<ele>649</ele>
+<time>2026-08-15T23:12:03-07:00</time>
+</trkpt>
+<trkpt lat="-45.02989" lon="168.6452">
+<ele>634</ele>
+<time>2026-08-15T23:12:04-07:00</time>
+</trkpt>
+<trkpt lat="-45.02992" lon="168.64519">
+<ele>634</ele>
+<time>2026-08-15T23:12:05-07:00</time>
+</trkpt>
+<trkpt lat="-45.02997" lon="168.64516">
+<ele>634</ele>
+<time>2026-08-15T23:12:06-07:00</time>
+</trkpt>
+<trkpt lat="-45.03002" lon="168.64519">
+<ele>634</ele>
+<time>2026-08-15T23:12:07-07:00</time>
+</trkpt>
+<trkpt lat="-45.03006" lon="168.64521">
+<ele>634</ele>
+<time>2026-08-15T23:12:08-07:00</time>
+</trkpt>
+<trkpt lat="-45.03009" lon="168.6452">
+<ele>634</ele>
+<time>2026-08-15T23:12:09-07:00</time>
+</trkpt>
+<trkpt lat="-45.03018" lon="168.64509">
+<ele>622</ele>
+<time>2026-08-15T23:12:10-07:00</time>
+</trkpt>
+<trkpt lat="-45.03019" lon="168.64503">
+<ele>622</ele>
+<time>2026-08-15T23:12:11-07:00</time>
+</trkpt>
+<trkpt lat="-45.03028" lon="168.64498">
+<ele>622</ele>
+<time>2026-08-15T23:12:12-07:00</time>
+</trkpt>
+<trkpt lat="-45.03035" lon="168.645">
+<ele>622</ele>
+<time>2026-08-15T23:12:13-07:00</time>
+</trkpt>
+<trkpt lat="-45.03041" lon="168.64512">
+<ele>622</ele>
+<time>2026-08-15T23:12:14-07:00</time>
+</trkpt>
+<trkpt lat="-45.03047" lon="168.6452">
+<ele>598</ele>
+<time>2026-08-15T23:12:15-07:00</time>
+</trkpt>
+<trkpt lat="-45.03053" lon="168.64532">
+<ele>598</ele>
+<time>2026-08-15T23:12:16-07:00</time>
+</trkpt>
+<trkpt lat="-45.03053" lon="168.6454">
+<ele>598</ele>
+<time>2026-08-15T23:12:17-07:00</time>
+</trkpt>
+<trkpt lat="-45.03052" lon="168.64545">
+<ele>600</ele>
+<time>2026-08-15T23:12:18-07:00</time>
+</trkpt>
+<trkpt lat="-45.03054" lon="168.6455">
+<ele>600</ele>
+<time>2026-08-15T23:12:19-07:00</time>
+</trkpt>
+<trkpt lat="-45.03057" lon="168.64549">
+<ele>600</ele>
+<time>2026-08-15T23:12:20-07:00</time>
+</trkpt>
+<trkpt lat="-45.03066" lon="168.6454">
+<ele>598</ele>
+<time>2026-08-15T23:12:21-07:00</time>
+</trkpt>
+<trkpt lat="-45.0307" lon="168.64537">
+<ele>581</ele>
+<time>2026-08-15T23:12:22-07:00</time>
+</trkpt>
+<trkpt lat="-45.03077" lon="168.6453">
+<ele>581</ele>
+<time>2026-08-15T23:12:23-07:00</time>
+</trkpt>
+<trkpt lat="-45.03081" lon="168.6452">
+<ele>581</ele>
+<time>2026-08-15T23:12:24-07:00</time>
+</trkpt>
+<trkpt lat="-45.03088" lon="168.64506">
+<ele>581</ele>
+<time>2026-08-15T23:12:25-07:00</time>
+</trkpt>
+<trkpt lat="-45.03094" lon="168.64502">
+<ele>581</ele>
+<time>2026-08-15T23:12:26-07:00</time>
+</trkpt>
+<trkpt lat="-45.031" lon="168.64508">
+<ele>569</ele>
+<time>2026-08-15T23:12:27-07:00</time>
+</trkpt>
+</trkseg>
+</trk>
+</gpx>

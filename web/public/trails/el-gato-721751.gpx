@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<gpx version="1.1" creator="Trailforks.com" xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPointExtension/v1" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd">
+<metadata>
+<name>El Gato Trailforks Trail</name>
+<link href="https://www.trailforks.com/">
+<text>Trailforks</text>
+</link>
+</metadata>
+<trk>
+<name>
+El Gato
+</name>
+<link href="https://www.trailforks.com/trails/el-gato-721751/">
+</link>
+<trkseg>
+<trkpt lat="-45.02699" lon="168.64335">
+<ele>789</ele>
+<time>2026-08-15T23:00:02-07:00</time>
+</trkpt>
+<trkpt lat="-45.02705" lon="168.64331">
+<ele>789</ele>
+<time>2026-08-15T23:00:03-07:00</time>
+</trkpt>
+<trkpt lat="-45.0271" lon="168.64322">
+<ele>778</ele>
+<time>2026-08-15T23:00:04-07:00</time>
+</trkpt>
+<trkpt lat="-45.02716" lon="168.64317">
+<ele>777</ele>
+<time>2026-08-15T23:00:05-07:00</time>
+</trkpt>
+<trkpt lat="-45.02719" lon="168.64319">
+<ele>777</ele>
+<time>2026-08-15T23:00:06-07:00</time>
+</trkpt>
+<trkpt lat="-45.02719" lon="168.64325">
+<ele>778</ele>
+<time>2026-08-15T23:00:07-07:00</time>
+</trkpt>
+<trkpt lat="-45.02722" lon="168.64335">
+<ele>778</ele>
+<time>2026-08-15T23:00:08-07:00</time>
+</trkpt>
+<trkpt lat="-45.02723" lon="168.64349">
+<ele>775</ele>
+<time>2026-08-15T23:00:09-07:00</time>
+</trkpt>
+<trkpt lat="-45.02726" lon="168.64358">
+<ele>775</ele>
+<time>2026-08-15T23:00:10-07:00</time>
+</trkpt>
+<trkpt lat="-45.02727" lon="168.64371">
+<ele>775</ele>
+<time>2026-08-15T23:00:11-07:00</time>
+</trkpt>
+<trkpt lat="-45.02724" lon="168.64377">
+<ele>770</ele>
+<time>2026-08-15T23:00:12-07:00</time>
+</trkpt>
+<trkpt lat="-45.02723" lon="168.64383">
+<ele>770</ele>
+<time>2026-08-15T23:00:13-07:00</time>
+</trkpt>
+<trkpt lat="-45.02725" lon="168.64393">
+<ele>770</ele>
+<time>2026-08-15T23:00:14-07:00</time>
+</trkpt>
+<trkpt lat="-45.02724" lon="168.64399">
+<ele>770</ele>
+<time>2026-08-15T23:00:15-07:00</time>
+</trkpt>
+<trkpt lat="-45.02726" lon="168.64404">
+<ele>766</ele>
+<time>2026-08-15T23:00:16-07:00</time>
+</trkpt>
+<trkpt lat="-45.02732" lon="168.64412">
+<ele>766</ele>
+<time>2026-08-15T23:00:17-07:00</time>
+</trkpt>
+<trkpt lat="-45.02735" lon="168.64415">
+<ele>766</ele>
+<time>2026-08-15T23:00:18-07:00</time>
+</trkpt>
+<trkpt lat="-45.02738" lon="168.64415">
+<ele>749</ele>
+<time>2026-08-15T23:00:19-07:00</time>
+</trkpt>
+<trkpt lat="-45.02741" lon="168.64417">
+<ele>749</ele>
+<time>2026-08-15T23:00:20-07:00</time>
+</trkpt>
+<trkpt lat="-45.02746" lon="168.64423">
+<ele>749</ele>
+<time>2026-08-15T23:00:21-07:00</time>
+</trkpt>
+<trkpt lat="-45.02753" lon="168.64434">
+<ele>753</ele>
+<time>2026-08-15T23:00:22-07:00</time>
+</trkpt>
+<trkpt lat="-45.02754" lon="168.64441">
+<ele>753</ele>
+<time>2026-08-15T23:00:23-07:00</time>
+</trkpt>
+<trkpt lat="-45.02758" lon="168.64452">
+<ele>753</ele>
+<time>2026-08-15T23:00:24-07:00</time>
+</trkpt>
+<trkpt lat="-45.02759" lon="168.64458">
+<ele>753</ele>
+<time>2026-08-15T23:00:25-07:00</time>
+</trkpt>
+<trkpt lat="-45.02759" lon="168.6446">
+<ele>755</ele>
+<time>2026-08-15T23:00:26-07:00</time>
+</trkpt>
+<trkpt lat="-45.0276" lon="168.64463">
+<ele>755</ele>
+<time>2026-08-15T23:00:27-07:00</time>
+</trkpt>
+<trkpt lat="-45.02761" lon="168.64465">
+<ele>755</ele>
+<time>2026-08-15T23:00:28-07:00</time>
+</trkpt>
+<trkpt lat="-45.02763" lon="168.64467">
+<ele>755</ele>
+<time>2026-08-15T23:00:29-07:00</time>
+</trkpt>
+<trkpt lat="-45.02767" lon="168.64469">
+<ele>743</ele>
+<time>2026-08-15T23:00:30-07:00</time>
+</trkpt>
+<trkpt lat="-45.02771" lon="168.64468">
+<ele>743</ele>
+<time>2026-08-15T23:00:31-07:00</time>
+</trkpt>
+<trkpt lat="-45.02777" lon="168.64462">
+<ele>743</ele>
+<time>2026-08-15T23:00:32-07:00</time>
+</trkpt>
+<trkpt lat="-45.02784" lon="168.64459">
+<ele>743</ele>
+<time>2026-08-15T23:00:33-07:00</time>
+</trkpt>
+<trkpt lat="-45.02793" lon="168.64457">
+<ele>723</ele>
+<time>2026-08-15T23:00:34-07:00</time>
+</trkpt>
+<trkpt lat="-45.02798" lon="168.64451">
+<ele>723</ele>
+<time>2026-08-15T23:00:35-07:00</time>
+</trkpt>
+<trkpt lat="-45.02801" lon="168.64445">
+<ele>723</ele>
+<time>2026-08-15T23:00:36-07:00</time>
+</trkpt>
+<trkpt lat="-45.02804" lon="168.64441">
+<ele>723</ele>
+<time>2026-08-15T23:00:37-07:00</time>
+</trkpt>
+<trkpt lat="-45.02807" lon="168.64435">
+<ele>723</ele>
+<time>2026-08-15T23:00:38-07:00</time>
+</trkpt>
+<trkpt lat="-45.02815" lon="168.64427">
+<ele>722</ele>
+<time>2026-08-15T23:00:39-07:00</time>
+</trkpt>
+</trkseg>
+</trk>
+</gpx>

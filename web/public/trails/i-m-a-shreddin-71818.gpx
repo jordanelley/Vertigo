@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<gpx version="1.1" creator="Trailforks.com" xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPointExtension/v1" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd">
+<metadata>
+<name>I&#039;m A Shreddin Trailforks Trail</name>
+<link href="https://www.trailforks.com/">
+<text>Trailforks</text>
+</link>
+</metadata>
+<trk>
+<name>
+I&#039;m A Shreddin
+</name>
+<link href="https://www.trailforks.com/trails/i-m-a-shreddin-71818/">
+</link>
+<trkseg>
+<trkpt lat="-45.02672" lon="168.64443">
+<ele>795</ele>
+<time>2026-08-15T23:01:30-07:00</time>
+</trkpt>
+<trkpt lat="-45.02675" lon="168.64424">
+<ele>800</ele>
+<time>2026-08-15T23:01:31-07:00</time>
+</trkpt>
+<trkpt lat="-45.02676" lon="168.64422">
+<ele>800</ele>
+<time>2026-08-15T23:01:32-07:00</time>
+</trkpt>
+<trkpt lat="-45.02677" lon="168.64427">
+<ele>800</ele>
+<time>2026-08-15T23:01:33-07:00</time>
+</trkpt>
+<trkpt lat="-45.02683" lon="168.64428">
+<ele>783</ele>
+<time>2026-08-15T23:01:34-07:00</time>
+</trkpt>
+<trkpt lat="-45.0269" lon="168.64421">
+<ele>783</ele>
+<time>2026-08-15T23:01:35-07:00</time>
+</trkpt>
+<trkpt lat="-45.02691" lon="168.64418">
+<ele>783</ele>
+<time>2026-08-15T23:01:36-07:00</time>
+</trkpt>
+<trkpt lat="-45.02691" lon="168.64416">
+<ele>783</ele>
+<time>2026-08-15T23:01:37-07:00</time>
+</trkpt>
+<trkpt lat="-45.0269" lon="168.64414">
+<ele>783</ele>
+<time>2026-08-15T23:01:38-07:00</time>
+</trkpt>
+<trkpt lat="-45.0269" lon="168.64411">
+<ele>783</ele>
+<time>2026-08-15T23:01:39-07:00</time>
+</trkpt>
+<trkpt lat="-45.02694" lon="168.64406">
+<ele>783</ele>
+<time>2026-08-15T23:01:40-07:00</time>
+</trkpt>
+<trkpt lat="-45.02698" lon="168.64407">
+<ele>783</ele>
+<time>2026-08-15T23:01:41-07:00</time>
+</trkpt>
+<trkpt lat="-45.02709" lon="168.64421">
+<ele>766</ele>
+<time>2026-08-15T23:01:42-07:00</time>
+</trkpt>
+<trkpt lat="-45.02715" lon="168.64421">
+<ele>766</ele>
+<time>2026-08-15T23:01:43-07:00</time>
+</trkpt>
+<trkpt lat="-45.02717" lon="168.64426">
+<ele>766</ele>
+<time>2026-08-15T23:01:44-07:00</time>
+</trkpt>
+<trkpt lat="-45.02738" lon="168.64453">
+<ele>753</ele>
+<time>2026-08-15T23:01:45-07:00</time>
+</trkpt>
+<trkpt lat="-45.02739" lon="168.64452">
+<ele>753</ele>
+<time>2026-08-15T23:01:46-07:00</time>
+</trkpt>
+<trkpt lat="-45.02739" lon="168.6445">
+<ele>753</ele>
+<time>2026-08-15T23:01:47-07:00</time>
+</trkpt>
+<trkpt lat="-45.02742" lon="168.64452">
+<ele>753</ele>
+<time>2026-08-15T23:01:48-07:00</time>
+</trkpt>
+<trkpt lat="-45.02747" lon="168.64454">
+<ele>753</ele>
+<time>2026-08-15T23:01:49-07:00</time>
+</trkpt>
+<trkpt lat="-45.0275" lon="168.64461">
+<ele>755</ele>
+<time>2026-08-15T23:01:50-07:00</time>
+</trkpt>
+<trkpt lat="-45.02773" lon="168.64481">
+<ele>743</ele>
+<time>2026-08-15T23:01:51-07:00</time>
+</trkpt>
+<trkpt lat="-45.02775" lon="168.64487">
+<ele>745</ele>
+<time>2026-08-15T23:01:52-07:00</time>
+</trkpt>
+<trkpt lat="-45.02785" lon="168.64488">
+<ele>745</ele>
+<time>2026-08-15T23:01:53-07:00</time>
+</trkpt>
+<trkpt lat="-45.02794" lon="168.64482">
+<ele>726</ele>
+<time>2026-08-15T23:01:54-07:00</time>
+</trkpt>
+<trkpt lat="-45.02801" lon="168.64473">
+<ele>726</ele>
+<time>2026-08-15T23:01:55-07:00</time>
+</trkpt>
+<trkpt lat="-45.02807" lon="168.64469">
+<ele>726</ele>
+<time>2026-08-15T23:01:56-07:00</time>
+</trkpt>
+<trkpt lat="-45.0281" lon="168.6446">
+<ele>726</ele>
+<time>2026-08-15T23:01:57-07:00</time>
+</trkpt>
+</trkseg>
+</trk>
+</gpx>

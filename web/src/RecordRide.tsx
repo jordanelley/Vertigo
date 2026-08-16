@@ -111,6 +111,17 @@ function totalDistanceKm(path: LatLng[]): number {
   return total
 }
 
+// How close the last recorded point needs to be to the trail's real endpoint to count as
+// finished, rather than abandoned partway through when the rider stopped recording early.
+const TRAIL_COMPLETION_RADIUS_KM = 0.1
+
+function reachedTrailEnd(segmentPoints: LatLng[], trailPoints: LatLng[]): boolean {
+  if (segmentPoints.length === 0 || trailPoints.length === 0) return false
+  const lastRecorded = segmentPoints[segmentPoints.length - 1]
+  const trailEnd = trailPoints[trailPoints.length - 1]
+  return haversineDistanceKm(lastRecorded, trailEnd) <= TRAIL_COMPLETION_RADIUS_KM
+}
+
 function RecenterMap({ position }: { position: LatLng }) {
   const map = useMap()
   useEffect(() => {
@@ -377,17 +388,21 @@ function RecordRide({ onSave, existingRideNames }: RecordRideProps) {
     return countLiftLaps(path, liftPoints)
   }, [recording, path, liftPaths])
 
-  const computedSegments = useMemo(() => {
-    if (recording || path.length < 2) return []
+  const { computedSegments, hasIncompleteSegments } = useMemo(() => {
+    if (recording || path.length < 2) return { computedSegments: [], hasIncompleteSegments: false }
     const runs = excludeLiftPoints(path, liftPaths)
-    const rawSegments = runs.flatMap((run) => segmentPathByTrail(run, trailPaths))
+    const allSegments = runs.flatMap((run) => segmentPathByTrail(run, trailPaths))
+    const completedRawSegments = allSegments.filter((segment) =>
+      reachedTrailEnd(segment.points, trailPaths[segment.trailName] ?? []),
+    )
     const namesSoFar: string[] = []
-    return rawSegments.map((segment) => {
+    const named = completedRawSegments.map((segment) => {
       const segDistance = totalDistanceKm(segment.points)
       const name = nextAttemptRideName(segment.trailName, [...existingRideNames, ...namesSoFar])
       namesSoFar.push(name)
       return { name, distance: segDistance }
     })
+    return { computedSegments: named, hasIncompleteSegments: completedRawSegments.length < allSegments.length }
   }, [recording, path, trailPaths, liftPaths, existingRideNames])
 
   const handleSave = async () => {
@@ -508,7 +523,7 @@ function RecordRide({ onSave, existingRideNames }: RecordRideProps) {
           </p>
           <ul className="record-ride__save-names">
             {computedSegments.length === 0 ? (
-              <li>Matching trail…</li>
+              <li>{hasIncompleteSegments ? "Stopped before finishing - not saved" : 'Matching trail…'}</li>
             ) : (
               computedSegments.map((segment) => (
                 <li key={segment.name}>

@@ -35,6 +35,8 @@ export const TRAILS: TrailDefinition[] = [
   trail("Upper Hammy's Track", 'upper-hammy-s-track-8273.gpx', 3),
   trail('Thunder Goat', 'thunder-goat.gpx', 3),
   trail('Lazy Vertigo', 'lazy-vertigo.gpx', 3),
+  trail("Hammy's Return", 'hammy-s-return.gpx', 3),
+  trail("Lower Hammy's Track", 'lower-hammy-s-track-16507.gpx', 3),
   trail('Skyline Access Road', 'skyline-access-road.gpx', 1),
   trail('Huck Yeah', 'huck-yeah.gpx', 5),
   trail('Armageddon', 'armageddon-8266.gpx', 5),

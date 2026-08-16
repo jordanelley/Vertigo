@@ -1,6 +1,6 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
-import { CircleMarker, ImageOverlay, MapContainer, Polyline, useMap } from 'react-leaflet'
-import { latLngBounds, type LatLngBounds } from 'leaflet'
+import { Fragment, useEffect, useMemo, useRef, useState } from 'react'
+import { CircleMarker, ImageOverlay, MapContainer, Marker, Polyline, useMap } from 'react-leaflet'
+import { divIcon, latLngBounds, type LatLngBounds } from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import {
   TRAILS,
@@ -19,6 +19,24 @@ const DEFAULT_CENTER: LatLng = [37.7749, -122.4194]
 const SKYLINE_QUEENSTOWN: LatLng = [-45.0266, 168.6495]
 const GEOFENCE_RADIUS_KM = 2.5
 const SIMULATED_RIDE_DURATION_MS = 10 * 1000
+const GONDOLA_CABIN_COUNT = 6
+
+const gondolaCabinIcon = divIcon({
+  className: 'gondola-cabin-icon',
+  html: `<svg width="10" height="16" viewBox="0 0 10 16">
+    <line x1="5" y1="0" x2="5" y2="5" stroke="#9ca3af" stroke-width="1" />
+    <rect x="1" y="5" width="8" height="7" rx="2" fill="#1e293b" stroke="#cbd5e1" stroke-width="1" />
+  </svg>`,
+  iconSize: [10, 16],
+  iconAnchor: [5, 0],
+})
+
+// Picks `count` evenly spaced points along the lift line to hang a cabin icon from.
+function sampleEvenly<T>(points: T[], count: number): T[] {
+  if (points.length <= count) return points
+  const step = (points.length - 1) / (count - 1)
+  return Array.from({ length: count }, (_, i) => points[Math.round(i * step)])
+}
 const vertigoAndThunderGoat = TRAILS.filter((trail) => trail.name === 'Vertigo' || trail.name === 'Thunder Goat')
 
 const hammysTrail = TRAILS.find((trail) => trail.name === "Upper Hammy's Track")
@@ -101,11 +119,15 @@ function LiftOverlays({ liftPaths }: { liftPaths: Record<string, LatLng[]> }) {
         const points = liftPaths[lift.name]
         if (!points) return null
         return (
-          <Polyline
-            key={lift.name}
-            positions={points}
-            pathOptions={{ color: '#9ca3af', weight: 1.5, dashArray: '2 10', opacity: 0.8 }}
-          />
+          <Fragment key={lift.name}>
+            <Polyline
+              positions={points}
+              pathOptions={{ color: '#9ca3af', weight: 1.5, dashArray: '2 10', opacity: 0.8 }}
+            />
+            {sampleEvenly(points, GONDOLA_CABIN_COUNT).map((point, i) => (
+              <Marker key={i} position={point} icon={gondolaCabinIcon} interactive={false} />
+            ))}
+          </Fragment>
         )
       })}
     </>

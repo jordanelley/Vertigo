@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { CircleMarker, MapContainer, Polyline, useMap } from 'react-leaflet'
+import { CircleMarker, ImageOverlay, MapContainer, Polyline, useMap } from 'react-leaflet'
+import { latLngBounds, type LatLngBounds } from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import {
   TRAILS,
@@ -11,6 +12,7 @@ import {
   type TrailDefinition,
 } from './trails'
 import { LIFTS, excludeLiftPoints, countLiftLaps } from './lifts'
+import { MOUNTAIN_BACKDROP_URL } from './MountainBackdrop'
 
 const DEFAULT_CENTER: LatLng = [37.7749, -122.4194]
 // Skyline Queenstown gondola top station, Bob's Peak (45°01'36"S 168°38'58"E)
@@ -294,6 +296,16 @@ function RecordRide({ onSave, existingRideNames }: RecordRideProps) {
 
   const distance = totalDistanceKm(path)
 
+  // Geographic bounds the mountain backdrop image is pinned to, padded out past the trail
+  // network itself so the art doesn't end exactly at the last trail point. Padded in real
+  // lat/lng space (not screen pixels), so zooming out on the map eventually pans past the
+  // image's edge into the plain blue .leaflet-container background beneath it.
+  const trailBounds = useMemo((): LatLngBounds | null => {
+    const allPoints = [...Object.values(trailPaths), ...Object.values(liftPaths)].flat()
+    if (allPoints.length === 0) return null
+    return latLngBounds(allPoints).pad(0.4)
+  }, [trailPaths, liftPaths])
+
   const gondolaLaps = useMemo(() => {
     if (recording || path.length < 2 || !gondolaLift) return 0
     const liftPoints = liftPaths[gondolaLift.name]
@@ -398,6 +410,7 @@ function RecordRide({ onSave, existingRideNames }: RecordRideProps) {
       )}
       <div className="record-ride__map">
         <MapContainer center={position} zoom={15} scrollWheelZoom={true} style={{ height: '220px', width: '100%' }}>
+          {trailBounds && <ImageOverlay url={MOUNTAIN_BACKDROP_URL} bounds={trailBounds} />}
           <RecenterMap position={position} />
           <FitAllTrails trailPaths={trailPaths} liftPaths={liftPaths} />
           <TrailOverlays trailPaths={trailPaths} />

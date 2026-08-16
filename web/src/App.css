@@ -390,9 +390,17 @@
 }
 
 .record-ride__map {
+  position: relative;
   border-radius: 12px;
   overflow: hidden;
   border: 1px solid #334155;
+}
+
+.record-ride__map .leaflet-container {
+  /* Same navy-to-slate stops as the sky gradient inside the mountain image (MountainBackdrop.tsx),
+     so panning/zooming past the image's bounds fades into more of the same sky instead of a
+     mismatched flat color. */
+  background: linear-gradient(180deg, #1e293b 0%, #334155 100%);
 }
 
 .record-ride__controls {

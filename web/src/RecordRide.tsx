@@ -31,11 +31,55 @@ const gondolaCabinIcon = divIcon({
   iconAnchor: [5, 0],
 })
 
-// Picks `count` evenly spaced points along the lift line to hang a cabin icon from.
-function sampleEvenly<T>(points: T[], count: number): T[] {
-  if (points.length <= count) return points
-  const step = (points.length - 1) / (count - 1)
-  return Array.from({ length: count }, (_, i) => points[Math.round(i * step)])
+// Walks the cumulative distance along a path to find the point sitting at `fraction` (0-1) of
+// the way along it, interpolating between whichever two points straddle that distance.
+function positionAlongPath(points: LatLng[], fraction: number): LatLng {
+  if (points.length === 0) return DEFAULT_CENTER
+  if (points.length === 1) return points[0]
+
+  const segmentLengths = points.slice(1).map((point, i) => haversineDistanceKm(points[i], point))
+  const totalLength = segmentLengths.reduce((sum, length) => sum + length, 0)
+  if (totalLength === 0) return points[0]
+
+  let remaining = fraction * totalLength
+  for (let i = 0; i < segmentLengths.length; i++) {
+    const segmentLength = segmentLengths[i]
+    if (remaining <= segmentLength || i === segmentLengths.length - 1) {
+      const t = segmentLength === 0 ? 0 : Math.min(remaining / segmentLength, 1)
+      const [lat1, lon1] = points[i]
+      const [lat2, lon2] = points[i + 1]
+      return [lat1 + (lat2 - lat1) * t, lon1 + (lon2 - lon1) * t]
+    }
+    remaining -= segmentLength
+  }
+  return points[points.length - 1]
+}
+
+const GONDOLA_CYCLE_SECONDS = 40
+const GONDOLA_TICK_MS = 200
+
+// Cabins bounce back and forth along the lift line (0 -> 1 -> 0), evenly spaced in phase so they
+// never bunch up, at a pace slow enough to read as a real gondola rather than a toy on fast-forward.
+function AnimatedGondolaCabins({ points }: { points: LatLng[] }) {
+  const [tick, setTick] = useState(0)
+  useEffect(() => {
+    const id = window.setInterval(() => setTick((t) => t + 1), GONDOLA_TICK_MS)
+    return () => window.clearInterval(id)
+  }, [])
+
+  const elapsedSeconds = (tick * GONDOLA_TICK_MS) / 1000
+  return (
+    <>
+      {Array.from({ length: GONDOLA_CABIN_COUNT }, (_, i) => {
+        const offset = i / GONDOLA_CABIN_COUNT
+        const phase = (elapsedSeconds / GONDOLA_CYCLE_SECONDS + offset) % 1
+        const fraction = phase < 0.5 ? phase * 2 : 2 - phase * 2
+        return (
+          <Marker key={i} position={positionAlongPath(points, fraction)} icon={gondolaCabinIcon} interactive={false} />
+        )
+      })}
+    </>
+  )
 }
 const vertigoAndThunderGoat = TRAILS.filter((trail) => trail.name === 'Vertigo' || trail.name === 'Thunder Goat')
 
@@ -124,9 +168,7 @@ function LiftOverlays({ liftPaths }: { liftPaths: Record<string, LatLng[]> }) {
               positions={points}
               pathOptions={{ color: '#9ca3af', weight: 1.5, dashArray: '2 10', opacity: 0.8 }}
             />
-            {sampleEvenly(points, GONDOLA_CABIN_COUNT).map((point, i) => (
-              <Marker key={i} position={point} icon={gondolaCabinIcon} interactive={false} />
-            ))}
+            <AnimatedGondolaCabins points={points} />
           </Fragment>
         )
       })}

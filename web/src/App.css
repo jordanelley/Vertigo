@@ -206,8 +206,25 @@
   text-align: left;
 }
 
-.badge-row {
+.data-list__item.badge-row {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.6rem;
+}
+
+.badge-row__top {
+  display: flex;
+  align-items: center;
   gap: 0.75rem;
+}
+
+.badge-row__percent {
+  align-self: flex-start;
+  margin-left: auto;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #94a3b8;
+  white-space: nowrap;
 }
 
 .badge-row__icon {
@@ -223,6 +240,25 @@
   background: #1e293b;
   border: 1px dashed #334155;
   border-radius: 50%;
+}
+
+.badge-row__text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.badge-row__progress {
+  height: 3px;
+  background: #334155;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.badge-row__progress-fill {
+  height: 100%;
+  background: #60a5fa;
+  border-radius: 999px;
 }
 
 .data-list__item {

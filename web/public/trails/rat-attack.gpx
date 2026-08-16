@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<gpx version="1.1" creator="Trailforks.com" xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPointExtension/v1" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd">
+<metadata>
+<name>Rat Attack Trailforks Trail</name>
+<link href="https://www.trailforks.com/">
+<text>Trailforks</text>
+</link>
+</metadata>
+<trk>
+<name>
+Rat Attack
+</name>
+<link href="https://www.trailforks.com/trails/rat-attack/">
+</link>
+<trkseg>
+<trkpt lat="-45.03219" lon="168.64835"><ele>458.8</ele></trkpt>
+<trkpt lat="-45.03228" lon="168.64859"><ele>455.1</ele></trkpt>
+<trkpt lat="-45.03231" lon="168.64881"><ele>452.8</ele></trkpt>
+<trkpt lat="-45.03234" lon="168.64927"><ele>444.4</ele></trkpt>
+<trkpt lat="-45.03232" lon="168.64949"><ele>440.7</ele></trkpt>
+<trkpt lat="-45.03222" lon="168.64977"><ele>442.4</ele></trkpt>
+<trkpt lat="-45.03214" lon="168.64992"><ele>445.7</ele></trkpt>
+<trkpt lat="-45.03214" lon="168.64998"><ele>445</ele></trkpt>
+<trkpt lat="-45.03216" lon="168.65001"><ele>443.5</ele></trkpt>
+<trkpt lat="-45.0322" lon="168.64998"><ele>441.5</ele></trkpt>
+<trkpt lat="-45.03222" lon="168.64998"><ele>440.4</ele></trkpt>
+<trkpt lat="-45.03223" lon="168.65001"><ele>439.4</ele></trkpt>
+<trkpt lat="-45.03222" lon="168.65023"><ele>437.4</ele></trkpt>
+<trkpt lat="-45.03219" lon="168.65033"><ele>438.1</ele></trkpt>
+</trkseg>
+</trk>
+</gpx>

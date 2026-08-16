@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<gpx version="1.1" creator="Trailforks.com" xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPointExtension/v1" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd">
+<metadata>
+<name>Old Original Trailforks Trail</name>
+<link href="https://www.trailforks.com/">
+<text>Trailforks</text>
+</link>
+</metadata>
+<trk>
+<name>
+Old Original
+</name>
+<link href="https://www.trailforks.com/trails/old-original/">
+</link>
+<trkseg>
+<trkpt lat="-45.03256" lon="168.64331"><ele>516</ele></trkpt>
+<trkpt lat="-45.03266" lon="168.64369"><ele>507</ele></trkpt>
+<trkpt lat="-45.03273" lon="168.64378"><ele>506</ele></trkpt>
+<trkpt lat="-45.03288" lon="168.64375"><ele>506</ele></trkpt>
+<trkpt lat="-45.03292" lon="168.64382"><ele>498</ele></trkpt>
+<trkpt lat="-45.03293" lon="168.64397"><ele>498</ele></trkpt>
+<trkpt lat="-45.03312" lon="168.64413"><ele>496</ele></trkpt>
+<trkpt lat="-45.03316" lon="168.64448"><ele>490</ele></trkpt>
+<trkpt lat="-45.0331" lon="168.64481"><ele>483</ele></trkpt>
+<trkpt lat="-45.03304" lon="168.64493"><ele>479</ele></trkpt>
+<trkpt lat="-45.03306" lon="168.64507"><ele>479</ele></trkpt>
+<trkpt lat="-45.03312" lon="168.64518"><ele>477</ele></trkpt>
+<trkpt lat="-45.03308" lon="168.64533"><ele>477</ele></trkpt>
+<trkpt lat="-45.03313" lon="168.6454"><ele>477</ele></trkpt>
+<trkpt lat="-45.03322" lon="168.64534"><ele>467</ele></trkpt>
+<trkpt lat="-45.03335" lon="168.64539"><ele>467</ele></trkpt>
+<trkpt lat="-45.03344" lon="168.6455"><ele>463</ele></trkpt>
+<trkpt lat="-45.03356" lon="168.64551"><ele>455</ele></trkpt>
+<trkpt lat="-45.03359" lon="168.6456"><ele>455</ele></trkpt>
+<trkpt lat="-45.03352" lon="168.64571"><ele>449</ele></trkpt>
+<trkpt lat="-45.0335" lon="168.64581"><ele>449</ele></trkpt>
+<trkpt lat="-45.0336" lon="168.64591"><ele>449</ele></trkpt>
+<trkpt lat="-45.03364" lon="168.64607"><ele>444</ele></trkpt>
+<trkpt lat="-45.03374" lon="168.64597"><ele>449</ele></trkpt>
+<trkpt lat="-45.03385" lon="168.64599"><ele>435</ele></trkpt>
+<trkpt lat="-45.03393" lon="168.64586"><ele>440</ele></trkpt>
+<trkpt lat="-45.03399" lon="168.64587"><ele>440</ele></trkpt>
+<trkpt lat="-45.03413" lon="168.64602"><ele>420</ele></trkpt>
+<trkpt lat="-45.03419" lon="168.64628"><ele>415</ele></trkpt>
+<trkpt lat="-45.03412" lon="168.64673"><ele>409</ele></trkpt>
+<trkpt lat="-45.03409" lon="168.64724"><ele>399</ele></trkpt>
+</trkseg>
+</trk>
+</gpx>

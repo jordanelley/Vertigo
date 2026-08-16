@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<gpx version="1.1" creator="Trailforks.com" xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPointExtension/v1" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd">
+<metadata>
+<name>Killer Bee Trailforks Trail</name>
+<link href="https://www.trailforks.com/">
+<text>Trailforks</text>
+</link>
+</metadata>
+<trk>
+<name>
+Killer Bee
+</name>
+<link href="https://www.trailforks.com/trails/killer-bee/">
+</link>
+<trkseg>
+<trkpt lat="-45.03107" lon="168.64869"><ele>514.7</ele></trkpt>
+<trkpt lat="-45.0311" lon="168.6486"><ele>512.3</ele></trkpt>
+<trkpt lat="-45.03113" lon="168.64862"><ele>511.7</ele></trkpt>
+<trkpt lat="-45.03119" lon="168.64887"><ele>512.7</ele></trkpt>
+<trkpt lat="-45.03121" lon="168.64897"><ele>513</ele></trkpt>
+<trkpt lat="-45.03123" lon="168.64918"><ele>512.6</ele></trkpt>
+<trkpt lat="-45.03124" lon="168.64931"><ele>512.1</ele></trkpt>
+<trkpt lat="-45.03119" lon="168.64952"><ele>513.1</ele></trkpt>
+<trkpt lat="-45.03118" lon="168.64959"><ele>512.8</ele></trkpt>
+<trkpt lat="-45.03123" lon="168.64989"><ele>505.5</ele></trkpt>
+<trkpt lat="-45.03124" lon="168.64991"><ele>504.4</ele></trkpt>
+<trkpt lat="-45.03127" lon="168.64991"><ele>502.3</ele></trkpt>
+<trkpt lat="-45.03132" lon="168.64992"><ele>498.6</ele></trkpt>
+<trkpt lat="-45.03153" lon="168.65023"><ele>475.1</ele></trkpt>
+<trkpt lat="-45.03158" lon="168.65026"><ele>471.4</ele></trkpt>
+<trkpt lat="-45.03178" lon="168.65021"><ele>462.5</ele></trkpt>
+<trkpt lat="-45.03183" lon="168.65019"><ele>460.4</ele></trkpt>
+<trkpt lat="-45.03194" lon="168.65001"><ele>457.2</ele></trkpt>
+<trkpt lat="-45.032" lon="168.64992"><ele>454.9</ele></trkpt>
+<trkpt lat="-45.03208" lon="168.64993"><ele>449.3</ele></trkpt>
+<trkpt lat="-45.03219" lon="168.65013"><ele>439.4</ele></trkpt>
+<trkpt lat="-45.0322" lon="168.65017"><ele>438.5</ele></trkpt>
+<trkpt lat="-45.03219" lon="168.65033"><ele>438.1</ele></trkpt>
+<trkpt lat="-45.03217" lon="168.65056"><ele>436.3</ele></trkpt>
+<trkpt lat="-45.03215" lon="168.6507"><ele>435.6</ele></trkpt>
+<trkpt lat="-45.0321" lon="168.65081"><ele>435.7</ele></trkpt>
+<trkpt lat="-45.03207" lon="168.65088"><ele>436.2</ele></trkpt>
+<trkpt lat="-45.03207" lon="168.65096"><ele>434.6</ele></trkpt>
+<trkpt lat="-45.03206" lon="168.65106"><ele>432.8</ele></trkpt>
+<trkpt lat="-45.03197" lon="168.65131"><ele>429.5</ele></trkpt>
+<trkpt lat="-45.03195" lon="168.65138"><ele>427.8</ele></trkpt>
+<trkpt lat="-45.03185" lon="168.65149"><ele>428.8</ele></trkpt>
+<trkpt lat="-45.03177" lon="168.65158"><ele>429.4</ele></trkpt>
+<trkpt lat="-45.03163" lon="168.65182"><ele>425</ele></trkpt>
+<trkpt lat="-45.03153" lon="168.65196"><ele>423.1</ele></trkpt>
+<trkpt lat="-45.0314" lon="168.65244"><ele>403.2</ele></trkpt>
+<trkpt lat="-45.03137" lon="168.65253"><ele>399.6</ele></trkpt>
+<trkpt lat="-45.03138" lon="168.65261"><ele>394.6</ele></trkpt>
+<trkpt lat="-45.03141" lon="168.65266"><ele>390.6</ele></trkpt>
+<trkpt lat="-45.03154" lon="168.65262"><ele>387.4</ele></trkpt>
+<trkpt lat="-45.03162" lon="168.65259"><ele>385.4</ele></trkpt>
+<trkpt lat="-45.03168" lon="168.6526"><ele>382.8</ele></trkpt>
+<trkpt lat="-45.0317" lon="168.65269"><ele>377.6</ele></trkpt>
+</trkseg>
+</trk>
+</gpx>

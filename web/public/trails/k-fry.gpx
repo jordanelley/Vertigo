@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<gpx version="1.1" creator="Trailforks.com" xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPointExtension/v1" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd">
+<metadata>
+<name>K Fry Trailforks Trail</name>
+<link href="https://www.trailforks.com/">
+<text>Trailforks</text>
+</link>
+</metadata>
+<trk>
+<name>
+K Fry
+</name>
+<link href="https://www.trailforks.com/trails/k-fry/">
+</link>
+<trkseg>
+<trkpt lat="-45.03139" lon="168.64378"><ele>566</ele></trkpt>
+<trkpt lat="-45.03149" lon="168.6439"><ele>566</ele></trkpt>
+<trkpt lat="-45.03158" lon="168.64397"><ele>552</ele></trkpt>
+<trkpt lat="-45.03163" lon="168.64394"><ele>552</ele></trkpt>
+<trkpt lat="-45.03169" lon="168.64393"><ele>552</ele></trkpt>
+<trkpt lat="-45.03171" lon="168.64397"><ele>552</ele></trkpt>
+<trkpt lat="-45.03173" lon="168.644"><ele>552</ele></trkpt>
+<trkpt lat="-45.03177" lon="168.64397"><ele>552</ele></trkpt>
+<trkpt lat="-45.03182" lon="168.64391"><ele>537</ele></trkpt>
+<trkpt lat="-45.03188" lon="168.64396"><ele>537</ele></trkpt>
+<trkpt lat="-45.03194" lon="168.64395"><ele>537</ele></trkpt>
+<trkpt lat="-45.03199" lon="168.644"><ele>537</ele></trkpt>
+<trkpt lat="-45.03204" lon="168.64401"><ele>537</ele></trkpt>
+<trkpt lat="-45.0321" lon="168.64402"><ele>526</ele></trkpt>
+<trkpt lat="-45.03217" lon="168.64404"><ele>526</ele></trkpt>
+<trkpt lat="-45.03222" lon="168.64405"><ele>526</ele></trkpt>
+<trkpt lat="-45.03225" lon="168.64406"><ele>526</ele></trkpt>
+<trkpt lat="-45.03228" lon="168.64409"><ele>526</ele></trkpt>
+<trkpt lat="-45.03233" lon="168.64414"><ele>526</ele></trkpt>
+<trkpt lat="-45.03236" lon="168.64416"><ele>526</ele></trkpt>
+<trkpt lat="-45.03239" lon="168.64418"><ele>514</ele></trkpt>
+<trkpt lat="-45.03246" lon="168.64422"><ele>514</ele></trkpt>
+</trkseg>
+</trk>
+</gpx>

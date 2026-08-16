@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<gpx version="1.1" creator="Trailforks.com" xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPointExtension/v1" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd">
+<metadata>
+<name>Hammy's Link Trailforks Trail</name>
+<link href="https://www.trailforks.com/">
+<text>Trailforks</text>
+</link>
+</metadata>
+<trk>
+<name>
+Hammy's Link
+</name>
+<link href="https://www.trailforks.com/trails/hammy-s-link-12333/">
+</link>
+<trkseg>
+<trkpt lat="-45.02531" lon="168.64064"><ele>765.83</ele></trkpt>
+<trkpt lat="-45.02535" lon="168.6406"><ele>765.83</ele></trkpt>
+<trkpt lat="-45.02536" lon="168.64057"><ele>765.83</ele></trkpt>
+<trkpt lat="-45.02536" lon="168.64055"><ele>766.31</ele></trkpt>
+<trkpt lat="-45.02535" lon="168.64052"><ele>766.31</ele></trkpt>
+<trkpt lat="-45.02533" lon="168.64046"><ele>765.83</ele></trkpt>
+<trkpt lat="-45.02535" lon="168.64024"><ele>765.83</ele></trkpt>
+<trkpt lat="-45.02535" lon="168.64014"><ele>764.87</ele></trkpt>
+<trkpt lat="-45.02528" lon="168.64"><ele>763.9</ele></trkpt>
+<trkpt lat="-45.02524" lon="168.63993"><ele>762.46</ele></trkpt>
+<trkpt lat="-45.02521" lon="168.63969"><ele>762.46</ele></trkpt>
+<trkpt lat="-45.02518" lon="168.63956"><ele>761.98</ele></trkpt>
+<trkpt lat="-45.02519" lon="168.63949"><ele>760.54</ele></trkpt>
+<trkpt lat="-45.02524" lon="168.63948"><ele>758.62</ele></trkpt>
+<trkpt lat="-45.0254" lon="168.6397"><ele>758.14</ele></trkpt>
+<trkpt lat="-45.02546" lon="168.63968"><ele>757.66</ele></trkpt>
+<trkpt lat="-45.02547" lon="168.63962"><ele>756.69</ele></trkpt>
+<trkpt lat="-45.02548" lon="168.63952"><ele>752.85</ele></trkpt>
+<trkpt lat="-45.02542" lon="168.63884"><ele>751.89</ele></trkpt>
+<trkpt lat="-45.02542" lon="168.63873"><ele>751.41</ele></trkpt>
+<trkpt lat="-45.02536" lon="168.63854"><ele>751.41</ele></trkpt>
+<trkpt lat="-45.0253" lon="168.63838"><ele>749.97</ele></trkpt>
+<trkpt lat="-45.02508" lon="168.63809"><ele>749.97</ele></trkpt>
+</trkseg>
+</trk>
+</gpx>

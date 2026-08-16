@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<gpx version="1.1" creator="Trailforks.com" xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPointExtension/v1" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd">
+<metadata>
+<name>Jungle Adventure Trailforks Trail</name>
+<link href="https://www.trailforks.com/">
+<text>Trailforks</text>
+</link>
+</metadata>
+<trk>
+<name>
+Jungle Adventure
+</name>
+<link href="https://www.trailforks.com/trails/jungle-adventure/">
+</link>
+<trkseg>
+<trkpt lat="-45.03178" lon="168.6418"><ele>560</ele></trkpt>
+<trkpt lat="-45.0319" lon="168.64187"><ele>549</ele></trkpt>
+<trkpt lat="-45.0321" lon="168.64216"><ele>538</ele></trkpt>
+<trkpt lat="-45.03212" lon="168.6422"><ele>538</ele></trkpt>
+<trkpt lat="-45.03214" lon="168.64222"><ele>538</ele></trkpt>
+<trkpt lat="-45.03218" lon="168.64218"><ele>538</ele></trkpt>
+<trkpt lat="-45.03222" lon="168.6422"><ele>538</ele></trkpt>
+<trkpt lat="-45.03235" lon="168.64236"><ele>538</ele></trkpt>
+<trkpt lat="-45.03237" lon="168.64238"><ele>525</ele></trkpt>
+<trkpt lat="-45.03241" lon="168.64246"><ele>525</ele></trkpt>
+<trkpt lat="-45.03244" lon="168.6425"><ele>525</ele></trkpt>
+<trkpt lat="-45.03249" lon="168.64276"><ele>519</ele></trkpt>
+</trkseg>
+</trk>
+</gpx>

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<gpx version="1.1" creator="Trailforks.com" xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPointExtension/v1" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd">
+<metadata>
+<name>Bubba Trailforks Trail</name>
+<link href="https://www.trailforks.com/">
+<text>Trailforks</text>
+</link>
+</metadata>
+<trk>
+<name>
+Bubba
+</name>
+<link href="https://www.trailforks.com/trails/bubba-473108/">
+</link>
+<trkseg>
+<trkpt lat="-45.03088" lon="168.6403">
+<ele>605</ele>
+</trkpt>
+<trkpt lat="-45.03092" lon="168.64047">
+<ele>608</ele>
+</trkpt>
+<trkpt lat="-45.03095" lon="168.6406">
+<ele>608</ele>
+</trkpt>
+<trkpt lat="-45.03095" lon="168.64072">
+<ele>606</ele>
+</trkpt>
+<trkpt lat="-45.03093" lon="168.64081">
+<ele>606</ele>
+</trkpt>
+<trkpt lat="-45.0309" lon="168.64088">
+<ele>606</ele>
+</trkpt>
+<trkpt lat="-45.03087" lon="168.64098">
+<ele>600</ele>
+</trkpt>
+<trkpt lat="-45.03086" lon="168.64108">
+<ele>600</ele>
+</trkpt>
+<trkpt lat="-45.03087" lon="168.64115">
+<ele>600</ele>
+</trkpt>
+<trkpt lat="-45.03087" lon="168.6412">
+<ele>600</ele>
+</trkpt>
+<trkpt lat="-45.03088" lon="168.64126">
+<ele>596</ele>
+</trkpt>
+<trkpt lat="-45.0309" lon="168.64159">
+<ele>597</ele>
+</trkpt>
+<trkpt lat="-45.03093" lon="168.64172">
+<ele>597</ele>
+</trkpt>
+<trkpt lat="-45.031" lon="168.64182">
+<ele>577</ele>
+</trkpt>
+<trkpt lat="-45.03097" lon="168.64208">
+<ele>597</ele>
+</trkpt>
+<trkpt lat="-45.03103" lon="168.64216">
+<ele>579</ele>
+</trkpt>
+<trkpt lat="-45.03114" lon="168.64226">
+<ele>579</ele>
+</trkpt>
+<trkpt lat="-45.03114" lon="168.64242">
+<ele>578</ele>
+</trkpt>
+<trkpt lat="-45.03119" lon="168.64248">
+<ele>578</ele>
+</trkpt>
+<trkpt lat="-45.03124" lon="168.6425">
+<ele>578</ele>
+</trkpt>
+<trkpt lat="-45.03165" lon="168.64288">
+<ele>555</ele>
+</trkpt>
+<trkpt lat="-45.03169" lon="168.6429">
+<ele>555</ele>
+</trkpt>
+<trkpt lat="-45.03172" lon="168.64288">
+<ele>555</ele>
+</trkpt>
+<trkpt lat="-45.03173" lon="168.64278">
+<ele>555</ele>
+</trkpt>
+<trkpt lat="-45.03176" lon="168.6427">
+<ele>555</ele>
+</trkpt>
+<trkpt lat="-45.03181" lon="168.64288">
+<ele>543</ele>
+</trkpt>
+<trkpt lat="-45.03194" lon="168.64317">
+<ele>541</ele>
+</trkpt>
+<trkpt lat="-45.03198" lon="168.64322">
+<ele>540</ele>
+</trkpt>
+<trkpt lat="-45.03201" lon="168.64324">
+<ele>540</ele>
+</trkpt>
+<trkpt lat="-45.03206" lon="168.64332">
+<ele>540</ele>
+</trkpt>
+</trkseg>
+</trk>
+</gpx>

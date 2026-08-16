@@ -57,6 +57,23 @@ export const TRAILS: TrailDefinition[] = [
   trail('Hobbit', 'hobbit.gpx', 6),
   trail('Slippery Ninja', 'slippery-ninja.gpx', 6),
   trail('World Cup', 'world-cup-8261.gpx', 6),
+  trail('Bubba', 'bubba.gpx', 5),
+  trail('Original', 'original.gpx', 5),
+  trail('Battlestag', 'battlestag.gpx', 5),
+  trail('Colonel Senders', 'colonel-senders-709986.gpx', 5),
+  trail('Single Track Sandwich', 'single-track-sandwich.gpx', 5),
+  trail("Hammy's Link", 'hammy-s-link-12333.gpx', 3),
+  trail('KY', 'ky.gpx', 5),
+  trail('Col Pith', 'col-pith.gpx', 5),
+  trail("Jeremy's", 'jeremy-s.gpx', 6),
+  trail('Diesel', 'diesel.gpx', 5),
+  trail('Old Original', 'old-original.gpx', 5),
+  trail('Rat Attack', 'rat-attack.gpx', 6),
+  trail('Jungle Adventure', 'jungle-adventure.gpx', 5),
+  trail('Fan Trail', 'fan-trail.gpx', 5),
+  trail('Killer Bee', 'killer-bee.gpx', 6),
+  trail('One82', 'one82.gpx', 5),
+  trail('K Fry', 'k-fry.gpx', 5),
 ]
 
 export function parseGpxTrack(gpxText: string): LatLng[] {

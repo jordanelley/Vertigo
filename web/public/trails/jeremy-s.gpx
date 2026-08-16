@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<gpx version="1.1" creator="Trailforks.com" xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPointExtension/v1" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd">
+<metadata>
+<name>Jeremy's Trailforks Trail</name>
+<link href="https://www.trailforks.com/">
+<text>Trailforks</text>
+</link>
+</metadata>
+<trk>
+<name>
+Jeremy's
+</name>
+<link href="https://www.trailforks.com/trails/jeremy-s/">
+</link>
+<trkseg>
+<trkpt lat="-45.03127" lon="168.64377"><ele>566</ele></trkpt>
+<trkpt lat="-45.03128" lon="168.64377"><ele>566</ele></trkpt>
+<trkpt lat="-45.03135" lon="168.64399"><ele>566</ele></trkpt>
+<trkpt lat="-45.03142" lon="168.64412"><ele>561</ele></trkpt>
+<trkpt lat="-45.03154" lon="168.64422"><ele>550</ele></trkpt>
+<trkpt lat="-45.03166" lon="168.64424"><ele>550</ele></trkpt>
+<trkpt lat="-45.03172" lon="168.64428"><ele>550</ele></trkpt>
+<trkpt lat="-45.03175" lon="168.64434"><ele>548</ele></trkpt>
+<trkpt lat="-45.03177" lon="168.64438"><ele>548</ele></trkpt>
+<trkpt lat="-45.03183" lon="168.64433"><ele>534</ele></trkpt>
+<trkpt lat="-45.03187" lon="168.64433"><ele>534</ele></trkpt>
+<trkpt lat="-45.03191" lon="168.64442"><ele>534</ele></trkpt>
+<trkpt lat="-45.03194" lon="168.64442"><ele>534</ele></trkpt>
+<trkpt lat="-45.03204" lon="168.64413"><ele>537</ele></trkpt>
+<trkpt lat="-45.03228" lon="168.64415"><ele>526</ele></trkpt>
+<trkpt lat="-45.03235" lon="168.64429"><ele>526</ele></trkpt>
+<trkpt lat="-45.03246" lon="168.64422"><ele>514</ele></trkpt>
+</trkseg>
+</trk>
+</gpx>

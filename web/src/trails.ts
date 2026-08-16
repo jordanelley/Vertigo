@@ -14,6 +14,7 @@ export const TRAILS: TrailDefinition[] = [
   { name: 'Vertigo', file: trailFile('vertigo.gpx'), color: '#3b82f6' },
   { name: "Upper Hammy's Track", file: trailFile('upper-hammy-s-track-8273.gpx'), color: '#22c55e' },
   { name: 'Thunder Goat', file: trailFile('thunder-goat.gpx'), color: '#f97316' },
+  { name: 'Huck Yeah', file: trailFile('huck-yeah.gpx'), color: '#a855f7' },
 ]
 
 export function parseGpxTrack(gpxText: string): LatLng[] {

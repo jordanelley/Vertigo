@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<gpx version="1.1" creator="Trailforks.com" xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPointExtension/v1" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd">
+<metadata>
+<name>Huck Yeah! Trailforks Trail</name>
+<link href="https://www.trailforks.com/">
+<text>Trailforks</text>
+</link>
+</metadata>
+<trk>
+<name>
+Huck Yeah!
+</name>
+<link href="https://www.trailforks.com/trails/huck-yeah/">
+</link>
+<trkseg>
+<trkpt lat="-45.02926" lon="168.64442">
+<ele>674</ele>
+<time>2026-08-15T22:14:39-07:00</time>
+</trkpt>
+<trkpt lat="-45.02931" lon="168.64438">
+<ele>658</ele>
+<time>2026-08-15T22:14:40-07:00</time>
+</trkpt>
+<trkpt lat="-45.02933" lon="168.64429">
+<ele>653</ele>
+<time>2026-08-15T22:14:41-07:00</time>
+</trkpt>
+<trkpt lat="-45.02931" lon="168.64419">
+<ele>653</ele>
+<time>2026-08-15T22:14:42-07:00</time>
+</trkpt>
+<trkpt lat="-45.02931" lon="168.64411">
+<ele>653</ele>
+<time>2026-08-15T22:14:43-07:00</time>
+</trkpt>
+<trkpt lat="-45.0293" lon="168.64403">
+<ele>672</ele>
+<time>2026-08-15T22:14:44-07:00</time>
+</trkpt>
+<trkpt lat="-45.02935" lon="168.64396">
+<ele>653</ele>
+<time>2026-08-15T22:14:45-07:00</time>
+</trkpt>
+<trkpt lat="-45.02937" lon="168.64388">
+<ele>653</ele>
+<time>2026-08-15T22:14:46-07:00</time>
+</trkpt>
+<trkpt lat="-45.02936" lon="168.64374">
+<ele>655</ele>
+<time>2026-08-15T22:14:47-07:00</time>
+</trkpt>
+<trkpt lat="-45.02939" lon="168.64363">
+<ele>655</ele>
+<time>2026-08-15T22:14:48-07:00</time>
+</trkpt>
+<trkpt lat="-45.02949" lon="168.64352">
+<ele>655</ele>
+<time>2026-08-15T22:14:49-07:00</time>
+</trkpt>
+<trkpt lat="-45.02955" lon="168.64338">
+<ele>657</ele>
+<time>2026-08-15T22:14:50-07:00</time>
+</trkpt>
+<trkpt lat="-45.02973" lon="168.6429">
+<ele>647</ele>
+<time>2026-08-15T22:14:51-07:00</time>
+</trkpt>
+<trkpt lat="-45.03001" lon="168.64255">
+<ele>631</ele>
+<time>2026-08-15T22:14:52-07:00</time>
+</trkpt>
+<trkpt lat="-45.03011" lon="168.64228">
+<ele>635</ele>
+<time>2026-08-15T22:14:53-07:00</time>
+</trkpt>
+<trkpt lat="-45.03021" lon="168.64198">
+<ele>624</ele>
+<time>2026-08-15T22:14:54-07:00</time>
+</trkpt>
+<trkpt lat="-45.03028" lon="168.6417">
+<ele>626</ele>
+<time>2026-08-15T22:14:55-07:00</time>
+</trkpt>
+<trkpt lat="-45.03033" lon="168.64122">
+<ele>626</ele>
+<time>2026-08-15T22:14:56-07:00</time>
+</trkpt>
+<trkpt lat="-45.03043" lon="168.64094">
+<ele>616</ele>
+<time>2026-08-15T22:14:57-07:00</time>
+</trkpt>
+<trkpt lat="-45.03046" lon="168.64074">
+<ele>616</ele>
+<time>2026-08-15T22:14:58-07:00</time>
+</trkpt>
+<trkpt lat="-45.03048" lon="168.64063">
+<ele>616</ele>
+<time>2026-08-15T22:14:59-07:00</time>
+</trkpt>
+<trkpt lat="-45.03054" lon="168.64061">
+<ele>616</ele>
+<time>2026-08-15T22:15:00-07:00</time>
+</trkpt>
+<trkpt lat="-45.03059" lon="168.64054">
+<ele>616</ele>
+<time>2026-08-15T22:15:01-07:00</time>
+</trkpt>
+<trkpt lat="-45.03059" lon="168.64029">
+<ele>613</ele>
+<time>2026-08-15T22:15:02-07:00</time>
+</trkpt>
+</trkseg>
+</trk>
+</gpx>

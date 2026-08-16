@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<gpx version="1.1" creator="Trailforks.com" xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPointExtension/v1" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd">
+<metadata>
+<name>Drop Garden Trailforks Trail</name>
+<link href="https://www.trailforks.com/">
+<text>Trailforks</text>
+</link>
+</metadata>
+<trk>
+<name>
+Drop Garden
+</name>
+<link href="https://www.trailforks.com/trails/drop-garden/">
+</link>
+<trkseg>
+<trkpt lat="-45.02836" lon="168.64598">
+<ele>741.79</ele>
+<time>2026-08-15T23:07:45-07:00</time>
+</trkpt>
+<trkpt lat="-45.02856" lon="168.6457">
+<ele>726.41</ele>
+<time>2026-08-15T23:07:46-07:00</time>
+</trkpt>
+<trkpt lat="-45.0286" lon="168.64567">
+<ele>724.97</ele>
+<time>2026-08-15T23:07:47-07:00</time>
+</trkpt>
+<trkpt lat="-45.02875" lon="168.6458">
+<ele>714.88</ele>
+<time>2026-08-15T23:07:48-07:00</time>
+</trkpt>
+</trkseg>
+</trk>
+</gpx>

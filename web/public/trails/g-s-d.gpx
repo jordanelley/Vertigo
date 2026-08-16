@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<gpx version="1.1" creator="Trailforks.com" xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPointExtension/v1" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd">
+<metadata>
+<name>G.S.D. Trailforks Trail</name>
+<link href="https://www.trailforks.com/">
+<text>Trailforks</text>
+</link>
+</metadata>
+<trk>
+<name>
+G.S.D.
+</name>
+<link href="https://www.trailforks.com/trails/g-s-d/">
+</link>
+<trkseg>
+<trkpt lat="-45.02903" lon="168.64576">
+<ele>686.52</ele>
+<time>2026-08-15T23:08:23-07:00</time>
+</trkpt>
+<trkpt lat="-45.02918" lon="168.64582">
+<ele>686.04</ele>
+<time>2026-08-15T23:08:24-07:00</time>
+</trkpt>
+<trkpt lat="-45.0292" lon="168.64586">
+<ele>685.56</ele>
+<time>2026-08-15T23:08:25-07:00</time>
+</trkpt>
+<trkpt lat="-45.02923" lon="168.64619">
+<ele>679.79</ele>
+<time>2026-08-15T23:08:26-07:00</time>
+</trkpt>
+<trkpt lat="-45.02925" lon="168.64624">
+<ele>677.87</ele>
+<time>2026-08-15T23:08:27-07:00</time>
+</trkpt>
+<trkpt lat="-45.02938" lon="168.64631">
+<ele>667.29</ele>
+<time>2026-08-15T23:08:28-07:00</time>
+</trkpt>
+<trkpt lat="-45.02942" lon="168.64633">
+<ele>665.37</ele>
+<time>2026-08-15T23:08:29-07:00</time>
+</trkpt>
+<trkpt lat="-45.02943" lon="168.64658">
+<ele>656.24</ele>
+<time>2026-08-15T23:08:30-07:00</time>
+</trkpt>
+<trkpt lat="-45.02944" lon="168.64661">
+<ele>654.31</ele>
+<time>2026-08-15T23:08:31-07:00</time>
+</trkpt>
+<trkpt lat="-45.02949" lon="168.64668">
+<ele>650.47</ele>
+<time>2026-08-15T23:08:32-07:00</time>
+</trkpt>
+<trkpt lat="-45.02951" lon="168.6467">
+<ele>649.03</ele>
+<time>2026-08-15T23:08:33-07:00</time>
+</trkpt>
+<trkpt lat="-45.02955" lon="168.64687">
+<ele>644.7</ele>
+<time>2026-08-15T23:08:34-07:00</time>
+</trkpt>
+<trkpt lat="-45.02958" lon="168.64698">
+<ele>642.78</ele>
+<time>2026-08-15T23:08:35-07:00</time>
+</trkpt>
+<trkpt lat="-45.02955" lon="168.64721">
+<ele>638.45</ele>
+<time>2026-08-15T23:08:36-07:00</time>
+</trkpt>
+<trkpt lat="-45.02953" lon="168.64731">
+<ele>630.28</ele>
+<time>2026-08-15T23:08:37-07:00</time>
+</trkpt>
+<trkpt lat="-45.02954" lon="168.64742">
+<ele>628.84</ele>
+<time>2026-08-15T23:08:38-07:00</time>
+</trkpt>
+<trkpt lat="-45.02951" lon="168.64777">
+<ele>618.75</ele>
+<time>2026-08-15T23:08:39-07:00</time>
+</trkpt>
+<trkpt lat="-45.02951" lon="168.64782">
+<ele>617.3</ele>
+<time>2026-08-15T23:08:40-07:00</time>
+</trkpt>
+<trkpt lat="-45.02944" lon="168.64799">
+<ele>611.06</ele>
+<time>2026-08-15T23:08:41-07:00</time>
+</trkpt>
+<trkpt lat="-45.02943" lon="168.64802">
+<ele>610.09</ele>
+<time>2026-08-15T23:08:42-07:00</time>
+</trkpt>
+<trkpt lat="-45.02941" lon="168.6482">
+<ele>606.73</ele>
+<time>2026-08-15T23:08:43-07:00</time>
+</trkpt>
+<trkpt lat="-45.02939" lon="168.64835">
+<ele>605.29</ele>
+<time>2026-08-15T23:08:44-07:00</time>
+</trkpt>
+<trkpt lat="-45.0294" lon="168.64873">
+<ele>598.08</ele>
+<time>2026-08-15T23:08:45-07:00</time>
+</trkpt>
+<trkpt lat="-45.02941" lon="168.64875">
+<ele>597.6</ele>
+<time>2026-08-15T23:08:46-07:00</time>
+</trkpt>
+<trkpt lat="-45.02955" lon="168.64857">
+<ele>592.31</ele>
+<time>2026-08-15T23:08:47-07:00</time>
+</trkpt>
+<trkpt lat="-45.02962" lon="168.64855">
+<ele>589.91</ele>
+<time>2026-08-15T23:08:48-07:00</time>
+</trkpt>
+<trkpt lat="-45.02977" lon="168.64827">
+<ele>583.18</ele>
+<time>2026-08-15T23:08:49-07:00</time>
+</trkpt>
+<trkpt lat="-45.02979" lon="168.64825">
+<ele>583.18</ele>
+<time>2026-08-15T23:08:50-07:00</time>
+</trkpt>
+<trkpt lat="-45.02995" lon="168.64824">
+<ele>580.29</ele>
+<time>2026-08-15T23:08:51-07:00</time>
+</trkpt>
+<trkpt lat="-45.03003" lon="168.64825">
+<ele>579.81</ele>
+<time>2026-08-15T23:08:52-07:00</time>
+</trkpt>
+<trkpt lat="-45.0301" lon="168.64821">
+<ele>590.39</ele>
+<time>2026-08-15T23:08:53-07:00</time>
+</trkpt>
+<trkpt lat="-45.03015" lon="168.6482">
+<ele>588.46</ele>
+<time>2026-08-15T23:08:54-07:00</time>
+</trkpt>
+<trkpt lat="-45.0302" lon="168.64812">
+<ele>585.1</ele>
+<time>2026-08-15T23:08:55-07:00</time>
+</trkpt>
+<trkpt lat="-45.03023" lon="168.64807">
+<ele>584.14</ele>
+<time>2026-08-15T23:08:56-07:00</time>
+</trkpt>
+<trkpt lat="-45.03031" lon="168.64802">
+<ele>579.33</ele>
+<time>2026-08-15T23:08:57-07:00</time>
+</trkpt>
+<trkpt lat="-45.03034" lon="168.64799">
+<ele>577.41</ele>
+<time>2026-08-15T23:08:58-07:00</time>
+</trkpt>
+<trkpt lat="-45.03047" lon="168.64773">
+<ele>565.87</ele>
+<time>2026-08-15T23:08:59-07:00</time>
+</trkpt>
+<trkpt lat="-45.03049" lon="168.64768">
+<ele>564.91</ele>
+<time>2026-08-15T23:09:00-07:00</time>
+</trkpt>
+<trkpt lat="-45.03056" lon="168.64768">
+<ele>563.95</ele>
+<time>2026-08-15T23:09:01-07:00</time>
+</trkpt>
+<trkpt lat="-45.0306" lon="168.64767">
+<ele>565.87</ele>
+<time>2026-08-15T23:09:02-07:00</time>
+</trkpt>
+<trkpt lat="-45.03065" lon="168.6477">
+<ele>568.76</ele>
+<time>2026-08-15T23:09:03-07:00</time>
+</trkpt>
+<trkpt lat="-45.03067" lon="168.6477">
+<ele>570.2</ele>
+<time>2026-08-15T23:09:04-07:00</time>
+</trkpt>
+<trkpt lat="-45.03072" lon="168.64787">
+<ele>567.32</ele>
+<time>2026-08-15T23:09:05-07:00</time>
+</trkpt>
+<trkpt lat="-45.03072" lon="168.64791">
+<ele>565.87</ele>
+<time>2026-08-15T23:09:06-07:00</time>
+</trkpt>
+<trkpt lat="-45.03076" lon="168.64791">
+<ele>564.43</ele>
+<time>2026-08-15T23:09:07-07:00</time>
+</trkpt>
+<trkpt lat="-45.03077" lon="168.64793">
+<ele>562.99</ele>
+<time>2026-08-15T23:09:08-07:00</time>
+</trkpt>
+<trkpt lat="-45.0308" lon="168.64816">
+<ele>556.74</ele>
+<time>2026-08-15T23:09:09-07:00</time>
+</trkpt>
+<trkpt lat="-45.03081" lon="168.64826">
+<ele>553.38</ele>
+<time>2026-08-15T23:09:10-07:00</time>
+</trkpt>
+<trkpt lat="-45.031" lon="168.64869">
+<ele>543.76</ele>
+<time>2026-08-15T23:09:11-07:00</time>
+</trkpt>
+</trkseg>
+</trk>
+</gpx>

@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { CircleMarker, MapContainer, Polyline, TileLayer, useMap } from 'react-leaflet'
+import { CircleMarker, MapContainer, Polyline, useMap } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
 import {
   TRAILS,
@@ -16,7 +16,6 @@ const DEFAULT_CENTER: LatLng = [37.7749, -122.4194]
 // Skyline Queenstown gondola top station, Bob's Peak (45°01'36"S 168°38'58"E)
 const SKYLINE_QUEENSTOWN: LatLng = [-45.0266, 168.6495]
 const GEOFENCE_RADIUS_KM = 2.5
-const STADIA_API_KEY = import.meta.env.VITE_STADIA_API_KEY
 const SIMULATED_RIDE_DURATION_MS = 10 * 1000
 const vertigoAndThunderGoat = TRAILS.filter((trail) => trail.name === 'Vertigo' || trail.name === 'Thunder Goat')
 
@@ -56,6 +55,25 @@ function RecenterMap({ position }: { position: LatLng }) {
   return null
 }
 
+// Trail/lift GPX files finish loading in a burst right after mount and then never change again,
+// so this only re-fires a handful of times as they resolve before settling - it won't fight with
+// RecenterMap's continuous re-centering once a ride is actually being recorded.
+function FitAllTrails({
+  trailPaths,
+  liftPaths,
+}: {
+  trailPaths: Record<string, LatLng[]>
+  liftPaths: Record<string, LatLng[]>
+}) {
+  const map = useMap()
+  useEffect(() => {
+    const allPoints = [...Object.values(trailPaths), ...Object.values(liftPaths)].flat()
+    if (allPoints.length === 0) return
+    map.fitBounds(allPoints, { padding: [20, 20] })
+  }, [trailPaths, liftPaths, map])
+  return null
+}
+
 function TrailOverlays({ trailPaths }: { trailPaths: Record<string, LatLng[]> }) {
   return (
     <>
@@ -66,7 +84,7 @@ function TrailOverlays({ trailPaths }: { trailPaths: Record<string, LatLng[]> })
           <Polyline
             key={trail.name}
             positions={points}
-            pathOptions={{ color: trail.color, weight: 4, dashArray: '8 8', opacity: 0.9 }}
+            pathOptions={{ color: trail.color, weight: 2, opacity: 0.9 }}
           />
         )
       })}
@@ -84,7 +102,7 @@ function LiftOverlays({ liftPaths }: { liftPaths: Record<string, LatLng[]> }) {
           <Polyline
             key={lift.name}
             positions={points}
-            pathOptions={{ color: '#9ca3af', weight: 3, dashArray: '2 10', opacity: 0.8 }}
+            pathOptions={{ color: '#9ca3af', weight: 1.5, dashArray: '2 10', opacity: 0.8 }}
           />
         )
       })}
@@ -379,15 +397,12 @@ function RecordRide({ onSave, existingRideNames }: RecordRideProps) {
         </div>
       )}
       <div className="record-ride__map">
-        <MapContainer center={position} zoom={15} scrollWheelZoom={false} style={{ height: '220px', width: '100%' }}>
-          <TileLayer
-            attribution='&copy; <a href="https://stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://stamen.com/" target="_blank">Stamen Design</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>'
-            url={`https://tiles.stadiamaps.com/tiles/stamen_terrain/{z}/{x}/{y}{r}.png?api_key=${STADIA_API_KEY}`}
-          />
+        <MapContainer center={position} zoom={15} scrollWheelZoom={true} style={{ height: '220px', width: '100%' }}>
           <RecenterMap position={position} />
+          <FitAllTrails trailPaths={trailPaths} liftPaths={liftPaths} />
           <TrailOverlays trailPaths={trailPaths} />
           <LiftOverlays liftPaths={liftPaths} />
-          {path.length > 1 && <Polyline positions={path} color="#ff6b35" weight={4} />}
+          {path.length > 1 && <Polyline positions={path} color="#ff6b35" weight={2} />}
           <CircleMarker
             center={position}
             radius={7}

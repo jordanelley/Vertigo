@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<gpx version="1.1" creator="Trailforks.com" xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPointExtension/v1" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd">
+<metadata>
+<name>Squid Run - Midway  Link Trailforks Trail</name>
+<link href="https://www.trailforks.com/">
+<text>Trailforks</text>
+</link>
+</metadata>
+<trk>
+<name>
+Squid Run - Midway  Link
+</name>
+<link href="https://www.trailforks.com/trails/squid-run-midway-link/">
+</link>
+<trkseg>
+<trkpt lat="-45.03076" lon="168.64015">
+<ele>605</ele>
+<time>2026-08-17T20:40:37-07:00</time>
+</trkpt>
+<trkpt lat="-45.03064" lon="168.63996">
+<ele>608</ele>
+<time>2026-08-17T20:40:38-07:00</time>
+</trkpt>
+<trkpt lat="-45.03055" lon="168.63991">
+<ele>608</ele>
+<time>2026-08-17T20:40:39-07:00</time>
+</trkpt>
+<trkpt lat="-45.03043" lon="168.63987">
+<ele>608</ele>
+<time>2026-08-17T20:40:40-07:00</time>
+</trkpt>
+<trkpt lat="-45.03024" lon="168.6396">
+<ele>613</ele>
+<time>2026-08-17T20:40:41-07:00</time>
+</trkpt>
+<trkpt lat="-45.03019" lon="168.63948">
+<ele>605</ele>
+<time>2026-08-17T20:40:42-07:00</time>
+</trkpt>
+<trkpt lat="-45.03008" lon="168.63936">
+<ele>610</ele>
+<time>2026-08-17T20:40:43-07:00</time>
+</trkpt>
+</trkseg>
+</trk>
+</gpx>

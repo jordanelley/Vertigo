@@ -31,8 +31,9 @@ type LeaderboardScope = 'all' | 'following'
 const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:5090'
 
 const feedItems = [
-  { id: 1, rider: 'Sam', rideName: 'Ridge Trail', distance: 24.1 },
-  { id: 2, rider: 'Alex', rideName: 'Sunday Loop', distance: 18.4 },
+  { id: 1, rider: 'Sam', laps: 5, highlight: 'New PR on Original' },
+  { id: 2, rider: 'Alex', laps: 3 },
+  { id: 3, rider: 'Sarah', message: 'just beat your time on Grundy', time: '5:12' },
 ]
 
 const feedLeaderboard = [
@@ -205,10 +206,28 @@ function App() {
                     <ul className="data-list">
                       {feedItems.map((item) => (
                         <li key={item.id} className="data-list__item">
-                          <span className="data-list__primary">{item.rider}</span>
-                          <span className="data-list__secondary">
-                            {item.rideName} · {item.distance} km
-                          </span>
+                          {item.message ? (
+                            <>
+                              <span className="data-list__primary">
+                                {item.rider} {item.message}
+                              </span>
+                              {item.time && (
+                                <span className="data-list__secondary">{item.time}</span>
+                              )}
+                            </>
+                          ) : (
+                            <>
+                              <span className="data-list__primary">{item.rider}</span>
+                              <span className="data-list__meta">
+                                <span className="data-list__secondary">
+                                  {item.laps} {item.laps === 1 ? 'lap' : 'laps'}
+                                </span>
+                                {item.highlight && (
+                                  <span className="data-list__highlight">{item.highlight}</span>
+                                )}
+                              </span>
+                            </>
+                          )}
                         </li>
                       ))}
                     </ul>

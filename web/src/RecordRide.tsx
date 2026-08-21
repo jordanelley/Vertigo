@@ -202,6 +202,7 @@ function RecordRide({ onSave, existingRideNames }: RecordRideProps) {
   const [trailPaths, setTrailPaths] = useState<Record<string, LatLng[]>>({})
   const [liftPaths, setLiftPaths] = useState<Record<string, LatLng[]>>({})
   const [showTrailPicker, setShowTrailPicker] = useState(false)
+  const [photoPreviewUrl, setPhotoPreviewUrl] = useState<string | null>(null)
   const watchIdRef = useRef<number | null>(null)
   const simulationIntervalRef = useRef<number | null>(null)
   const recordingStartRef = useRef<number | null>(null)
@@ -416,9 +417,29 @@ function RecordRide({ onSave, existingRideNames }: RecordRideProps) {
         await onSave(segment.name, Math.round(segment.distance * 100) / 100, Math.round(segTime * 10) / 10)
       }
       setPath([])
+      setPhotoPreviewUrl((prev) => {
+        if (prev) URL.revokeObjectURL(prev)
+        return null
+      })
     } finally {
       setSaving(false)
     }
+  }
+
+  const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+    setPhotoPreviewUrl((prev) => {
+      if (prev) URL.revokeObjectURL(prev)
+      return URL.createObjectURL(file)
+    })
+  }
+
+  const handleRemovePhoto = () => {
+    setPhotoPreviewUrl((prev) => {
+      if (prev) URL.revokeObjectURL(prev)
+      return null
+    })
   }
 
   const testButton = (
@@ -532,6 +553,30 @@ function RecordRide({ onSave, existingRideNames }: RecordRideProps) {
               ))
             )}
           </ul>
+          <div className="record-ride__photo">
+            {photoPreviewUrl ? (
+              <div className="record-ride__photo-preview">
+                <img src={photoPreviewUrl} alt="Ride" className="record-ride__photo-thumb" />
+                <button
+                  type="button"
+                  className="btn btn-secondary record-ride__photo-remove"
+                  onClick={handleRemovePhoto}
+                >
+                  Remove Photo
+                </button>
+              </div>
+            ) : (
+              <label className="btn btn-secondary record-ride__photo-add">
+                Add Photo
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handlePhotoChange}
+                  style={{ display: 'none' }}
+                />
+              </label>
+            )}
+          </div>
           <button className="btn btn-primary" onClick={handleSave} disabled={saving || computedSegments.length === 0}>
             {saving ? 'Saving…' : computedSegments.length > 1 ? 'Save Rides' : 'Save Ride'}
           </button>

@@ -280,6 +280,19 @@
   font-size: 0.9rem;
 }
 
+.data-list__meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.15rem;
+}
+
+.data-list__highlight {
+  color: #34d399;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
 .data-list__info {
   display: flex;
   justify-content: space-between;
@@ -495,6 +508,29 @@
 .record-ride__save-names li span {
   color: #94a3b8;
   font-weight: 400;
+}
+
+.record-ride__photo {
+  display: flex;
+}
+
+.record-ride__photo-add {
+  cursor: pointer;
+  text-align: center;
+}
+
+.record-ride__photo-preview {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.record-ride__photo-thumb {
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid #334155;
 }
 
 .btn-danger {

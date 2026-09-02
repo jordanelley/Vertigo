@@ -1,6 +1,5 @@
-import { Fragment, useEffect, useMemo, useRef, useState } from 'react'
-import { CircleMarker, ImageOverlay, MapContainer, Marker, Polyline, useMap } from 'react-leaflet'
-import { divIcon, latLngBounds, type LatLngBounds } from 'leaflet'
+import { useEffect, useMemo, useRef, useState } from 'react'
+import { latLngBounds, type LatLngBounds } from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import {
   TRAILS,
@@ -10,77 +9,19 @@ import {
   nextAttemptRideName,
   type LatLng,
   type TrailDefinition,
-} from './trails'
-import { LIFTS, excludeLiftPoints, countLiftLaps } from './lifts'
-import { MOUNTAIN_BACKDROP_URL } from './MountainBackdrop'
+} from '../trails'
+import { LIFTS, excludeLiftPoints, countLiftLaps } from '../lifts'
+import { DEFAULT_CENTER } from '../mapGeometry'
+import { API_URL } from '../api'
+import type { Ride } from '../types'
+import { RecordRideMap } from './RecordRideMap'
+import { RideSimulationControls } from './RideSimulationControls'
 
-const DEFAULT_CENTER: LatLng = [37.7749, -122.4194]
 // Skyline Queenstown gondola top station, Bob's Peak (45°01'36"S 168°38'58"E)
 const SKYLINE_QUEENSTOWN: LatLng = [-45.0266, 168.6495]
 const GEOFENCE_RADIUS_KM = 2.5
 const SIMULATED_RIDE_DURATION_MS = 10 * 1000
-const GONDOLA_CABIN_COUNT = 6
 
-const gondolaCabinIcon = divIcon({
-  className: 'gondola-cabin-icon',
-  html: `<svg width="10" height="16" viewBox="0 0 10 16">
-    <line x1="5" y1="0" x2="5" y2="5" stroke="#9ca3af" stroke-width="1" />
-    <rect x="1" y="5" width="8" height="7" rx="2" fill="#1e293b" stroke="#cbd5e1" stroke-width="1" />
-  </svg>`,
-  iconSize: [10, 16],
-  iconAnchor: [5, 0],
-})
-
-// Walks the cumulative distance along a path to find the point sitting at `fraction` (0-1) of
-// the way along it, interpolating between whichever two points straddle that distance.
-function positionAlongPath(points: LatLng[], fraction: number): LatLng {
-  if (points.length === 0) return DEFAULT_CENTER
-  if (points.length === 1) return points[0]
-
-  const segmentLengths = points.slice(1).map((point, i) => haversineDistanceKm(points[i], point))
-  const totalLength = segmentLengths.reduce((sum, length) => sum + length, 0)
-  if (totalLength === 0) return points[0]
-
-  let remaining = fraction * totalLength
-  for (let i = 0; i < segmentLengths.length; i++) {
-    const segmentLength = segmentLengths[i]
-    if (remaining <= segmentLength || i === segmentLengths.length - 1) {
-      const t = segmentLength === 0 ? 0 : Math.min(remaining / segmentLength, 1)
-      const [lat1, lon1] = points[i]
-      const [lat2, lon2] = points[i + 1]
-      return [lat1 + (lat2 - lat1) * t, lon1 + (lon2 - lon1) * t]
-    }
-    remaining -= segmentLength
-  }
-  return points[points.length - 1]
-}
-
-const GONDOLA_CYCLE_SECONDS = 40
-const GONDOLA_TICK_MS = 200
-
-// Cabins bounce back and forth along the lift line (0 -> 1 -> 0), evenly spaced in phase so they
-// never bunch up, at a pace slow enough to read as a real gondola rather than a toy on fast-forward.
-function AnimatedGondolaCabins({ points }: { points: LatLng[] }) {
-  const [tick, setTick] = useState(0)
-  useEffect(() => {
-    const id = window.setInterval(() => setTick((t) => t + 1), GONDOLA_TICK_MS)
-    return () => window.clearInterval(id)
-  }, [])
-
-  const elapsedSeconds = (tick * GONDOLA_TICK_MS) / 1000
-  return (
-    <>
-      {Array.from({ length: GONDOLA_CABIN_COUNT }, (_, i) => {
-        const offset = i / GONDOLA_CABIN_COUNT
-        const phase = (elapsedSeconds / GONDOLA_CYCLE_SECONDS + offset) % 1
-        const fraction = phase < 0.5 ? phase * 2 : 2 - phase * 2
-        return (
-          <Marker key={i} position={positionAlongPath(points, fraction)} icon={gondolaCabinIcon} interactive={false} />
-        )
-      })}
-    </>
-  )
-}
 const vertigoAndThunderGoat = TRAILS.filter((trail) => trail.name === 'Vertigo' || trail.name === 'Thunder Goat')
 
 const hammysTrail = TRAILS.find((trail) => trail.name === "Upper Hammy's Track")
@@ -122,77 +63,8 @@ function reachedTrailEnd(segmentPoints: LatLng[], trailPoints: LatLng[]): boolea
   return haversineDistanceKm(lastRecorded, trailEnd) <= TRAIL_COMPLETION_RADIUS_KM
 }
 
-function RecenterMap({ position }: { position: LatLng }) {
-  const map = useMap()
-  useEffect(() => {
-    map.setView(position)
-  }, [position, map])
-  return null
-}
-
-// Trail/lift GPX files finish loading in a burst right after mount and then never change again,
-// so this only re-fires a handful of times as they resolve before settling - it won't fight with
-// RecenterMap's continuous re-centering once a ride is actually being recorded.
-function FitAllTrails({
-  trailPaths,
-  liftPaths,
-}: {
-  trailPaths: Record<string, LatLng[]>
-  liftPaths: Record<string, LatLng[]>
-}) {
-  const map = useMap()
-  useEffect(() => {
-    const allPoints = [...Object.values(trailPaths), ...Object.values(liftPaths)].flat()
-    if (allPoints.length === 0) return
-    map.fitBounds(allPoints, { padding: [20, 20] })
-  }, [trailPaths, liftPaths, map])
-  return null
-}
-
-function TrailOverlays({ trailPaths }: { trailPaths: Record<string, LatLng[]> }) {
-  return (
-    <>
-      {TRAILS.map((trail) => {
-        const points = trailPaths[trail.name]
-        if (!points) return null
-        return (
-          <Polyline
-            key={trail.name}
-            positions={points}
-            pathOptions={{ color: trail.color, weight: 2, opacity: 0.9 }}
-          />
-        )
-      })}
-    </>
-  )
-}
-
-function LiftOverlays({ liftPaths }: { liftPaths: Record<string, LatLng[]> }) {
-  return (
-    <>
-      {LIFTS.map((lift) => {
-        const points = liftPaths[lift.name]
-        if (!points) return null
-        return (
-          <Fragment key={lift.name}>
-            <Polyline
-              positions={points}
-              pathOptions={{ color: '#9ca3af', weight: 1.5, dashArray: '2 10', opacity: 0.8 }}
-            />
-            <AnimatedGondolaCabins points={points} />
-          </Fragment>
-        )
-      })}
-    </>
-  )
-}
-
-interface RecordRideProps {
-  onSave: (rideName: string, distance: number, time: number) => Promise<void>
-  existingRideNames: string[]
-}
-
-function RecordRide({ onSave, existingRideNames }: RecordRideProps) {
+function Ride() {
+  const [rides, setRides] = useState<Ride[]>([])
   const [recording, setRecording] = useState(false)
   const [path, setPath] = useState<LatLng[]>([])
   const [position, setPosition] = useState<LatLng>(DEFAULT_CENTER)
@@ -224,6 +96,13 @@ function RecordRide({ onSave, existingRideNames }: RecordRideProps) {
         })
         .catch((err) => console.error(`Failed to load lift "${lift.name}":`, err))
     })
+  }, [])
+
+  useEffect(() => {
+    fetch(`${API_URL}/api/rides`)
+      .then((res) => res.json())
+      .then(setRides)
+      .catch(() => setRides([]))
   }, [])
 
   useEffect(() => {
@@ -320,22 +199,6 @@ function RecordRide({ onSave, existingRideNames }: RecordRideProps) {
     }, stepMs)
   }
 
-  const simulateMovement = async (trail: TrailDefinition) => {
-    if (!recording || simulationIntervalRef.current !== null) return
-    setShowTrailPicker(false)
-
-    let points: LatLng[]
-    try {
-      points = await loadPoints(trail)
-    } catch (err) {
-      console.error(`Failed to load trail "${trail.name}" for simulation:`, err)
-      return
-    }
-    if (points.length < 2) return
-
-    runSimulatedPath(points, SIMULATED_RIDE_DURATION_MS)
-  }
-
   const simulateCombinedRide = async (trails: TrailDefinition[]) => {
     if (!recording || simulationIntervalRef.current !== null) return
     setShowTrailPicker(false)
@@ -389,6 +252,8 @@ function RecordRide({ onSave, existingRideNames }: RecordRideProps) {
     return countLiftLaps(path, liftPoints)
   }, [recording, path, liftPaths])
 
+  const existingRideNames = rides.map((ride) => ride.rideName)
+
   const { computedSegments, hasIncompleteSegments } = useMemo(() => {
     if (recording || path.length < 2) return { computedSegments: [], hasIncompleteSegments: false }
     const runs = excludeLiftPoints(path, liftPaths)
@@ -406,6 +271,22 @@ function RecordRide({ onSave, existingRideNames }: RecordRideProps) {
     return { computedSegments: named, hasIncompleteSegments: completedRawSegments.length < allSegments.length }
   }, [recording, path, trailPaths, liftPaths, existingRideNames])
 
+  const saveRide = async (rideName: string, distance: number, time: number) => {
+    const res = await fetch(`${API_URL}/api/rides`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ rideName, distance, time }),
+    })
+    const newRide = await res.json()
+    setRides((prev) => [...prev, newRide])
+  }
+
+  const deleteRide = async (id: number, rideName: string) => {
+    if (!window.confirm(`Delete "${rideName}"? This can't be undone.`)) return
+    await fetch(`${API_URL}/api/rides/${id}`, { method: 'DELETE' })
+    setRides((prev) => prev.filter((ride) => ride.id !== id))
+  }
+
   const handleSave = async () => {
     if (computedSegments.length === 0) return
     const totalSegmentDistance = computedSegments.reduce((sum, s) => sum + s.distance, 0)
@@ -414,7 +295,7 @@ function RecordRide({ onSave, existingRideNames }: RecordRideProps) {
       for (const segment of computedSegments) {
         const segTime =
           totalSegmentDistance > 0 ? (elapsedMinutes * segment.distance) / totalSegmentDistance : 0
-        await onSave(segment.name, Math.round(segment.distance * 100) / 100, Math.round(segTime * 10) / 10)
+        await saveRide(segment.name, Math.round(segment.distance * 100) / 100, Math.round(segTime * 10) / 10)
       }
       setPath([])
       setPhotoPreviewUrl((prev) => {
@@ -454,136 +335,136 @@ function RecordRide({ onSave, existingRideNames }: RecordRideProps) {
     </button>
   )
 
+  const savedRidesList = (
+    <ul className="data-list">
+      {rides.length === 0 && <li className="data-list__empty">No rides yet.</li>}
+      {rides.map((ride) => (
+        <li key={ride.id} className="data-list__item">
+          <div className="data-list__info">
+            <span className="data-list__primary">{ride.rideName}</span>
+            <span className="data-list__secondary">
+              {ride.distance} km · {ride.time} min
+            </span>
+          </div>
+          <button
+            className="data-list__delete"
+            onClick={() => deleteRide(ride.id, ride.rideName)}
+            aria-label={`Delete ${ride.rideName}`}
+          >
+            ×
+          </button>
+        </li>
+      ))}
+    </ul>
+  )
+
   if (locationStatus === 'checking') {
     return (
-      <div className="record-ride">
-        <p className="record-ride__status">Checking your location…</p>
-        {testButton}
-      </div>
+      <>
+        <div className="record-ride">
+          <p className="record-ride__status">Checking your location…</p>
+          {testButton}
+        </div>
+        {savedRidesList}
+      </>
     )
   }
 
   if (locationStatus === 'not-at-skyline') {
     return (
-      <div className="record-ride">
-        <p className="record-ride__status">Please go to Skyline Queenstown to record your ride.</p>
-        {testButton}
-      </div>
+      <>
+        <div className="record-ride">
+          <p className="record-ride__status">Please go to Skyline Queenstown to record your ride.</p>
+          {testButton}
+        </div>
+        {savedRidesList}
+      </>
     )
   }
 
   return (
-    <div className="record-ride">
-      {testButton}
-      <button
-        className="btn btn-secondary record-ride__test-btn"
-        onClick={() => setShowTrailPicker((prev) => !prev)}
-        disabled={!recording}
-      >
-        Test: Moving
-      </button>
-      {showTrailPicker && (
-        <div className="record-ride__trail-picker">
-          {TRAILS.map((trail) => (
-            <button
-              key={trail.name}
-              className="btn btn-secondary record-ride__test-btn"
-              onClick={() => simulateMovement(trail)}
-            >
-              {trail.name}
+    <>
+      <div className="record-ride">
+        {testButton}
+        <RideSimulationControls
+          recording={recording}
+          open={showTrailPicker}
+          onToggle={() => setShowTrailPicker((prev) => !prev)}
+          onSimulateCombined={
+            vertigoAndThunderGoat.length === 2 ? () => simulateCombinedRide(vertigoAndThunderGoat) : null
+          }
+          onSimulateBigRide={bigRideSequence ? simulateBigRide : null}
+        />
+        <RecordRideMap
+          position={position}
+          path={path}
+          trailPaths={trailPaths}
+          liftPaths={liftPaths}
+          trailBounds={trailBounds}
+        />
+
+        <div className="record-ride__controls">
+          <span className="record-ride__distance">{distance.toFixed(2)} km</span>
+          {!recording ? (
+            <button className="btn btn-primary" onClick={startRecording}>
+              {path.length > 0 ? 'Record Again' : 'Record'}
             </button>
-          ))}
-          {vertigoAndThunderGoat.length === 2 && (
-            <button
-              className="btn btn-secondary record-ride__test-btn"
-              onClick={() => simulateCombinedRide(vertigoAndThunderGoat)}
-            >
-              Vertigo + Thunder Goat
-            </button>
-          )}
-          {bigRideSequence && (
-            <button className="btn btn-secondary record-ride__test-btn" onClick={simulateBigRide}>
-              Big Ride: Hammy's → TG → Gondola → Vertigo → TG → Gondola → Hammy's → TG
+          ) : (
+            <button className="btn btn-danger" onClick={finishRecording}>
+              Stop
             </button>
           )}
         </div>
-      )}
-      <div className="record-ride__map">
-        <MapContainer center={position} zoom={15} scrollWheelZoom={true} style={{ height: '220px', width: '100%' }}>
-          {trailBounds && <ImageOverlay url={MOUNTAIN_BACKDROP_URL} bounds={trailBounds} />}
-          <RecenterMap position={position} />
-          <FitAllTrails trailPaths={trailPaths} liftPaths={liftPaths} />
-          <TrailOverlays trailPaths={trailPaths} />
-          <LiftOverlays liftPaths={liftPaths} />
-          {path.length > 1 && <Polyline positions={path} color="#ff6b35" weight={2} />}
-          <CircleMarker
-            center={position}
-            radius={7}
-            pathOptions={{ color: '#2563eb', fillColor: '#60a5fa', fillOpacity: 1 }}
-          />
-        </MapContainer>
-      </div>
 
-      <div className="record-ride__controls">
-        <span className="record-ride__distance">{distance.toFixed(2)} km</span>
-        {!recording ? (
-          <button className="btn btn-primary" onClick={startRecording}>
-            {path.length > 0 ? 'Record Again' : 'Record'}
-          </button>
-        ) : (
-          <button className="btn btn-danger" onClick={finishRecording}>
-            Stop
-          </button>
+        {!recording && path.length > 1 && (
+          <div className="record-ride__save">
+            <p className="record-ride__laps">
+              {gondolaLaps} lap{gondolaLaps === 1 ? '' : 's'} this session
+            </p>
+            <ul className="record-ride__save-names">
+              {computedSegments.length === 0 ? (
+                <li>{hasIncompleteSegments ? "Stopped before finishing - not saved" : 'Matching trail…'}</li>
+              ) : (
+                computedSegments.map((segment) => (
+                  <li key={segment.name}>
+                    {segment.name} <span>({segment.distance.toFixed(2)} km)</span>
+                  </li>
+                ))
+              )}
+            </ul>
+            <div className="record-ride__photo">
+              {photoPreviewUrl ? (
+                <div className="record-ride__photo-preview">
+                  <img src={photoPreviewUrl} alt="Ride" className="record-ride__photo-thumb" />
+                  <button
+                    type="button"
+                    className="btn btn-secondary record-ride__photo-remove"
+                    onClick={handleRemovePhoto}
+                  >
+                    Remove Photo
+                  </button>
+                </div>
+              ) : (
+                <label className="btn btn-secondary record-ride__photo-add">
+                  Add Photo
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handlePhotoChange}
+                    style={{ display: 'none' }}
+                  />
+                </label>
+              )}
+            </div>
+            <button className="btn btn-primary" onClick={handleSave} disabled={saving || computedSegments.length === 0}>
+              {saving ? 'Saving…' : computedSegments.length > 1 ? 'Save Rides' : 'Save Ride'}
+            </button>
+          </div>
         )}
       </div>
-
-      {!recording && path.length > 1 && (
-        <div className="record-ride__save">
-          <p className="record-ride__laps">
-            {gondolaLaps} lap{gondolaLaps === 1 ? '' : 's'} this session
-          </p>
-          <ul className="record-ride__save-names">
-            {computedSegments.length === 0 ? (
-              <li>{hasIncompleteSegments ? "Stopped before finishing - not saved" : 'Matching trail…'}</li>
-            ) : (
-              computedSegments.map((segment) => (
-                <li key={segment.name}>
-                  {segment.name} <span>({segment.distance.toFixed(2)} km)</span>
-                </li>
-              ))
-            )}
-          </ul>
-          <div className="record-ride__photo">
-            {photoPreviewUrl ? (
-              <div className="record-ride__photo-preview">
-                <img src={photoPreviewUrl} alt="Ride" className="record-ride__photo-thumb" />
-                <button
-                  type="button"
-                  className="btn btn-secondary record-ride__photo-remove"
-                  onClick={handleRemovePhoto}
-                >
-                  Remove Photo
-                </button>
-              </div>
-            ) : (
-              <label className="btn btn-secondary record-ride__photo-add">
-                Add Photo
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handlePhotoChange}
-                  style={{ display: 'none' }}
-                />
-              </label>
-            )}
-          </div>
-          <button className="btn btn-primary" onClick={handleSave} disabled={saving || computedSegments.length === 0}>
-            {saving ? 'Saving…' : computedSegments.length > 1 ? 'Save Rides' : 'Save Ride'}
-          </button>
-        </div>
-      )}
-    </div>
+      {savedRidesList}
+    </>
   )
 }
 
-export default RecordRide
+export default Ride

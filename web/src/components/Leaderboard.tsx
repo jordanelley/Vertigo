@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useAuth0 } from '@auth0/auth0-react'
-import { API_URL } from '../api'
+import { API_URL, authHeaders } from '../api'
 import type { LeaderboardEntry, TrackLeaderboard, LeaderboardScope } from '../types'
 
 const SCOPES: LeaderboardScope[] = ['all', 'following']
@@ -10,11 +10,9 @@ export function Leaderboard() {
   const [scope, setScope] = useState<LeaderboardScope>('all')
   const { user } = useAuth0()
 
-  const authHeaders = (): HeadersInit => (user?.sub ? { 'X-Auth0-Id': user.sub } : {})
-
   const fetchLeaderboard = (next: LeaderboardScope) => {
     fetch(`${API_URL}/api/leaderboard?scope=${next}`, {
-      headers: authHeaders(),
+      headers: authHeaders(user),
     })
       .then((res) => res.json())
       .then(setLeaderboard)
@@ -35,7 +33,7 @@ export function Leaderboard() {
   const handleToggleFollow = async (entry: LeaderboardEntry) => {
     await fetch(`${API_URL}/api/users/${entry.userId}/follow`, {
       method: entry.isFollowing ? 'DELETE' : 'POST',
-      headers: authHeaders(),
+      headers: authHeaders(user),
     })
     fetchLeaderboard(scope)
   }

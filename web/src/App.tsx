@@ -6,8 +6,7 @@ import { Tabs, type Tab } from './components/Tabs'
 import { Feed } from './components/Feed'
 import { Challenges } from './components/Challenges'
 import { Leaderboard } from './components/Leaderboard'
-import { AuthPage } from './components/AuthPage'
-import { API_URL } from './api'
+import { syncUser } from './api'
 import './App.css'
 
 function App() {
@@ -27,30 +26,22 @@ function App() {
   const logout = () =>
     auth0Logout({ logoutParams: { returnTo: window.location.origin } })
 
-  const authHeaders = (): HeadersInit =>
-    user?.sub ? { 'X-Auth0-Id': user.sub } : {}
-
   useEffect(() => {
     if (!isAuthenticated || !user?.sub) return
-
-    fetch(`${API_URL}/api/users/me`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', ...authHeaders() },
-      body: JSON.stringify({ nickname: user.nickname ?? 'Rider' }),
-    })
+    syncUser(user)
   }, [isAuthenticated, user?.sub])
 
   if (isLoading) return 'Loading...'
 
   return (
-    <>
-      {isAuthenticated ? (
-        <div className="auth-page">
-          <div className="auth-card auth-card--app">
-            <div className="auth-card__banner">
-              <MountainBikeIllustration />
-            </div>
-            <div className="auth-card__body">
+    <div className="auth-page">
+      <div className="auth-card auth-card--app">
+        <div className="auth-card__banner">
+          <MountainBikeIllustration />
+        </div>
+        <div className="auth-card__body">
+          {isAuthenticated ? (
+            <>
               {user?.picture ? (
                 <img src={user.picture} alt="" className="avatar" />
               ) : (
@@ -59,31 +50,46 @@ function App() {
                 </div>
               )}
               <h1>{user?.nickname ?? 'Welcome back'}</h1>
+            </>
+          ) : (
+            <>
+              <h1>Vertigo</h1>
+              <p className="subtitle">Track your rides. Chase the descent.</p>
+            </>
+          )}
+          {error && <p className="error">Error: {error.message}</p>}
 
-              <Tabs activeTab={activeTab} onSelect={setActiveTab} />
+          <Tabs activeTab={activeTab} onSelect={setActiveTab} />
 
-              <div className="tab-panel">
-                {activeTab === 'feed' && <Feed />}
+          <div className="tab-panel">
+            {activeTab === 'feed' && <Feed />}
 
-                {activeTab === 'ride' && <Ride />}
+            {activeTab === 'ride' && <Ride />}
 
-                {activeTab === 'leaderboard' && <Leaderboard />}
+            {activeTab === 'leaderboard' && <Leaderboard />}
 
-                {activeTab === 'challenges' && <Challenges />}
-              </div>
+            {activeTab === 'challenges' && <Challenges />}
+          </div>
 
-              <div className="auth-card__actions">
-                <button className="btn btn-secondary" onClick={logout}>
-                  Log Out
+          <div className="auth-card__actions">
+            {isAuthenticated ? (
+              <button className="btn btn-secondary" onClick={logout}>
+                Log Out
+              </button>
+            ) : (
+              <>
+                <button className="btn btn-primary" onClick={() => login()}>
+                  Log In
                 </button>
-              </div>
-            </div>
+                <button className="btn btn-secondary" onClick={signup}>
+                  Sign Up
+                </button>
+              </>
+            )}
           </div>
         </div>
-      ) : (
-        <AuthPage error={error} onLogin={() => login()} onSignup={signup} />
-      )}
-    </>
+      </div>
+    </div>
   )
 }
 

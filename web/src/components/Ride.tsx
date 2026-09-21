@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
+import { useAuth0 } from '@auth0/auth0-react'
 import { latLngBounds, type LatLngBounds } from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import {
@@ -12,7 +13,7 @@ import {
 } from '../trails'
 import { LIFTS, excludeLiftPoints, countLiftLaps } from '../lifts'
 import { DEFAULT_CENTER } from '../mapGeometry'
-import { API_URL } from '../api'
+import { API_URL, authHeaders, syncUser } from '../api'
 import type { Ride } from '../types'
 import { RecordRideMap } from './RecordRideMap'
 import { RideSimulationControls } from './RideSimulationControls'
@@ -64,11 +65,14 @@ function reachedTrailEnd(segmentPoints: LatLng[], trailPoints: LatLng[]): boolea
 }
 
 function Ride() {
+  const { isAuthenticated, user, loginWithPopup } = useAuth0()
   const [rides, setRides] = useState<Ride[]>([])
   const [recording, setRecording] = useState(false)
   const [path, setPath] = useState<LatLng[]>([])
   const [position, setPosition] = useState<LatLng>(DEFAULT_CENTER)
   const [saving, setSaving] = useState(false)
+  const [saveError, setSaveError] = useState<string | null>(null)
+  const [pendingSave, setPendingSave] = useState(false)
   const [locationStatus, setLocationStatus] = useState<LocationStatus>('checking')
   const [elapsedMinutes, setElapsedMinutes] = useState(0)
   const [trailPaths, setTrailPaths] = useState<Record<string, LatLng[]>>({})
@@ -274,7 +278,7 @@ function Ride() {
   const saveRide = async (rideName: string, distance: number, time: number) => {
     const res = await fetch(`${API_URL}/api/rides`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', ...authHeaders(user) },
       body: JSON.stringify({ rideName, distance, time }),
     })
     const newRide = await res.json()
@@ -287,10 +291,10 @@ function Ride() {
     setRides((prev) => prev.filter((ride) => ride.id !== id))
   }
 
-  const handleSave = async () => {
-    if (computedSegments.length === 0) return
+  const performSave = async () => {
     const totalSegmentDistance = computedSegments.reduce((sum, s) => sum + s.distance, 0)
     setSaving(true)
+    setSaveError(null)
     try {
       for (const segment of computedSegments) {
         const segTime =
@@ -302,10 +306,39 @@ function Ride() {
         if (prev) URL.revokeObjectURL(prev)
         return null
       })
+    } catch (err) {
+      console.error('Failed to save ride:', err)
+      setSaveError('Failed to save ride. Try again.')
     } finally {
       setSaving(false)
     }
   }
+
+  const handleSave = async () => {
+    if (computedSegments.length === 0) return
+    setSaveError(null)
+    if (!isAuthenticated) {
+      setPendingSave(true)
+      try {
+        await loginWithPopup()
+      } catch (err) {
+        console.error('Login popup failed or was cancelled:', err)
+        setSaveError('Log in to save this ride.')
+        setPendingSave(false)
+      }
+      return
+    }
+    await performSave()
+  }
+
+  useEffect(() => {
+    if (!pendingSave || !isAuthenticated || !user?.sub) return
+    setPendingSave(false)
+    syncUser(user).then(performSave)
+    // performSave/computedSegments intentionally omitted: this effect should only react to the
+    // pending-save + auth-state transition, not re-fire on every recompute of the derived segments.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pendingSave, isAuthenticated, user?.sub])
 
   const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -456,8 +489,19 @@ function Ride() {
                 </label>
               )}
             </div>
-            <button className="btn btn-primary" onClick={handleSave} disabled={saving || computedSegments.length === 0}>
-              {saving ? 'Saving…' : computedSegments.length > 1 ? 'Save Rides' : 'Save Ride'}
+            {saveError && <p className="error">{saveError}</p>}
+            <button
+              className="btn btn-primary"
+              onClick={handleSave}
+              disabled={saving || pendingSave || computedSegments.length === 0}
+            >
+              {!isAuthenticated
+                ? 'Log In to Save'
+                : saving
+                  ? 'Saving…'
+                  : computedSegments.length > 1
+                    ? 'Save Rides'
+                    : 'Save Ride'}
             </button>
           </div>
         )}

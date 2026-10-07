@@ -15,9 +15,21 @@ public class RidesController : ControllerBase
     }
 
     [HttpGet(Name = "GetRides")]
-    public async Task<IEnumerable<Ride>> Get()
+    public async Task<IEnumerable<Ride>> Get(
+        [FromQuery] bool mine = false,
+        [FromHeader(Name = "X-Auth0-Id")] string? auth0Id = null)
     {
-        return await _db.Rides.ToListAsync();
+        if (!mine) return await _db.Rides.ToListAsync();
+
+        if (string.IsNullOrEmpty(auth0Id)) return Enumerable.Empty<Ride>();
+        // AsNoTracking: otherwise EF's relationship fixup wires each ride's User nav property back
+        // to this tracked user, and User.Rides back to the rides, causing an infinite cycle when
+        // the JSON serializer tries to write it out (see CreateRide's ride.User = null for the
+        // same issue on the write side).
+        var user = await _db.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Auth0Id == auth0Id);
+        if (user is null) return Enumerable.Empty<Ride>();
+
+        return await _db.Rides.AsNoTracking().Where(r => r.UserId == user.Id).ToListAsync();
     }
 
     [HttpPost(Name = "CreateRide")]

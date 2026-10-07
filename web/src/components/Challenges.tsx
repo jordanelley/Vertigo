@@ -1,6 +1,21 @@
+import { useEffect, useState } from 'react'
+import { useAuth0 } from '@auth0/auth0-react'
+import { API_URL, authHeaders } from '../api'
+import { TRAILS, baseTrailName } from '../trails'
+import type { Ride } from '../types'
+
+const BLUE_LEVELS = [3, 4]
+const blueTrailNames = TRAILS.filter((trail) => BLUE_LEVELS.includes(trail.level)).map((trail) => trail.name)
+const allTrailNames = TRAILS.map((trail) => trail.name)
+
+function percentRidden(trailNames: string[], riddenTrails: Set<string>): number {
+  const completed = trailNames.filter((name) => riddenTrails.has(name)).length
+  return Math.round((completed / trailNames.length) * 100)
+}
+
 const challengeBadges = [
-  { id: 1, name: 'Blue Runner', description: 'Ride every blue track in skyline', progress: 40 },
-  { id: 2, name: 'Trail Master', description: 'Ride every track in Skyline', progress: 15 },
+  { id: 1, name: 'Blue Runner', description: 'Ride every blue track in skyline' },
+  { id: 2, name: 'Trail Master', description: 'Ride every track in Skyline' },
   { id: 3, name: 'I Have A Friend', description: 'Do a lap with another user', progress: 0 },
   { id: 4, name: 'Night Climber', description: 'Pedal up Hammys (probably better at night)', progress: 60 },
   { id: 5, name: 'Night Owl', description: 'do a lap after 9pm', progress: 0 },
@@ -29,23 +44,50 @@ const challengeBadges = [
 ]
 
 export function Challenges() {
+  const { isAuthenticated, user } = useAuth0()
+  const [blueRunnerProgress, setBlueRunnerProgress] = useState(0)
+  const [trailMasterProgress, setTrailMasterProgress] = useState(0)
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      setBlueRunnerProgress(0)
+      setTrailMasterProgress(0)
+      return
+    }
+    fetch(`${API_URL}/api/rides?mine=true`, { headers: authHeaders(user) })
+      .then((res) => res.json())
+      .then((rides: Ride[]) => {
+        const riddenTrails = new Set(rides.map((ride) => baseTrailName(ride.rideName)))
+        setBlueRunnerProgress(percentRidden(blueTrailNames, riddenTrails))
+        setTrailMasterProgress(percentRidden(allTrailNames, riddenTrails))
+      })
+      .catch(() => {
+        setBlueRunnerProgress(0)
+        setTrailMasterProgress(0)
+      })
+  }, [isAuthenticated, user])
+
   return (
     <ul className="data-list">
-      {challengeBadges.map((badge) => (
-        <li key={badge.id} className="data-list__item badge-row">
-          <div className="badge-row__top">
-            <span className="badge-row__icon" aria-hidden="true">🔒</span>
-            <span className="badge-row__text">
-              <span className="data-list__primary">{badge.name}</span>
-              <span className="data-list__secondary">{badge.description}</span>
-            </span>
-            <span className="badge-row__percent">{badge.progress}%</span>
-          </div>
-          <div className="badge-row__progress">
-            <div className="badge-row__progress-fill" style={{ width: `${badge.progress}%` }} />
-          </div>
-        </li>
-      ))}
+      {challengeBadges.map((badge) => {
+        const progress =
+          badge.id === 1 ? blueRunnerProgress : badge.id === 2 ? trailMasterProgress : badge.progress
+        return (
+          <li key={badge.id} className="data-list__item badge-row">
+            <div className="badge-row__top">
+              <span className="badge-row__icon" aria-hidden="true">🔒</span>
+              <span className="badge-row__text">
+                <span className="data-list__primary">{badge.name}</span>
+                <span className="data-list__secondary">{badge.description}</span>
+              </span>
+              <span className="badge-row__percent">{progress}%</span>
+            </div>
+            <div className="badge-row__progress">
+              <div className="badge-row__progress-fill" style={{ width: `${progress}%` }} />
+            </div>
+          </li>
+        )
+      })}
     </ul>
   )
 }

@@ -103,11 +103,15 @@ function Ride() {
   }, [])
 
   useEffect(() => {
-    fetch(`${API_URL}/api/rides`)
+    if (!isAuthenticated) {
+      setRides([])
+      return
+    }
+    fetch(`${API_URL}/api/rides?mine=true`, { headers: authHeaders(user) })
       .then((res) => res.json())
       .then(setRides)
       .catch(() => setRides([]))
-  }, [])
+  }, [isAuthenticated, user])
 
   useEffect(() => {
     if (!navigator.geolocation) {

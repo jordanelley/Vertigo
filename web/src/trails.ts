@@ -4,6 +4,7 @@ export interface TrailDefinition {
   name: string
   file: string
   color: string
+  level: number
 }
 
 // import.meta.env.BASE_URL is Vite's configured base path (e.g. "/Vertigo/" in production, "/"
@@ -28,6 +29,7 @@ const trail = (name: string, file: string, level: number): TrailDefinition => ({
   name,
   file: trailFile(file),
   color: LEVEL_COLORS[level],
+  level,
 })
 
 export const TRAILS: TrailDefinition[] = [
@@ -171,6 +173,11 @@ export function segmentPathByTrail(path: LatLng[], trailPaths: Record<string, La
   }
 
   return merged.filter((segment) => segment.points.length >= 2)
+}
+
+/** Strips the " #N" attempt suffix a saved ride name carries, back to its trail name. */
+export function baseTrailName(rideName: string): string {
+  return rideName.replace(/\s#\d+$/, '')
 }
 
 /** Builds "<Trail Name> #N" using the next attempt number after any existing matches. */
